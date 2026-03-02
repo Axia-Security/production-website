@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Axia Brand Assets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Manrope', system-ui, sans-serif; background: #f8fafc; color: #1e293b; }
+        h1 { font-size: 2rem; font-weight: 800; padding: 3rem 2rem 1rem; text-align: center; }
+        h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .card {
+            border-radius: 16px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .card-dark { background: #111827; }
+        .card-light { background: #ffffff; border: 1px solid #e2e8f0; }
+        .card img, .card object { max-width: 200px; height: auto; }
+        .card.lockup img, .card.lockup object { max-width: 360px; }
+        .label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+        .card-dark .label { color: #94a3b8; }
+        .card-light .label { color: #64748b; }
+        .filename { font-size: 0.6875rem; font-family: monospace; opacity: 0.6; margin-top: -0.5rem; }
+        section { margin-bottom: 3rem; }
+        .section-title { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+        .colors { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 1rem auto; max-width: 600px; }
+        .swatch {
+            width: 80px; height: 80px; border-radius: 12px; display: flex; align-items: flex-end;
+            justify-content: center; padding-bottom: 0.5rem; font-size: 0.625rem; font-weight: 600;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Axia Brand Assets</h1>
+
+    <section>
+        <div class="section-title"><h2>Brain Logo</h2></div>
+        <div class="grid">
+            <div class="card card-dark">
+                <span class="label">Dark Mode</span>
+                <img src="brain-logo-dark.svg" alt="Brain logo dark mode" width="200"/>
+                <span class="filename">brain-logo-dark.svg</span>
+            </div>
+            <div class="card card-light">
+                <span class="label">Light Mode</span>
+                <img src="brain-logo-light.svg" alt="Brain logo light mode" width="200"/>
+                <span class="filename">brain-logo-light.svg</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title"><h2>Wordmark</h2></div>
+        <div class="grid">
+            <div class="card card-dark">
+                <span class="label">Dark Mode</span>
+                <img src="wordmark-dark.svg" alt="Wordmark dark mode" width="240"/>
+                <span class="filename">wordmark-dark.svg</span>
+            </div>
+            <div class="card card-light">
+                <span class="label">Light Mode</span>
+                <img src="wordmark-light.svg" alt="Wordmark light mode" width="240"/>
+                <span class="filename">wordmark-light.svg</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title"><h2>Lockup (Brain + Wordmark)</h2></div>
+        <div class="grid">
+            <div class="card card-dark lockup">
+                <span class="label">Dark Mode</span>
+                <img src="lockup-dark.svg" alt="Lockup dark mode" width="360"/>
+                <span class="filename">lockup-dark.svg</span>
+            </div>
+            <div class="card card-light lockup">
+                <span class="label">Light Mode</span>
+                <img src="lockup-light.svg" alt="Lockup light mode" width="360"/>
+                <span class="filename">lockup-light.svg</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title"><h2>Favicon</h2></div>
+        <div class="grid">
+            <div class="card card-dark">
+                <span class="label">Favicon (SVG)</span>
+                <img src="favicon.svg" alt="Favicon" width="64"/>
+                <span class="filename">favicon.svg</span>
+            </div>
+            <div class="card card-light">
+                <span class="label">Source PNG (brain mask)</span>
+                <img src="brain-shape.png" alt="Brain shape PNG" width="200" style="opacity:0.8;"/>
+                <span class="filename">brain-shape.png</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title"><h2>Brand Colors</h2></div>
+        <div class="colors">
+            <div class="swatch" style="background:#0D9488;color:#fff;">#0D9488</div>
+            <div class="swatch" style="background:#22D3EE;color:#111;">#22D3EE</div>
+            <div class="swatch" style="background:#111827;color:#fff;">#111827</div>
+            <div class="swatch" style="background:#FFFFFF;color:#111;border:1px solid #e2e8f0;">#FFFFFF</div>
+        </div>
+    </section>
+</body>
+</html>

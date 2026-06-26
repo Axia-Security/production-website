@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name='viewport' content='width=device-width,initial-scale=1'><title>AXIA InfoSec Highlights v3</title><style>body{font-family:'Manrope',-apple-system,Segoe UI,Roboto,sans-serif;color:#0f172a;max-width:860px;margin:0 auto;padding:40px 28px 80px;line-height:1.65;background:#fff}
+h1{font-size:30px;color:#0b7d72;border-bottom:3px solid #0D9488;padding-bottom:10px}h2{font-size:20px;color:#0b7d72;margin-top:30px}h3{font-size:16px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14px}th,td{border:1px solid #e2e8f0;padding:8px 10px;text-align:left;vertical-align:top}th{background:#f0fdfa;color:#0b7d72}
+a{color:#0D9488}hr{border:0;border-top:1px solid #e2e8f0;margin:22px 0}blockquote{border-left:4px solid #0D9488;background:#f8fafc;padding:8px 16px;color:#475569}
+.brand{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#0D9488;font-weight:800;margin-bottom:4px}</style></head><body><div class="brand">AXIA</div><h1>Information Security Policies &amp; Standards</h1>
+<blockquote>
+<p><strong>v3 (2026-06-26): deployment-posture wording generalized to on-prem OR customer's own cloud tenant; no other control changed.</strong></p>
+</blockquote>
+<p><strong>Date:</strong> April 2026 · <strong>Document_Id:</strong> AXIA-ISPS-2026-001 · <strong>Classification:</strong> Confidential</p>
+<h2>1. Purpose and Scope</h2>
+<p>Axia Security (“Axia”) maintains a comprehensive Information Security Program designed to protect its systems, operations, and customer environments from unauthorized access, disruption, or misuse.</p>
+<p>This document provides an overview of Axia’s information security policies and standards, which are aligned with industry best practices and evolving compliance frameworks, including the SOC 2 Trust Services Criteria (Security, Availability, and Confidentiality).</p>
+<p>The scope of this program includes all Axia personnel, systems, and processes supporting product development, operations, and customer engagements.</p>
+<h2>2. Governance and Risk Management</h2>
+<p>Axia maintains a structured governance framework for information security, including:</p>
+<ul>
+<li>Defined roles and responsibilities across executive management, engineering, and operations</li>
+<li>Integration of security considerations into business and product decision-making</li>
+<li>Ongoing identification and assessment of risks to systems and operations</li>
+<li>Security policies and standards are reviewed periodically and updated to reflect changes in the threat landscape, business operations, and regulatory expectations.</li>
+</ul>
+<p>Information security governance is owned by Guy Hindi, Chief Product Officer, who serves as the Qualified Individual under the FTC Safeguards Rule §314.4(a)(1). AXIA's §314.4(f) service-provider oversight posture is described in the Compliance Program Charter (available on request).</p>
+<h2>3. Access Control and Identity Management</h2>
+<p>Axia enforces access controls based on the principle of least privilege and business need:</p>
+<ul>
+<li>Role-based access controls (RBAC) are implemented across internal systems</li>
+<li>Access to sensitive systems and data is restricted and managed</li>
+<li>Authentication mechanisms are enforced for system access</li>
+<li>Access rights are reviewed and adjusted as part of operational processes</li>
+<li>These controls are designed to reduce the risk of unauthorized access and support accountability.</li>
+</ul>
+<h2>4. Data Protection and Confidentiality</h2>
+<p>Axia implements controls to protect sensitive and confidential information, including:</p>
+<ul>
+<li>Secure handling and processing of data in accordance with internal policies</li>
+<li>Encryption practices aligned with industry standards, where applicable</li>
+<li>AXIA's deployment supports TLS 1.2+ for data in transit and AES-256-GCM for data at rest at the storage/file-system layer. Specific cryptographic posture per customer engagement is documented in the DPA Schedule A.</li>
+<li>Data minimization principles to limit unnecessary exposure</li>
+<li>For customer engagements, Axia’s solution is deployed within the customer's controlled environment — on-premises OR the customer's own cloud tenant, ensuring:</li>
+<li>Customer data remains within the organization’s environment</li>
+<li>No transfer of customer data to Axia-managed systems</li>
+<li>Full customer control over data access and retention</li>
+<li>This approach aligns with regulatory expectations for data protection in highly regulated industries.</li>
+</ul>
+<h2>5. Secure Development and Change Management</h2>
+<p>Security is integrated into Axia’s software development lifecycle:</p>
+<ul>
+<li>Secure coding practices are followed by engineering teams</li>
+<li>Testing and validation are conducted prior to deployment</li>
+<li>Changes to systems and applications are controlled and managed</li>
+<li>This ensures that security considerations are embedded throughout the development and release process.</li>
+</ul>
+<h2>6. Incident Response and Security Monitoring</h2>
+<p>Axia maintains incident response procedures to address security events and operational incidents:</p>
+<ul>
+<li>Identification and classification of incidents</li>
+<li>Defined escalation and response protocols</li>
+<li>Containment, mitigation, and recovery actions</li>
+<li>Internal coordination and communication procedures</li>
+<li>These processes support timely and effective handling of incidents while minimizing potential impact.</li>
+</ul>
+<h2>7. Business Continuity and Disaster Recovery</h2>
+<p>Axia maintains Business Continuity and Disaster Recovery frameworks to support operational resilience:</p>
+<ul>
+<li>Identification of critical business functions and dependencies</li>
+<li>Defined recovery priorities and procedures</li>
+<li>Periodic review and validation of continuity plans</li>
+<li>These capabilities ensure that Axia can continue operations and respond effectively to disruptions.</li>
+</ul>
+<h2>8. Infrastructure and Deployment Model</h2>
+<p>Axia’s deployment model is designed to minimize operational and security risk:</p>
+<ul>
+<li>Customer-facing deployments run within the customer's controlled environment (on-premises or the customer's own cloud tenant)</li>
+<li>Axia does not operate customer production data environments</li>
+<li>Customer data is not transmitted outside the customer's controlled environment</li>
+<li>This architecture reduces third-party risk and aligns with the expectations of financial institutions and other regulated organizations.</li>
+</ul>
+<h2>9. Third-Party Risk Management</h2>
+<p>Axia evaluates third-party vendors and service providers based on security and operational considerations. A formal Vendor Risk Register governance framework is contemplated under AXIA's Compliance Program Charter; formalization timing is aligned with the Charter's policy-library review cycle. Current practice includes:</p>
+<ul>
+<li>Assessment of vendor security practices where applicable</li>
+<li>Alignment with internal security standards</li>
+<li>Ongoing monitoring of third-party relationships</li>
+<li>This approach is intended to ensure that external dependencies do not introduce undue risk as formalization progresses.</li>
+</ul>
+<h2>10. Employee Security and Awareness</h2>
+<p>Axia maintains practices to ensure that employees understand and fulfill their security responsibilities:</p>
+<ul>
+<li>Adherence to internal security policies and guidelines</li>
+<li>Responsible handling of sensitive information</li>
+<li>Awareness of security and operational risks</li>
+<li>These measures support a culture of security across the organization.</li>
+</ul>
+<h2>11. Compliance and Continuous Improvement</h2>
+<p>Axia is committed to continuous improvement of its security posture:</p>
+<ul>
+<li>Alignment with industry best practices and control frameworks</li>
+<li>Ongoing enhancement of policies, processes, and controls</li>
+<li>Security practices evolve alongside the company’s growth and the changing threat landscape.</li>
+</ul>
+<p>AXIA has engaged a third-party compliance partner (Scytale) and initiated a formal SOC 2 Type 2 readiness program. Completion timing depends on the audit scope, readiness assessment, and external auditor availability, and cannot be committed as a fixed date.</p>
+<h2>Conclusion</h2>
+<p>Axia’s Information Security Program provides a structured and risk-based approach to protecting systems, data, and operations. Combined with its in-customer-environment deployment model, Axia enables organizations—particularly in regulated industries such as financial services, to maintain full control over their data while benefiting from advanced security capabilities.</p></body></html>

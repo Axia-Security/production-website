@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>AXIA — Security & Trust Centre</title>
+
+<style>
+  :root{
+    --teal:#0D9488; --teal-dark:#0b7d72; --accent:#22D3EE;
+    --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Manrope',-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+  header{background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff;padding:56px 0 48px}
+  header .wrap{display:flex;flex-direction:column;gap:8px}
+  .brand{font-size:14px;letter-spacing:.18em;text-transform:uppercase;opacity:.85;font-weight:700}
+  h1{margin:6px 0 4px;font-size:38px;font-weight:800;letter-spacing:-.02em}
+  .sub{font-size:18px;opacity:.92;max-width:620px}
+  .pill{display:inline-block;margin-top:14px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);
+        padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600}
+  section{padding:34px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 16px;font-weight:800}
+  h3{font-size:19px;margin:0 0 6px;font-weight:700}
+  p{margin:0 0 12px;color:var(--muted)}
+  .lead{font-size:18px;color:var(--ink)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}h1{font-size:30px}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .card h3{font-size:16px;display:flex;align-items:center;gap:8px}
+  .card p{font-size:14.5px;margin:0}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{padding:10px 0;border-bottom:1px dashed var(--line);color:var(--muted);font-size:15px}
+  ul.clean li:last-child{border-bottom:0}
+  ul.clean li b{color:var(--ink)}
+  .status{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;padding:3px 10px;border-radius:8px}
+  .s-ref{background:#ecfeff;color:#0e7490}
+  .s-prog{background:#fef9c3;color:#854d0e}
+  .s-no{background:#f1f5f9;color:#475569}
+  .docs{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .docs span{background:#f1f5f9;border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:13px;color:var(--muted)}
+  .cta{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;padding:18px 22px}
+  .cta a{color:var(--teal);font-weight:700;text-decoration:none}
+  footer{padding:28px 0 48px;color:#94a3b8;font-size:13px}
+  .note{background:#fffbeb;border:1px dashed #f59e0b;border-radius:10px;padding:12px 16px;color:#92400e;font-size:13px;margin-top:18px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">AXIA</div>
+    <h1>Security &amp; Trust Centre</h1>
+    <div class="sub">How AXIA protects customer data, the frameworks our program is designed with reference to, and how to request our documentation.</div>
+    <span class="pill">Deployed inside your environment · Your data never leaves your custody</span>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Deployment &amp; data custody</h2>
+    <p class="lead">AXIA runs inside the customer's own controlled environment — on-premises or the customer's own cloud tenant — and customer data does not leave the customer's custody.</p>
+    <p>The LLM used for severity judgment is always provided by the customer: either the customer's own contracted cloud LLM service (e.g. Amazon Bedrock, Azure OpenAI, Google Vertex) or a customer-managed/approved API to an on-premises model. <b>AXIA does not host or provide the LLM, does not operate a SaaS or multi-tenant service, and does not custody customer production data.</b></p>
+    <div class="grid" style="margin-top:8px">
+      <div class="card"><h3><span class="dot"></span> Data residency</h3><p>Customer-determined — data resides only in the region(s) of the customer's own environment.</p></div>
+      <div class="card"><h3><span class="dot"></span> Segregation</h3><p>Each deployment is a separate environment in the customer's own tenant; no shared multi-tenant datastore.</p></div>
+      <div class="card"><h3><span class="dot"></span> Provider relationships</h3><p>The cloud and model providers are the customer's direct counterparties — not AXIA sub-processors.</p></div>
+      <div class="card"><h3><span class="dot"></span> Personnel access</h3><p>AXIA personnel hold no standing access path to customer production data; support runs under the customer's controls and logging.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Security program</h2>
+    <ul class="clean">
+      <li><b>Encryption.</b> TLS 1.2+ in transit; AES-256-GCM at rest at the storage layer.</li>
+      <li><b>Authentication &amp; access.</b> Users authenticate via the customer's own identity provider (SSO; OIDC+PKCE / SAML 2.0); the customer's MFA policy applies. Per-screen, server-side role-based access control with object-level checks.</li>
+      <li><b>Audit trail.</b> No state-changing action is recorded without a resolved authenticated principal; AI actions trace to the authorizing human.</li>
+      <li><b>Monitoring &amp; incident response.</b> Monitoring of AXIA's own systems under a Computer Incident Response Program; the product emits logs into the customer's own security tooling. AXIA notifies the customer within 24 hours of confirming an AXIA-side security incident affecting customer data.</li>
+      <li><b>Resilience.</b> Business Continuity and Disaster Recovery plans with defined recovery objectives and periodic review.</li>
+      <li><b>Secure development &amp; third-party risk.</b> A secure SDLC and a Vendor Risk Register inventorying vendors by data-access scope, criticality, certification status, and contractual flow-down.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>AI governance</h2>
+    <p>AXIA's AI posture is <b>designed with reference to the NIST AI Risk Management Framework 1.0 and the Generative AI Profile</b>, documented in an AXIA self-assessed crosswalk (a mapping, not a conformance attestation). The design includes data minimization (no protected-class attributes or HR records), human-confirmation gates on AI-suggested actions, explainability for every alert, and model documentation (model cards).</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Compliance &amp; frameworks</h2>
+    <p>AXIA holds no independent third-party attestation at this time. References below are design targets, not certifications.</p>
+    <ul class="clean">
+      <li><span class="status s-prog">SOC 2 Type II</span> &nbsp; Readiness in progress. No attestation is held; no completion date is committed. Report shared under NDA once issued.</li>
+      <li><span class="status s-ref">ISO/IEC 27001</span> &nbsp; Designed with reference to the control families. <b>Not ISO 27001 certified.</b></li>
+      <li><span class="status s-ref">GDPR / UK GDPR / Swiss FADP</span> &nbsp; Designed with reference to Article 32-style security of processing; the in-environment model supports the customer's own obligations.</li>
+      <li><span class="status s-ref">NIST AI RMF 1.0 + GenAI Profile</span> &nbsp; Self-assessed crosswalk (see AI governance).</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Documentation — available under NDA</h2>
+    <p>The following AXIA-authored materials are available to customers and prospects on request, under NDA:</p>
+    <div class="docs">
+      <span>NIST AI RMF Crosswalk</span><span>Compliance Program Charter</span><span>Vendor Risk Register</span>
+      <span>AI Supply-Chain Posture</span><span>InfoSec Policies &amp; Standards Highlights</span><span>BCP / DRP / CIRP / IRP</span>
+      <span>Physical Security Program</span><span>Model Cards</span>
+    </div>
+    <div class="cta" style="margin-top:18px">
+      Request document access: <a href="mailto:security@axiasecurity.io">security@axiasecurity.io</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Privacy &amp; contact</h2>
+    <p>Our privacy practices are described in the <a href="/privacy" style="color:var(--teal);font-weight:700;text-decoration:none">Privacy Policy</a>. For security, privacy, or trust enquiries, contact <a href="mailto:security@axiasecurity.io" style="color:var(--teal);font-weight:700;text-decoration:none">security@axiasecurity.io</a>.</p>
+    
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© <span id="yr">2026</span> AXIA · Security &amp; Trust Centre · Designed-with-reference posture; no attestation held.</div>
+</footer>
+</body>
+</html>

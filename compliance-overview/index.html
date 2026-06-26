@@ -1,0 +1,43 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+<title>AXIA Security &amp; Compliance Overview</title><style>body{font-family:'Manrope',Segoe UI,sans-serif;max-width:860px;margin:0 auto;padding:40px 28px 80px;line-height:1.6;color:#0f172a}h1{color:#0b7d72;border-bottom:3px solid #0D9488;padding-bottom:10px}h2{color:#0b7d72}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid #e2e8f0;padding:7px}th{background:#f0fdfa}blockquote{border-left:4px solid #0D9488;background:#f8fafc;padding:8px 16px;color:#475569}a{color:#0D9488}</style></head><body><div style='font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#0D9488;font-weight:800;margin-bottom:4px'>AXIA</div><h1>AXIA Security &amp; Compliance Overview</h1>
+<p><b>Jurisdiction:</b> Neutral — this overview serves both EU/UK/Swiss and US prospects. Jurisdiction-specific citations live in the per-engagement questionnaire response, not here.</p>
+<hr>
+<h2>AXIA at a glance</h2>
+<p>AXIA is an AI-powered insider-risk platform. AXIA is designed so that customer data stays under the customer&#x27;s own control: AXIA does not custody customer production data. The sections below summarize AXIA&#x27;s security posture, data-handling model, and the compliance frameworks AXIA is designed with reference to.</p>
+<hr>
+<h2>Deployment &amp; data custody</h2>
+<p>AXIA&#x27;s platform runs inside the customer&#x27;s own controlled environment — on-premises or the customer&#x27;s own cloud tenant — and customer data does not leave the customer&#x27;s custody. The LLM is always provided by the customer: either the customer&#x27;s own contracted cloud LLM service (e.g., Bedrock/Azure/Vertex) or a customer-managed/approved API to an on-premises model the customer runs. AXIA does not host or provide the LLM, does not operate a SaaS or multi-tenant service, and does not custody customer production data.</p>
+<p>Because of this architecture:</p>
+<ul>
+<li><b>Data residency is customer-determined.</b> Customer data resides only in the region(s) of the customer&#x27;s own environment.</li>
+<li><b>Customer-to-customer segregation is by tenant/physical isolation.</b> Each deployment is a separate environment in the customer&#x27;s own tenant or infrastructure; there is no shared AXIA multi-tenant datastore holding multiple customers&#x27; production data.</li>
+<li><b>AXIA personnel hold no standing access path to customer production data.</b> Any support performed inside a customer environment occurs under the customer&#x27;s own controls and logging.</li>
+<li><b>The cloud and model providers are the customer&#x27;s direct counterparties</b>, not AXIA sub-processors, because the customer contracts them directly within its own environment.</li>
+</ul>
+<hr>
+<h2>Security program highlights</h2>
+<ul>
+<li><b>Encryption.</b> TLS 1.2 or higher in transit; AES-256-GCM at rest at the storage/file-system layer (specific cryptographic posture per engagement is set in the Data Processing Addendum).</li>
+<li><b>Access control.</b> Role-based access control and least privilege across internal systems, with periodic access reviews.</li>
+<li><b>Authentication.</b> Users authenticate through the customer&#x27;s own identity provider via SSO; the customer&#x27;s MFA policy applies at login.</li>
+<li><b>Monitoring &amp; incident response.</b> Monitoring and detection for AXIA&#x27;s own systems under a Computer Incident Response Program and Incident Response Policy; in customer deployments the product emits logs into the customer&#x27;s own security tooling. AXIA commits to prompt incident notification to customers per its contractual terms.</li>
+<li><b>Resilience.</b> Business Continuity and Disaster Recovery plans with defined recovery objectives and periodic review.</li>
+<li><b>Secure development &amp; third-party risk.</b> A secure software development lifecycle, and a Third-Party Risk Management process governed by a Vendor Risk Register that inventories vendors by data-access scope, criticality, certification status, and contractual flow-down.</li>
+</ul>
+<hr>
+<h2>AI governance</h2>
+<p>AXIA&#x27;s AI posture is <b>designed with reference to the NIST AI Risk Management Framework 1.0 and the Generative AI Profile</b>, documented in an AXIA self-assessed crosswalk that maps AXIA&#x27;s controls to the framework&#x27;s Govern / Map / Measure / Manage functions. This crosswalk is a self-assessment and mapping, not a conformance attestation or certification. AXIA&#x27;s design includes data minimization (no ingestion of protected-class attributes or HR records), human-confirmation gates on AI-suggested actions, explainability for every alert, and model documentation (model cards).</p>
+<hr>
+<h2>Compliance frameworks &amp; status</h2>
+<p>AXIA is <b>designed with reference to</b> the frameworks below. AXIA holds no independent third-party attestation at this time; references are to design targets, not certifications.</p>
+<ul>
+<li><b>SOC 2 Type II — readiness in progress.</b> AXIA has engaged a third-party compliance partner (Scytale) and initiated a formal SOC 2 Type II readiness program. <b>No SOC 2 attestation is held</b>, and completion is not committed to a fixed date. The report will be made available to customers under NDA once issued.</li>
+<li><b>ISO/IEC 27001 — designed with reference to.</b> AXIA&#x27;s information security program is designed with reference to ISO/IEC 27001 control families. <b>AXIA is not ISO 27001 certified.</b></li>
+<li><b>GDPR / UK GDPR / Swiss FADP (Art. 32-style security of processing) — designed with reference to</b>, with the in-customer-environment model supporting the customer&#x27;s own data-protection obligations.</li>
+<li><b>NIST AI RMF 1.0 + Generative AI Profile — designed with reference to</b> (self-assessed crosswalk, see AI governance above).</li>
+</ul>
+<p>Detailed self-assessment documents (program charter, crosswalk, vendor risk register, supply-chain posture, policy highlights, model cards) and, once issued, the SOC 2 readiness letter and report, are available to customers and prospects <b>under NDA</b> on request.</p>
+<hr>
+<blockquote></blockquote>
+<blockquote><b>Jurisdiction Assumed:</b> Neutral by design. Framework citations are stated as &quot;designed with reference to,&quot; not as jurisdiction-specific legal conclusions.</blockquote></body></html>

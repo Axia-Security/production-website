@@ -1410,7 +1410,7 @@
                 <div class="flex items-center justify-between px-5 py-4">
                     <div class="flex flex-col gap-0.5">
                         <h1 class="text-xl font-extrabold tracking-tight leading-none text-text-primary">Act</h1>
-                        <p class="text-[14px] font-medium text-text-secondary uppercase tracking-wider">Action catalog &amp; verdict routing</p>
+                        <p class="text-[14px] font-medium text-text-secondary uppercase tracking-wider">Action catalog &amp; SOC routing</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
@@ -1419,7 +1419,7 @@
                 </div>
             </header>
 
-            <main id="connections-content" class="flex flex-col px-4 pt-4 gap-6 overflow-y-auto flex-1">
+            <main id="connections-content" class="flex flex-col px-4 pt-4 pb-24 gap-6 overflow-y-auto flex-1">
                 <!-- Content rendered by JS -->
             </main>
         </section>
@@ -1497,22 +1497,12 @@
                 <div class="flex items-center justify-between px-5 py-4">
                     <div class="flex flex-col gap-0.5">
                         <h1 class="text-xl font-extrabold tracking-tight leading-none text-text-primary">Connect</h1>
-                        <p class="text-[14px] font-medium text-text-secondary uppercase tracking-wider">Read · Act · Close</p>
+                        <p class="text-[14px] font-medium text-text-secondary uppercase tracking-wider">Connected sources &amp; available integrations</p>
                     </div>
                 </div>
             </header>
-            <main class="flex flex-col px-4 pt-4 gap-4 overflow-y-auto flex-1">
-                <!-- Phase 3: read · act · close framing + 4 action families -->
-                <div class="bg-surface-card rounded-lg border border-border-default p-4 card-shadow">
-                    <p class="text-xs text-text-secondary leading-relaxed">AXIA <strong class="text-text-primary">reads</strong> the signals across your connected sources, <strong class="text-text-primary">acts</strong> through the systems it is wired into, and <strong class="text-text-primary">closes</strong> each case by serving its verdict outward. Integrations below are grouped by where they sit in that loop and which of the four action families they power.</p>
-                    <div class="grid gap-2 sm:grid-cols-2 xl:grid-cols-4 mt-3">
-                        <div class="flex items-start gap-2 p-2 rounded-lg bg-ops-teal/10 border border-ops-teal/30"><span class="material-symbols-outlined text-ops-teal text-[18px]">forum</span><div><p class="text-[11px] font-bold text-text-primary">Engagement</p><p class="text-[10px] text-text-secondary">Coach &amp; notify via the org mailbox</p></div></div>
-                        <div class="flex items-start gap-2 p-2 rounded-lg bg-severity-high/10 border border-severity-high/30"><span class="material-symbols-outlined text-severity-high text-[18px]">lock</span><div><p class="text-[11px] font-bold text-text-primary">Content</p><p class="text-[10px] text-text-secondary">Owned enforcement: hold · remove · quarantine · revoke</p></div></div>
-                        <div class="flex items-start gap-2 p-2 rounded-lg bg-ops-purple/10 border border-ops-purple/30"><span class="material-symbols-outlined text-ops-purple text-[18px]">key</span><div><p class="text-[11px] font-bold text-text-primary">Identity</p><p class="text-[10px] text-text-secondary">Step-up · disable — incl. agent identities</p></div></div>
-                        <div class="flex items-start gap-2 p-2 rounded-lg bg-severity-medium/10 border border-severity-medium/30"><span class="material-symbols-outlined text-severity-medium text-[18px]">sync_alt</span><div><p class="text-[11px] font-bold text-text-primary">Verdict-out</p><p class="text-[10px] text-text-secondary">Served to SIEM / SOAR to close</p></div></div>
-                    </div>
-                </div>
-
+            <main class="flex flex-col px-4 pt-4 pb-24 gap-4 overflow-y-auto flex-1">
+                <!-- v7 V6: reverted to connected-vs-available (READ·ACT·CLOSE band framing removed). -->
                 <!-- Connected Systems -->
                 <details id="connect-systems" class="group bg-surface-card rounded-lg border border-primary/30 overflow-hidden card-shadow" open>
                     <summary class="flex items-center justify-between p-4 cursor-pointer select-none hover:bg-surface-hover transition-colors">
@@ -1521,8 +1511,8 @@
                                 <span class="material-symbols-outlined text-accent-teal text-[24px]">hub</span>
                             </div>
                             <div>
-                                <h3 class="text-base font-bold text-text-primary">Read · Connected sources</h3>
-                                <p class="text-[14px] text-text-secondary">Signals AXIA reads + the systems it acts through</p>
+                                <h3 class="text-base font-bold text-text-primary">Connected sources</h3>
+                                <p class="text-[14px] text-text-secondary">Channels, DLP and context systems AXIA is wired into</p>
                             </div>
                         </div>
                         <span class="material-symbols-outlined text-text-secondary transition-transform duration-300 group-open:rotate-180">expand_more</span>
@@ -1543,8 +1533,8 @@
                                 <span class="material-symbols-outlined text-primary text-[24px]">add_circle</span>
                             </div>
                             <div>
-                                <h3 class="text-base font-bold text-text-primary">Act · Available integrations</h3>
-                                <p class="text-[14px] text-text-secondary">Extend the act &amp; verdict-out surface for your environment</p>
+                                <h3 class="text-base font-bold text-text-primary">Available to connect</h3>
+                                <p class="text-[14px] text-text-secondary">Integrations available for your environment</p>
                             </div>
                         </div>
                         <span class="material-symbols-outlined text-text-secondary transition-transform duration-300 group-open:rotate-180">expand_more</span>
@@ -4964,7 +4954,7 @@ const DEMO_DATA = {
         welcome: [
             { label: 'Top risk users', prompt: 'Who are the highest-risk employees at FundGuard right now?' },
             { label: 'Agent identities at risk', prompt: 'Which non-human / agent identities are acting outside their baseline right now?' },
-            { label: 'Verdicts to the SOC', prompt: 'What verdicts has AXIA pushed to Splunk / Sentinel and which SOAR playbooks fired this week?' },
+            { label: 'Forwarded to the SOC', prompt: 'What has AXIA forwarded to Splunk / Sentinel and which SOAR playbooks fired this week?' },
             { label: 'Content actions', prompt: 'What files did AXIA hold, quarantine, or revoke shares on this week, and on which systems?' },
             { label: 'Department risk', prompt: 'Which departments have the highest risk scores?' }
         ],
@@ -5082,7 +5072,7 @@ const DEMO_DATA = {
         { id: 'disable-identity', label: 'Disable user / agent session', icon: 'person_off', mode: 'manual', family: 'identity', autoSeverities: [], systems: 'Entra · Okta · Ping (incl. agent identities)' },
         { id: 'revoke-token', label: 'Revoke token / agent credential', icon: 'key_off', mode: 'manual', family: 'identity', autoSeverities: [], systems: 'Entra Agent ID · Okta Cross-App Access (agent rails)' },
         // Verdict-out (judgment served to SIEM / SOAR)
-        { id: 'verdict-siem', label: 'Emit verdict to SIEM', icon: 'sync_alt', mode: 'automated', family: 'verdict-out', autoSeverities: ['low','medium','high'], systems: 'Splunk · Sentinel' },
+        { id: 'verdict-siem', label: 'Forward to SIEM', icon: 'sync_alt', mode: 'automated', family: 'verdict-out', autoSeverities: ['low','medium','high'], systems: 'Splunk · Sentinel' },
         { id: 'verdict-soar', label: 'Trigger SOAR playbook', icon: 'bolt', mode: 'automated', family: 'verdict-out', autoSeverities: ['low','medium','high'], systems: 'Splunk SOAR · Palo Alto XSOAR · Tines → ServiceNow · Jira' }
     ]
 };
@@ -5294,23 +5284,24 @@ AXIA treats agent and service identities as first-class actors and contains them
 
 ### Currently flagged
 - **svc-nav-export (AI agent)** — pulling NAV reference datasets on a stale OAuth token to an external endpoint. **Action:** AXIA revoked the token and disabled the session via **Entra** (*identity* family).
-- **Cursor coding agent (MCP)** — requested AXIA's verdict before writing live API keys into a shared repo. AXIA returned **BLOCK** over MCP; the agent self-corrected. *Verdict served as a capability — prevented, no case to work.*
+- **Cursor coding agent (MCP)** — asked AXIA for a decision before writing live API keys into a shared repo. AXIA returned **BLOCK** over MCP; the agent self-corrected. *AXIA's decision served as a capability — prevented, no case to work.*
 
 ### Identity rails AXIA acts through
 **Entra · Okta · Ping**, plus agent-specific rails **Entra Agent ID** and **Okta Cross-App Access**.
 
 Agent identities move data at machine speed and are routinely over-permissioned — AXIA's judgment closes the loop by revoking the credential or disabling the session at the identity layer.`,
 
-    'verdicts': `## Verdicts Served to the SOC (SIEM / SOAR)
+    'verdicts': `## Forwarded to the SOC (SIEM / SOAR)
 
-AXIA's judgment is a capability other systems consume at the point of action.
+AXIA's decision is a capability other systems consume at the point of action.
 
-### Where verdicts went
-- **SIEM:** Splunk · Microsoft Sentinel — AXIA emits the verdict for correlation (e.g. FATCA queue export → Sentinel; GitHub access pattern → Splunk).
+### Where AXIA forwarded
+- **SIEM:** Splunk · Microsoft Sentinel — AXIA forwards its decision for correlation (e.g. FATCA queue export → Sentinel; GitHub access pattern → Splunk).
 - **SOAR:** Splunk SOAR · Palo Alto XSOAR · Tines — containment playbooks fired for bulk-download and DLP-evasion patterns, then routed tickets to **ServiceNow / Jira**.
 
 ### The model
-**DSPM categorizes the file · IRM/UBA profiles the user · SIEM/SOAR logs & responds.** AXIA supplies the *judgment* — the verdict — and serves it out so the SOC's existing automation executes the response.`,
+**DSPM categorizes the file · IRM/UBA profiles the user · SIEM/SOAR logs & responds.** AXIA supplies the *judgment* and forwards it to the SOC so the existing automation executes the response.`,
+
 
     'content actions': `## Content Actions This Period (hold · remove · quarantine · revoke)
 
@@ -5972,27 +5963,25 @@ function renderCaseCard(c, compact = false) {
     const chip = (cls, iconHtml, text) => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold ${cls} min-h-[28px]">${iconHtml}${text}</span>`;
     const dot = (c2) => `<span class="w-1.5 h-1.5 rounded-full bg-${c2} animate-pulse"></span>`;
     const mIcon = (n) => `<span class="material-symbols-outlined text-[14px]">${n}</span>`;
-    let statusBadge;
-    if (stage === 'judging') statusBadge = chip('bg-primary/10 text-primary border border-primary/30', dot('primary'), 'AXIA judging…');
-    else if (stage === 'awaiting') statusBadge = chip('bg-severity-critical/10 text-severity-critical border border-severity-critical/30', mIcon('pending'), 'Awaiting your confirmation') + `<button type="button" onclick="event.stopPropagation(); axiaConfirm('${c.id}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-severity-critical text-white border border-severity-critical min-h-[28px] hover:opacity-90 transition-opacity">${mIcon('verified_user')}Approve containment</button>`;
-    else if (stage === 'acting') statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px] axia-acting"><span class="material-symbols-outlined text-[14px] axia-spin">progress_activity</span>${c.actionVerb || 'AXIA acting…'}</span>`;
-    else if (stage === 'closed') statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]">${mIcon('check_circle')}${c.closeLabel || 'Resolved'}</span>` + (c.outcome ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-status-success/10 text-status-success border border-status-success/20 min-h-[28px]">${mIcon('person')}${c.outcome}</span>` : '');
-    else statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-status-success/10 text-status-success border border-status-success/20 min-h-[28px]">${dot('status-success')}Open</span>`;
-    const channelChip = c.channel ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]">${mIcon(c.channelIcon || 'lan')}${c.channel}</span>` : '';
-    const remChip = c.remediation ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px]">${mIcon(c.remediation.icon || 'bolt')}${c.remediation.label}</span>` : '';
-    // V6.31.0-v4: surface the per-case NBA trigger in Command (manual => approve/execute, auto => self-runs)
-    let nbaTrigger = '';
-    if (isOpen && c.remediation && typeof caseNBA === 'function' && stage !== 'closed') {
-        const _nba = caseNBA(c);
-        if (!_nba.gated && stage !== 'awaiting' && stage !== 'acting') {
-            // v6 #N1: Copy-for-personal only makes sense for engagement (there's an email to copy). Non-engagement → no Copy.
-            const _isEng = (c.holdEmail || (c.remediation && c.remediation.family === 'engagement'));
-            const _copyBtn = _isEng ? `<button type="button" onclick="event.stopPropagation(); axiaCopyNBA('${c.id}')" title="Copy for personal use" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-surface-hover text-text-secondary border border-border-default min-h-[28px] hover:text-text-primary transition-colors">${mIcon('content_copy')}Copy</button>` : '';
-            nbaTrigger = (_nba.mode === 'manual')
-                ? `<button type="button" onclick="event.stopPropagation(); executeNBA('${c.id}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal text-white border border-ops-teal min-h-[28px] hover:opacity-90 transition-opacity">${mIcon('play_arrow')}Approve &amp; execute</button>${_copyBtn}`
-                : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px]">${mIcon('auto_mode')}Auto</span>`;
-        }
+    // v7 V1+V9: ONE stage-aware "Recommended action" control replaces the old status-chip + separate
+    // Approve button. New stages: drafted (email written, awaiting send-confirm) and pending (sent,
+    // awaiting employee reply) — both keep status:'open' so tallies never drop them.
+    const verb = (c.remediation && c.remediation.label) || ((typeof caseNBA === 'function') ? caseNBA(c).label : '') || 'Review & decide';
+    const recBtn = (label, icon) => `<button type="button" onclick="event.stopPropagation(); axiaRecommend('${c.id}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-bold bg-ops-teal text-white border border-ops-teal min-h-[28px] shadow-sm hover:opacity-90 transition-opacity">${mIcon(icon)}Recommended action: ${label}</button>`;
+    let recommendedControl;
+    if (stage === 'judging') recommendedControl = chip('bg-primary/10 text-primary border border-primary/30', dot('primary'), 'AXIA judging…');
+    else if (stage === 'acting') recommendedControl = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px] axia-acting"><span class="material-symbols-outlined text-[14px] axia-spin">progress_activity</span>${c.actionVerb || 'AXIA acting…'}</span>`;
+    else if (stage === 'pending') recommendedControl = chip('bg-severity-medium/10 text-severity-medium border border-severity-medium/30', mIcon('hourglass_top'), 'Awaiting employee reply');
+    else if (stage === 'drafted') recommendedControl = recBtn('Send ' + verb, 'outgoing_mail');
+    else if (stage === 'awaiting') recommendedControl = recBtn(verb, 'verified_user');
+    else if (stage === 'closed') recommendedControl = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]">${mIcon('check_circle')}${c.closeLabel || 'Resolved'}</span>` + (c.outcome ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-status-success/10 text-status-success border border-status-success/20 min-h-[28px]">${mIcon('person')}${c.outcome}</span>` : '');
+    else { // open — AXIA self-runs (auto) or a human confirms (manual/gate) via the recommended-action control
+        const _nba = (typeof caseNBA === 'function') ? caseNBA(c) : { mode: 'manual', gated: false };
+        if (_nba.gated) recommendedControl = recBtn(verb, 'verified_user');
+        else if (_nba.mode === 'manual') recommendedControl = recBtn(verb, 'play_arrow');
+        else recommendedControl = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px]">${mIcon('auto_mode')}Auto</span>`;
     }
+    const channelChip = c.channel ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]">${mIcon(c.channelIcon || 'lan')}${c.channel}</span>` : '';
 
     return `
         <div data-case-id="${c.id}" data-stage="${stage}" class="case-card ${rowActive ? 'axia-row-active' : ''} ${exiting ? 'axia-exiting' : ''} flex items-start gap-3 p-4 ${compact ? 'border-b border-border-default' : 'bg-surface-card rounded-lg border border-border-default shadow-card'} hover:bg-surface-hover/50 transition-all cursor-pointer relative ${!isOpen ? 'opacity-75 hover:opacity-100' : ''}" onclick="viewCase('${c.id}')">
@@ -6014,28 +6003,24 @@ function renderCaseCard(c, compact = false) {
                     <span class="text-[11px] text-text-secondary">${c.entity.role}</span>
                 </div>
                 ${(() => {
-                    // Phase3 #4: split the crowded single wrap-row into (1) a status/CTA row and (2) a metadata row.
-                    // Drop the redundant remediation chip in the awaiting/gated state (the Approve CTA already implies it); cap ≤4 tags/row.
+                    // v7 V2: channel/source tag(s) on the FIRST line; the Recommended-action control BELOW it.
                     const isEngageEmail = (c.holdEmail || (c.remediation && c.remediation.family === 'engagement'));
-                    // v6 #N2: promote the email to a distinct, clearly-labeled FILLED button (founder kept missing the tiny chip).
                     let emailChip = '';
                     if (isEngageEmail) {
-                        const sentState = (stage === 'acting' || stage === 'closed');
+                        const sentState = (stage === 'acting' || stage === 'pending' || stage === 'closed');
                         const lbl = sentState ? 'View sent message' : 'View suggested email';
                         const ic = sentState ? 'mark_email_read' : 'outgoing_mail';
-                        emailChip = `<button type="button" onclick="event.stopPropagation(); axiaViewEmail('${c.id}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-bold bg-ops-teal text-white border border-ops-teal min-h-[28px] shadow-sm hover:opacity-90 transition-opacity">${mIcon(ic)}${lbl}</button>`;
+                        emailChip = `<button type="button" onclick="event.stopPropagation(); axiaViewEmail('${c.id}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-bold bg-white text-ops-teal border border-ops-teal min-h-[28px] shadow-sm hover:bg-ops-teal/5 transition-colors">${mIcon(ic)}${lbl}</button>`;
                     }
                     const dlpBadge = (c.dlpAlerted && (typeof localStorage !== 'undefined' && localStorage.getItem('axia_show_dlp_badge') === 'true')) ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]"><span class="material-symbols-outlined text-[14px]">shield</span>${c.dlpSystem || 'DLP'}</span>` : '';
                     const actionsTags = (c.actions || []).map(a => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-primary/10 text-primary border border-primary/30 min-h-[28px]">${a}</span>`).join('');
-                    const showRem = (stage !== 'awaiting'); // suppress remediation chip while awaiting confirmation (de-clutter)
-                    const metaRow = `${channelChip}${showRem ? remChip : ''}${actionsTags}${dlpBadge}`;
+                    const channelRow = `${channelChip}${dlpBadge}${actionsTags}`;
                     return `
-                    <div class="flex items-center gap-2 mt-2 flex-wrap">
-                        ${statusBadge}
-                        ${nbaTrigger}
+                    ${channelRow.trim() ? `<div class="flex items-center gap-2 mt-2 flex-wrap">${channelRow}</div>` : ''}
+                    <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                        ${recommendedControl}
                         ${emailChip}
-                    </div>
-                    ${metaRow.trim() ? `<div class="flex items-center gap-2 mt-1.5 flex-wrap">${metaRow}</div>` : ''}`;
+                    </div>`;
                 })()}
             </div>
         </div>
@@ -7891,45 +7876,34 @@ function renderAxiaActionsHorizontal() {
     const container = document.getElementById('widget-axia-actions');
     if (!container) return;
 
-    // v6 #N4: list EVERY configured action from the Act catalog (not a family rollup), grouped by family.
-    const famMeta = {
-        'engagement':  { color: '#0D9488', label: 'Engagement' },
-        'content':     { color: '#dc2626', label: 'Content' },
-        'identity':    { color: '#8b5cf6', label: 'Identity' },
-        'verdict-out': { color: '#f59e0b', label: 'Verdict-out' }
-    };
-    const order = ['engagement', 'content', 'identity', 'verdict-out'];
+    // v7 V8: REVERTED to a flat, NON-scrolling list (founder dislikes the family-grouped scroll).
+    // ~8 grounded actions sourced from the live Act catalog + counts — no family headers, no scroll,
+    // no invented numbers. Labels pull from the catalog so display renames flow through automatically.
     const counts = axiaActionCounts(dashboardTimeframe);
     const catalog = (typeof caseActionOptions !== 'undefined' && Array.isArray(caseActionOptions)) ? caseActionOptions : [];
+    const byId = {}; catalog.forEach(a => { byId[a.id] = a; });
+    const SHOW = ['coach-employee','notify-manager','hold-content','quarantine-content','revoke-share','stepup-auth','revoke-token','verdict-siem'];
+    const rowsData = SHOW.filter(id => byId[id]).map(id => ({ label: byId[id].label, value: counts[id] || 0 }));
     const total = Object.keys(counts).reduce((s, k) => s + (counts[k] || 0), 0);
-    const maxVal = Math.max(...Object.values(counts), 1);
-
-    let rows = '';
-    order.forEach(fam => {
-        const acts = catalog.filter(x => x.family === fam);
-        if (!acts.length) return;
-        rows += `<div class="text-[9px] font-bold uppercase tracking-wider mt-1.5 mb-0.5" style="color:${famMeta[fam].color}">${famMeta[fam].label}</div>`;
-        acts.forEach(act => {
-            const v = counts[act.id] || 0;
-            const pct = Math.round((v / maxVal) * 100);
-            rows += `
-                <div class="flex items-center gap-1.5">
-                    <span class="text-[10px] text-text-secondary w-[92px] text-right truncate" title="${act.label}">${act.label}</span>
-                    <div class="flex-1 h-3 bg-surface-elevated rounded-full overflow-hidden relative">
-                        <div class="h-full rounded-full transition-all duration-500" style="width:${pct}%;background:${famMeta[fam].color};opacity:0.85"></div>
-                    </div>
-                    <span class="text-[10px] font-bold text-text-primary w-[24px] text-right font-mono">${v}</span>
-                </div>`;
-        });
-    });
+    const maxVal = Math.max(...rowsData.map(r => r.value), 1);
 
     container.innerHTML = `
         <div class="flex items-center justify-between mb-1.5">
             <h3 class="text-xs font-bold text-text-primary tracking-wide">AXIA Actions</h3>
             <span class="text-[10px] font-bold text-accent-teal">${total} total</span>
         </div>
-        <div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-1" style="max-height:240px">
-            ${rows}
+        <div class="flex-1 flex flex-col justify-center gap-1">
+            ${rowsData.map(r => {
+                const pct = Math.round((r.value / maxVal) * 100);
+                return `
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] text-text-secondary w-[92px] text-right truncate" title="${r.label}">${r.label}</span>
+                        <div class="flex-1 h-3 bg-surface-elevated rounded-full overflow-hidden relative">
+                            <div class="h-full rounded-full transition-all duration-500" style="width:${pct}%;background:#0D9488;opacity:0.85"></div>
+                        </div>
+                        <span class="text-[10px] font-bold text-text-primary w-[24px] text-right font-mono">${r.value}</span>
+                    </div>`;
+            }).join('')}
         </div>
         <div class="text-[9px] text-text-muted mt-1 pt-1 border-t border-border-subtle text-center">
             Actions taken by AXIA, by individual action
@@ -9252,7 +9226,7 @@ function renderActionToggles() {
         'engagement':  { label: 'Engagement / Communication', icon: 'forum',     exec: 'Sent via the org mailbox' },
         'content':     { label: 'Content',                     icon: 'lock',      exec: 'hold · remove · quarantine · revoke' },
         'identity':    { label: 'Identity',                    icon: 'key',       exec: 'step-up · disable (incl. agents)' },
-        'verdict-out': { label: 'Verdict-out',                 icon: 'sync_alt',  exec: 'served to SIEM / SOAR' }
+        'verdict-out': { label: 'Forward to SOC',              icon: 'sync_alt',  exec: 'forwarded to SIEM / SOAR' }
     };
     const order = ['engagement', 'content', 'identity', 'verdict-out'];
 
@@ -9428,41 +9402,54 @@ function renderConnectScreen() {
         </div>
     `;
 
-    // v6 #N7: ONE complete systems inventory, grouped READ → ACT (4 families) → CLOSE, including every
-    // system discussed (Entra/Okta/Ping + agent rails, Splunk/Sentinel/Splunk-SOAR/XSOAR/Tines/ServiceNow/Jira,
-    // the org mailbox, DSPM/IRM-UBA/PAM/NHI). The two former Connect collapsibles are merged into this one.
-    const SYS = {
-        band: (tag, color, icon, text) =>
-            `<div class="mb-2 mt-3 flex items-center gap-2"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-${color}/15 text-${color} border border-${color}/30"><span class="material-symbols-outlined text-[12px]">${icon}</span>${tag}</span><span class="text-[11px] text-text-muted">${text}</span></div>`,
-        group: (label, icon, color, items, pill) =>
-            `<div class="mb-3">
-                <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-1.5 flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-${color}">${icon}</span>${label}</h4>
-                <div class="flex flex-wrap gap-1.5">
-                    ${items.map(n => `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium bg-white border border-border-default text-text-primary"><span class="w-1.5 h-1.5 rounded-full bg-status-success"></span>${n}</span>`).join('')}
-                    ${pill ? `<span class="inline-flex items-center px-1.5 py-1 rounded text-[10px] font-medium text-accent-teal bg-accent-teal/10">${pill}</span>` : ''}
-                </div>
-            </div>`
-    };
+    // v7 V6: REVERTED to the connected-vs-available design (founder dislikes the READ/ACT/CLOSE bands).
+    // CONNECTED systems (live, from connectionsData) on top; everything else as "available to connect"
+    // below. The full v6 systems inventory is carried forward into the available panel (deduped against
+    // connected) so NO system is dropped in the revert.
+    const systemsConnected = connectedItems.filter(c => c.category === 'system' || c.category === 'context' || c.isContextSource);
+    const connectedGroup = (label, icon, items) => items.length ? `
+        <div class="mb-4">
+            <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[14px]">${icon}</span>${label}
+            </h4>
+            <div class="grid gap-2">${items.map(conn => renderConnectedCard(conn)).join('')}</div>
+        </div>` : '';
+
     activeContainer.innerHTML = `
-        ${SYS.band('READ', 'ops-teal', 'visibility', 'Sources &amp; priors AXIA reads — never required. DSPM categorizes the file · IRM/UBA profiles the user.')}
-        ${SYS.group('Inbound channels &amp; sensors', 'sensors', 'ops-teal', ['Microsoft 365','Gmail','Slack','Teams','Google Drive','Box','SharePoint','OneDrive','Dropbox','Atlassian','Salesforce','Cursor','GitHub','GitLab','Browser Guard'])}
-        ${SYS.group('DSPM &amp; labels', 'sell', 'ops-teal', ['Microsoft Purview','Cyera','BigID','Varonis'], 'Enrichment')}
-        ${SYS.group('IRM / UBA &amp; PAM', 'person_search', 'ops-teal', ['DTEX','Purview IRM','CyberArk (PAM)'], 'Enrichment')}
-        ${SYS.group('Non-human identity (agent-risk priors)', 'smart_toy', 'ops-teal', ['Astrix','Token Security','Oasis'], 'Enrichment')}
-
-        ${SYS.band('ACT', 'severity-high', 'bolt', 'The systems AXIA acts through — the four action families.')}
-        ${SYS.group('Engagement', 'forum', 'ops-teal', ['Org mailbox (soc@fundguard.com)'])}
-        ${SYS.group('Content (hold · remove · quarantine · revoke)', 'lock', 'severity-high', ['Box','Google Drive','SharePoint','OneDrive','Slack (Grid)','Teams','M365 email','Gmail','Dropbox','Atlassian','Salesforce'])}
-        ${SYS.group('Identity (step-up · disable — incl. agents)', 'key', 'ops-purple', ['Entra','Okta','Ping','Entra Agent ID','Okta Cross-App Access'])}
-
-        ${SYS.band('CLOSE', 'severity-medium', 'sync_alt', 'Verdict served out + the learning loop. SIEM/SOAR logs &amp; responds.')}
-        ${SYS.group('Verdict-out (SIEM · SOAR · ticketing)', 'sync_alt', 'severity-medium', ['Splunk','Microsoft Sentinel','Splunk SOAR','Palo Alto XSOAR','Tines','ServiceNow','Jira'])}
+        ${connectedGroup('Email Channels', 'mail', emailChannels)}
+        ${connectedGroup('SaaS Channels', 'cloud', saasChannels)}
+        ${connectedGroup('DLP &amp; Context Systems', 'database', systemsConnected)}
     `;
 
-    // Merge: the second collapsible is now redundant — empty it and hide its wrapper.
-    additionalContainer.innerHTML = '';
+    // Available to connect — the complete inventory from the v6 build, carried forward and grouped by
+    // function, minus anything already shown as connected above.
+    const connectedNames = new Set(connectedItems.map(c => (c.name || '').toLowerCase()));
+    const connectedShort = new Set(connectedItems.map(c => (c.shortName || '').toLowerCase()));
+    const AVAIL = {
+        'Inbound channels &amp; sensors': ['Microsoft 365','Gmail','Slack','Teams','Google Drive','Box','SharePoint','OneDrive','Dropbox','Atlassian','Salesforce','Cursor','GitHub','GitLab','Browser Guard'],
+        'DSPM &amp; labels': ['Microsoft Purview','Cyera','BigID','Varonis'],
+        'IRM / UBA &amp; PAM': ['DTEX','Purview IRM','CyberArk (PAM)'],
+        'Non-human identity (agent-risk priors)': ['Astrix','Token Security','Oasis'],
+        'Identity &amp; access': ['Entra','Okta','Ping','Entra Agent ID','Okta Cross-App Access'],
+        'Engagement': ['Org mailbox (soc@fundguard.com)'],
+        'SIEM · SOAR · ticketing': ['Splunk','Microsoft Sentinel','Splunk SOAR','Palo Alto XSOAR','Tines','ServiceNow','Jira']
+    };
+    const availChip = (n) => `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium bg-white border border-border-default text-text-primary"><span class="material-symbols-outlined text-[13px] text-text-muted">add_circle</span>${n}</span>`;
+    let availHtml = '';
+    Object.keys(AVAIL).forEach(group => {
+        const items = AVAIL[group].filter(n => {
+            const k = n.toLowerCase();
+            return !connectedNames.has(k) && !connectedShort.has(k);
+        });
+        if (!items.length) return;
+        availHtml += `<div class="mb-3">
+            <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-1.5">${group}</h4>
+            <div class="flex flex-wrap gap-1.5">${items.map(availChip).join('')}</div>
+        </div>`;
+    });
+    additionalContainer.innerHTML = availHtml;
     const addWrap = document.getElementById('connect-additional');
-    if (addWrap) addWrap.style.display = 'none';
+    if (addWrap) addWrap.style.display = '';
 }
 
 // V6.20: Connection flow modal
@@ -10176,8 +10163,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- ===================== V6.31.0-v4 FULL-PIVOT HELPERS (dark default · animations · timeframe persistence · typed NBA · Enforce reframe) ===================== -->
 <style id="axia-v4-anim">
-  .case-card { animation: axiaRowIn .35s ease both; transition: background-color .3s ease, opacity .35s ease; }
-  @keyframes axiaRowIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: none; } }
+  /* v7 V5: pronounced ENTER — bigger slide + scale + a one-shot teal flash so a new case is unmissable. */
+  .case-card { animation: axiaRowIn .5s cubic-bezier(.22,1,.36,1) both; transition: background-color .3s ease, opacity .35s ease; }
+  @keyframes axiaRowIn {
+    0%   { opacity: 0; transform: translateY(-22px) scale(.96); box-shadow: 0 0 0 2px rgba(13,148,136,0); }
+    35%  { opacity: 1; box-shadow: 0 0 0 2px rgba(13,148,136,0.55), 0 0 18px rgba(13,148,136,0.35); }
+    100% { opacity: 1; transform: translateY(0) scale(1); box-shadow: 0 0 0 2px rgba(13,148,136,0); }
+  }
   .sev-tally { font-variant-numeric: tabular-nums; }
   /* Phase 3: live "AXIA is acting" animation */
   .axia-spin { display:inline-block; animation: axiaSpin 1s linear infinite; }
@@ -10198,7 +10190,7 @@ var NBA_FAMILY = {
   'identity':    { label: 'Identity', icon: 'key',         exec: 'step-up · disable (incl. agents)',
                    text:'text-ops-purple',      bg:'bg-ops-purple/15',      border:'border-ops-purple/30',
                    channels:'Entra · Okta · Ping' },
-  'verdict-out': { label: 'Verdict-out', icon: 'sync_alt', exec: 'verdict served out',
+  'verdict-out': { label: 'Forward to SOC', icon: 'sync_alt', exec: 'forwarded to SIEM / SOAR',
                    text:'text-severity-medium', bg:'bg-severity-medium/15', border:'border-severity-medium/30',
                    channels:'Splunk · Sentinel → SOAR' }
 };
@@ -10348,7 +10340,7 @@ function renderNBAPanel(c){
   var trigger;
   if (executed) {
     trigger = '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-status-success/10 border border-status-success/30 text-status-success text-sm font-bold"><span class="material-symbols-outlined">check_circle</span>Executed'
-      + (nba.family === 'engagement' ? ' · sent via the org mailbox' : (nba.family === 'verdict-out' ? ' · verdict served' : '')) + '</div>';
+      + (nba.family === 'engagement' ? ' · sent via the org mailbox' : (nba.family === 'verdict-out' ? ' · forwarded to SOC' : '')) + '</div>';
   } else if (nba.gated) {
     trigger = awaiting
       ? '<button type="button" onclick="axiaConfirm(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-2 h-11 px-4 rounded-lg bg-severity-critical text-white shadow-lg hover:opacity-90 transition-all font-bold text-sm"><span class="material-symbols-outlined">verified_user</span>Approve containment</button>'
@@ -10356,7 +10348,7 @@ function renderNBAPanel(c){
   } else if (nba.mode === 'manual') {
     trigger = '<button type="button" onclick="executeNBA(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-2 h-11 px-4 rounded-lg bg-primary text-white shadow-lg shadow-primary/25 hover:bg-primary-hover transition-all font-bold text-sm"><span class="material-symbols-outlined">play_arrow</span>Approve &amp; execute</button>';
   } else {
-    trigger = '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-ops-teal/10 border border-ops-teal/30 text-ops-teal text-sm font-medium"><span class="material-symbols-outlined">auto_mode</span>Automatic — AXIA executes this ' + (nba.family === 'engagement' ? 'via the org mailbox' : (nba.family === 'verdict-out' ? 'and serves the verdict out' : 'on its own')) + '</div>';
+    trigger = '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-ops-teal/10 border border-ops-teal/30 text-ops-teal text-sm font-medium"><span class="material-symbols-outlined">auto_mode</span>Automatic — AXIA executes this ' + (nba.family === 'engagement' ? 'via the org mailbox' : (nba.family === 'verdict-out' ? 'and forwards it to the SOC' : 'on its own')) + '</div>';
   }
 
   // ---- Extras: copy-for-personal-use + suggested engagement email (engagement / hold-email) ----
@@ -10416,12 +10408,57 @@ function renderNBAPanel(c){
 }
 
 // ---- Manual approve → execute (single action) ----
+// v7 V1: ONE "Recommended action" control → this confirmation dialog (reuses #policy-modal) → routes to
+// the right executor. gate → axiaConfirm; drafted → axiaSend (→ pending); everything else → executeNBA.
+function axiaRecommend(id){
+  var c = (typeof casesData !== 'undefined') ? casesData.find(function(x){ return x.id === id; }) : null;
+  if (!c) return;
+  var stage = c.stage || (c.status === 'open' ? 'open' : 'closed');
+  var gate = (id === (window.AXIA_GATE_ID || 'CASE-FG-001'));
+  var isDraft = (stage === 'drafted');
+  var verb = (c.remediation && c.remediation.label) || ((typeof caseNBA === 'function') ? caseNBA(c).label : '') || 'Proceed';
+  var route = gate ? 'gate' : (isDraft ? 'send' : 'execute');
+  var actionLabel = isDraft ? ('Send: ' + verb) : verb;
+  var modal = document.getElementById('policy-modal');
+  var content = document.getElementById('policy-modal-content');
+  if (!modal || !content) { // no modal available → route directly
+    if (route === 'gate' && window.axiaConfirm) return window.axiaConfirm(id);
+    if (route === 'send' && window.axiaSend) return window.axiaSend(id);
+    if (typeof executeNBA === 'function') return executeNBA(id);
+    return;
+  }
+  content.innerHTML =
+    '<div class="flex items-center justify-between mb-3">' +
+      '<h3 class="text-lg font-bold text-text-primary flex items-center gap-2"><span class="material-symbols-outlined text-primary">task_alt</span>Confirm recommended action</h3>' +
+      '<button onclick="closePolicyModal()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-hover text-text-secondary"><span class="material-symbols-outlined">close</span></button>' +
+    '</div>' +
+    '<p class="text-sm text-text-secondary mb-3">' + (c.title || '') + '</p>' +
+    '<div class="bg-surface-elevated border border-border-default rounded-lg p-3 mb-4 flex items-center gap-2">' +
+      '<span class="material-symbols-outlined text-ops-teal">' + (isDraft ? 'outgoing_mail' : 'bolt') + '</span>' +
+      '<div><div class="text-[11px] text-text-secondary uppercase tracking-wider">Recommended action</div>' +
+      '<div class="text-sm font-bold text-text-primary">' + actionLabel + '</div></div>' +
+    '</div>' +
+    '<div class="flex gap-2">' +
+      '<button onclick="axiaConfirmRecommended(\'' + id + '\',\'' + route + '\')" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg font-medium hover:opacity-90 transition-colors flex items-center justify-center gap-2"><span class="material-symbols-outlined text-lg">check</span>Confirm &amp; execute</button>' +
+      '<button onclick="closePolicyModal()" class="px-4 py-2 bg-surface-hover text-text-secondary rounded-lg font-medium hover:text-text-primary transition-colors">Cancel</button>' +
+    '</div>';
+  modal.classList.remove('hidden');
+}
+function axiaConfirmRecommended(id, route){
+  if (typeof closePolicyModal === 'function') closePolicyModal();
+  if (route === 'gate' && window.axiaConfirm) window.axiaConfirm(id);
+  else if (route === 'send' && window.axiaSend) window.axiaSend(id);
+  else if (typeof executeNBA === 'function') executeNBA(id);
+}
+window.axiaRecommend = axiaRecommend;
+window.axiaConfirmRecommended = axiaConfirmRecommended;
+
 function executeNBA(id){
   var c = (typeof casesData !== 'undefined') ? casesData.find(function(x){ return x.id === id; }) : null;
   if (!c) return;
   var nba = caseNBA(c);
   if (typeof showToast === 'function') {
-    var via = nba.family === 'engagement' ? ' — sent via org mailbox' : (nba.family === 'verdict-out' ? ' — verdict served' : '');
+    var via = nba.family === 'engagement' ? ' — sent via org mailbox' : (nba.family === 'verdict-out' ? ' — forwarded to SOC' : '');
     showToast('AXIA executing: ' + nba.label + via, 'success');
   }
   // Preferred path: hand to the driver so the approve shows the live acting animation → auto-resolve
@@ -10671,12 +10708,15 @@ function addActionOption(family){
     box-shadow:0 10px 34px rgba(0,0,0,.20); display:none; }
   #axia-help.show { display:block; }
   #axia-help b { color:#09434e; }
-  /* v6 #3: outcome-flash → slide-out as a closed case leaves its open severity section */
-  .axia-exiting { animation: axiaExit 1.15s ease-in forwards; }
+  /* v7 V5: pronounced EXIT — amber flash + ring, then a clear slide-right + collapse so the queue
+     visibly drains. Kept at 1.0s, under the 1300ms render-drop timer in startActing() so it never gets
+     yanked mid-animation. */
+  .axia-exiting { animation: axiaExit 1.0s ease-in forwards; }
   @keyframes axiaExit {
-    0%   { opacity:1; transform:translateX(0); max-height:200px; }
-    70%  { opacity:.85; transform:translateX(0); }
-    100% { opacity:0; transform:translateX(14px); max-height:0; padding-top:0; padding-bottom:0; }
+    0%   { opacity:1; transform:translateX(0) scale(1); max-height:200px; background-color: rgba(245,158,11,0.18); box-shadow: 0 0 0 2px rgba(245,158,11,0.5); }
+    25%  { opacity:1; transform:translateX(0) scale(1.01); background-color: rgba(245,158,11,0.22); }
+    55%  { opacity:.9; transform:translateX(10px); }
+    100% { opacity:0; transform:translateX(48px) scale(.97); max-height:0; padding-top:0; padding-bottom:0; margin-bottom:0; }
   }
 </style>
 <script>
@@ -10704,12 +10744,12 @@ function addActionOption(family){
     'CASE-FG-014': {channel:'SharePoint / OneDrive',       channelIcon:'folder_shared', remediation:{family:'content',     label:'Hold file · restrict access',    icon:'lock'}},
     'CASE-FG-002': {channel:'Internal API · Box',     channelIcon:'folder',        remediation:{family:'identity',    label:'Step-up auth · revoke token',    icon:'key'}},
     'CASE-FG-004': {channel:'Google Drive',                channelIcon:'add_to_drive',  remediation:{family:'content',     label:'Revoke external share',              icon:'link_off'}},
-    'CASE-FG-017': {channel:'Dropbox',                     channelIcon:'cloud',         remediation:{family:'verdict-out', label:'Verdict served', icon:'sync_alt'}},
+    'CASE-FG-017': {channel:'Dropbox',                     channelIcon:'cloud',         remediation:{family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt'}},
     'CASE-FG-001': {channel:'Microsoft 365 → personal Gmail', channelIcon:'mail',  remediation:{family:'content',     label:'Hold email · revoke shares · Legal', icon:'gavel'}},
     // closed history cases — channel-coverage chips only
     'CASE-FG-006': {channel:'Slack',                       channelIcon:'forum',         remediation:{family:'content',     label:'Message removed',                    icon:'block'}},
     'CASE-FG-012': {channel:'Microsoft Teams',             channelIcon:'groups',        remediation:{family:'engagement',  label:'Coached employee',                   icon:'forum'}},
-    'CASE-FG-007': {channel:'GitHub / GitLab',             channelIcon:'code',          remediation:{family:'verdict-out', label:'Verdict logged',     icon:'sync_alt'}},
+    'CASE-FG-007': {channel:'GitHub / GitLab',             channelIcon:'code',          remediation:{family:'verdict-out', label:'Logged to SIEM',      icon:'sync_alt'}},
     'CASE-FG-009': {channel:'Atlassian (Jira/Confluence)', channelIcon:'view_kanban',   remediation:{family:'content',     label:'Restricted page',                    icon:'lock'}},
     'CASE-FG-013': {channel:'GitHub (open source)',        channelIcon:'code',          remediation:{family:'engagement',  label:'Verified legitimate',                icon:'check'}},
     'CASE-FG-015': {channel:'Browser upload',             channelIcon:'public',        remediation:{family:'content',     label:'Upload quarantined',                 icon:'block'}},
@@ -10722,7 +10762,7 @@ function addActionOption(family){
   addCase({
     id:'CASE-FG-018', severity:'critical', status:'open', score:95, time:'12m ago',
     title:'Rogue AI export agent (svc-nav-export) on a stale token pulling NAV datasets to an external endpoint',
-    description:'A non-human identity — the svc-nav-export automation agent — began pulling NAV reference datasets on a stale OAuth token and posting them to an unrecognized external endpoint. AXIA rendered the verdict and contained the agent identity itself: token revoked and session terminated via Entra.',
+    description:'A non-human identity — the svc-nav-export automation agent — began pulling NAV reference datasets on a stale OAuth token and posting them to an unrecognized external endpoint. AXIA made the call and contained the agent identity itself: token revoked and session terminated via Entra.',
     entity:{name:'svc-nav-export (AI agent)', initials:'AI', role:'Automation service identity', department:'Engineering', location:'Non-human identity'},
     actions:[], completedActions:[], dlpAlerted:false,
     channel:'AI agent identity (Entra)', channelIcon:'smart_toy',
@@ -10739,21 +10779,21 @@ function addActionOption(family){
   });
   addCase({
     id:'CASE-FG-019', severity:'high', status:'open', score:88, time:'6m ago',
-    title:'Coding agent (Cursor) asked AXIA for a verdict over MCP before writing live API keys into a shared repo',
-    description:'A developer’s MCP coding agent called AXIA’s verdict service before committing a change that embedded live FundGuard API keys into a shared repository. AXIA returned BLOCK with the reason; the agent obeyed and rewrote the change to reference a managed secret. Prevented — no incident, no case to work.',
+    title:'Coding agent (Cursor) asked AXIA for a decision over MCP before writing live API keys into a shared repo',
+    description:'A developer’s MCP coding agent called AXIA’s decision service before committing a change that embedded live FundGuard API keys into a shared repository. AXIA returned BLOCK with the reason; the agent obeyed and rewrote the change to reference a managed secret. Prevented — no incident, no case to work.',
     entity:{name:'Cursor coding agent', initials:'MCP', role:'Developer MCP agent', department:'Engineering', location:'Dev workstation'},
     actions:[], completedActions:[], dlpAlerted:false,
     channel:'MCP coding agent (Cursor)', channelIcon:'terminal',
-    remediation:{family:'verdict-out', label:'Verdict served → BLOCK (prevented)', icon:'verified'},
+    remediation:{family:'verdict-out', label:'Decision → BLOCK (prevented)', icon:'verified'},
     closeLabel:'Prevented', stage:'open',
     analysis:{
-      what:'The Cursor MCP agent queried AXIA’s verdict service before committing code that would have written live API keys into a shared repo. AXIA returned a BLOCK verdict with the reason; the agent rewrote the commit to reference a managed secret instead.',
-      whyMatters:'Judgment-as-a-service means AXIA’s verdict can be consumed at the point of action by other systems and agents — stopping the risky action before it happens, so there is no incident to investigate and no case to close.',
-      whyUnusual:'Live secrets in a shared repo is a known high-risk pattern; the agent self-corrected on AXIA’s verdict.',
-      riskScore:{total:88, factors:{content:90, behavior:80, context:88}}, dataSources:['GitHub Enterprise'], contextSources:['MCP verdict API'], timeline:[]
+      what:'The Cursor MCP agent queried AXIA’s decision service before committing code that would have written live API keys into a shared repo. AXIA returned a BLOCK decision with the reason; the agent rewrote the commit to reference a managed secret instead.',
+      whyMatters:'Decision-as-a-service means AXIA’s call can be consumed at the point of action by other systems and agents — stopping the risky action before it happens, so there is no incident to investigate and no case to close.',
+      whyUnusual:'Live secrets in a shared repo is a known high-risk pattern; the agent self-corrected on AXIA’s decision.',
+      riskScore:{total:88, factors:{content:90, behavior:80, context:88}}, dataSources:['GitHub Enterprise'], contextSources:['MCP decision API'], timeline:[]
     },
-    evidence:{channel:'email', email:{from:'cursor-agent@fundguard.dev', to:['axia-verdict@mcp'], cc:[], subject:'verdict request: commit with embedded credentials', sentAt:'2026-04-14T05:06:00Z', bodyMarkdown:'MCP verdict request from the Cursor coding agent before committing live API keys. AXIA returned BLOCK; the agent rewrote the change to reference a managed secret. Prevented — no incident.', attachments:[]}},
-    canEnforce:false, judgmentOnlyReason:'AXIA’s verdict is served to the agent over MCP at the point of action; the risky commit was prevented before it happened.', judgmentRouteTo:'Engineering'
+    evidence:{channel:'email', email:{from:'cursor-agent@fundguard.dev', to:['axia-decision@mcp'], cc:[], subject:'decision request: commit with embedded credentials', sentAt:'2026-04-14T05:06:00Z', bodyMarkdown:'MCP decision request from the Cursor coding agent before committing live API keys. AXIA returned BLOCK; the agent rewrote the change to reference a managed secret. Prevented — no incident.', attachments:[]}},
+    canEnforce:false, judgmentOnlyReason:'AXIA’s decision is served to the agent over MCP at the point of action; the risky commit was prevented before it happened.', judgmentRouteTo:'Engineering'
   });
 
   // ---------- 2b. Phase 3: easy-to-automate Medium/Low cases + the hold-email "engage-to-verify" use case ----------
@@ -10861,20 +10901,20 @@ function addActionOption(family){
     // ---- 7d Act-breadth: Identity (Okta, Ping) + Verdict-out (Splunk SOAR) ----
     { id:'CASE-FG-024', sev:'high', family:'identity', label:'Step-up authentication (Okta)', icon:'verified_user', channel:'Okta', channelIcon:'verified_user', score:78, name:'Noa Bar-Lev', initials:'NB', role:'Treasury Analyst', dept:'Finance', loc:'Tel Aviv', title:'Anomalous sign-in to the treasury console triggered an Okta step-up challenge', desc:'AXIA judged a high-risk sign-in pattern on the treasury console and required an Okta step-up challenge before access continued.', what:'A treasury-console sign-in showed impossible-travel and device-posture anomalies.', why:'Step-up authentication contains account-takeover risk without locking out a legitimate user.', cc:'manager', from:'noa.barlev@fundguard.com', to:'okta', subj:'step-up challenge issued' },
     { id:'CASE-FG-025', sev:'high', family:'identity', label:'Disable session (Ping)', icon:'person_off', channel:'Ping', channelIcon:'person_off', score:84, name:'Eitan Gross', initials:'EG', role:'Platform Engineer', dept:'Engineering', loc:'Tel Aviv', title:'Compromised session terminated via Ping after credential-stuffing indicators', desc:'AXIA disabled an active session through Ping after detecting credential-stuffing indicators against an engineering account.', what:'Credential-stuffing indicators against an engineering identity with an active privileged session.', why:'Disabling the session through Ping stops misuse immediately while the account is reset.', from:'eitan.gross@fundguard.com', to:'ping', subj:'session disabled' },
-    { id:'CASE-FG-026', sev:'medium', family:'verdict-out', label:'Verdict served', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:58, name:'Automated detection', initials:'SO', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict triggered a containment playbook for a bulk-download pattern', desc:'AXIA served its verdict, which triggered a containment playbook (isolate + ticket) for a bulk-download pattern.', what:'A bulk-download pattern matched a containment playbook.', why:'Serving the verdict out lets the SOC’s existing automation execute containment at machine speed.', from:'detections@fundguard.com', to:'soc', subj:'containment playbook fired' },
+    { id:'CASE-FG-026', sev:'medium', family:'verdict-out', label:'Forwarded to SOC', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:58, name:'Automated detection', initials:'SO', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Forwarded to the SOC, triggering a containment playbook for a bulk-download pattern', desc:'AXIA forwarded its decision to the SOC, which triggered a containment playbook (isolate + ticket) for a bulk-download pattern.', what:'A bulk-download pattern matched a containment playbook.', why:'Forwarding to the SOC lets the SOC’s existing automation execute containment at machine speed.', from:'detections@fundguard.com', to:'soc', subj:'containment playbook fired' },
     // ---- 30d history (+7): C2 H2 M2 L1 ----
     { id:'CASE-FG-027', sev:'critical', family:'content', label:'Hold file · revoke share', icon:'lock', channel:'SharePoint', channelIcon:'folder_shared', score:93, name:'Liora Katz', initials:'LK', role:'Fund Controller', dept:'Finance', loc:'London', title:'Restricted NAV reconciliation workbook shared externally before quarter close', desc:'AXIA held the workbook and revoked the external share after a restricted NAV reconciliation file was shared outside the org.', what:'A restricted NAV reconciliation workbook was shared to an external address near quarter close.', why:'Quarter-close financial artifacts are highly sensitive; holding + revoking stops external exposure.', cc:'Legal', dlp:true },
     { id:'CASE-FG-028', sev:'critical', family:'identity', label:'Revoke agent token', icon:'key_off', channel:'Entra Agent ID', channelIcon:'smart_toy', score:91, name:'svc-report-sync', initials:'AI', role:'Automation service identity', dept:'Engineering', loc:'Non-human identity', title:'Service agent on an over-broad scope pulling investor reports off-baseline', desc:'AXIA revoked the agent credential after a reporting service identity began pulling investor reports far outside its baseline.', what:'A reporting service identity used an over-broad scope to pull investor reports off-baseline.', why:'Over-permissioned agents move data at machine speed; revoking the token contains it.' },
     { id:'CASE-FG-029', sev:'high', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:75, name:'Ron Shaked', initials:'RS', role:'Investor Relations', dept:'IR', loc:'London', title:'Investor allocation extract emailed to an unapproved external consultant', desc:'AXIA quarantined an outbound email carrying an investor allocation extract to an unapproved external consultant.', what:'An investor allocation extract was emailed to an unapproved external consultant.', why:'Investor allocation data leaving to an unvetted party is a reportable exposure.' },
     { id:'CASE-FG-030', sev:'high', family:'engagement', label:'Coach + brief manager', icon:'forum', channel:'Google email (Gmail)', channelIcon:'mail', score:72, name:'Tal Mizrahi', initials:'TM', role:'Quant Researcher', dept:'Research', loc:'Tel Aviv', title:'Model notebook forwarded to personal Gmail before a conference', desc:'AXIA coached the researcher and briefed the manager after a model notebook was forwarded to a personal address.', what:'A model notebook was forwarded to a personal Gmail before a conference.', why:'Model IP off the managed environment needs a coaching touch plus manager awareness.', cc:'manager' },
     { id:'CASE-FG-031', sev:'medium', family:'content', label:'Hold / restrict file', icon:'lock', channel:'Box', channelIcon:'folder', score:55, name:'Yael Adler', initials:'YA', role:'Operations Analyst', dept:'Operations', loc:'London', title:'Internal runbook with embedded credentials placed on hold in Box', desc:'AXIA placed an internal runbook on hold after detecting embedded credentials in a Box upload.', what:'An internal runbook containing embedded credentials was uploaded to Box.', why:'Credentials in shared docs are a lateral-movement risk; holding the file prevents spread.' },
-    { id:'CASE-FG-032', sev:'medium', family:'verdict-out', label:'Verdict served', icon:'sync_alt', channel:'Security Ops', channelIcon:'sync_alt', score:52, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict on repeated after-hours access served for correlation', desc:'AXIA served a verdict on a repeated after-hours access pattern for SOC correlation.', what:'A repeated after-hours access pattern met the threshold for correlation.', why:'Serving the verdict out lets the SOC correlate it with other signals.' },
+    { id:'CASE-FG-032', sev:'medium', family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt', channel:'Security Ops', channelIcon:'sync_alt', score:52, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Repeated after-hours access forwarded to the SOC for correlation', desc:'AXIA forwarded a repeated after-hours access pattern to the SOC for correlation.', what:'A repeated after-hours access pattern met the threshold for correlation.', why:'Forwarding to the SOC lets it correlate the pattern with other signals.' },
     { id:'CASE-FG-033', sev:'low', family:'engagement', label:'Coach employee', icon:'forum', channel:'Microsoft 365 email', channelIcon:'mail', score:22, name:'Gil Peretz', initials:'GP', role:'Sales Associate', dept:'Sales', loc:'London', title:'Internal pricing sheet emailed to a personal address for a commute read', desc:'AXIA auto-coached the associate after an internal pricing sheet was sent to a personal address.', what:'An internal pricing sheet was emailed to a personal address.', why:'Low-harm habit worth a light automatic nudge.' },
     // ---- 90d history (+9): C2 H3 M2 L2 ----
     { id:'CASE-FG-034', sev:'critical', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:95, name:'Dana Friedman', initials:'DF', role:'Senior Fund Accountant', dept:'Finance', loc:'New York', title:'Full investor KYC pack emailed externally days before resignation', desc:'AXIA quarantined an outbound email containing a full investor KYC pack sent externally shortly before the sender resigned.', what:'A full investor KYC pack was emailed externally just before a resignation.', why:'Departure-adjacent bulk PII exfiltration is the highest-harm pattern.', cc:'Legal', dlp:true },
     { id:'CASE-FG-035', sev:'critical', family:'identity', label:'Disable user session', icon:'person_off', channel:'Entra', channelIcon:'key_off', score:90, name:'Omer Levi', initials:'OL', role:'Database Administrator', dept:'Engineering', loc:'Tel Aviv', title:'DBA session disabled after mass export from the investor database', desc:'AXIA disabled an administrator session via Entra after a mass export from the investor database off-baseline.', what:'A DBA session performed a mass export from the investor database far off-baseline.', why:'Privileged mass export needs immediate session containment.' },
     { id:'CASE-FG-036', sev:'high', family:'content', label:'Revoke external share', icon:'link_off', channel:'Google Drive', channelIcon:'add_to_drive', score:74, name:'Maya Stern', initials:'MS', role:'Client Solutions', dept:'Client Operations', loc:'London', title:'Client onboarding folder shared to a personal Google account', desc:'AXIA revoked an external share after a client onboarding folder was shared to a personal Google account.', what:'A client onboarding folder was shared to a personal Google account.', why:'Client data on personal storage is an exposure that revocation closes.' },
-    { id:'CASE-FG-037', sev:'high', family:'verdict-out', label:'Verdict served', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:80, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict triggered a containment playbook for repeated DLP-evasion attempts', desc:'AXIA served a verdict, which triggered a containment playbook for repeated DLP-evasion attempts.', what:'Repeated DLP-evasion attempts matched a containment playbook.', why:'Serving the verdict out contains evasion attempts at machine speed.' },
+    { id:'CASE-FG-037', sev:'high', family:'verdict-out', label:'Forwarded to SOC', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:80, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Forwarded to the SOC, triggering a containment playbook for repeated DLP-evasion attempts', desc:'AXIA forwarded its decision to the SOC, which triggered a containment playbook for repeated DLP-evasion attempts.', what:'Repeated DLP-evasion attempts matched a containment playbook.', why:'Forwarding to the SOC contains evasion attempts at machine speed.' },
     { id:'CASE-FG-038', sev:'high', family:'engagement', label:'Notify HR', icon:'badge', channel:'Microsoft Teams', channelIcon:'groups', score:70, name:'Avi Cohen', initials:'AC', role:'Portfolio Manager', dept:'Investments', loc:'New York', title:'Sensitive performance figures posted in a broad Teams channel', desc:'AXIA engaged the employee and notified HR after sensitive performance figures were posted in an over-broad Teams channel.', what:'Sensitive performance figures were posted in a broad internal Teams channel.', why:'Over-sharing sensitive figures internally warrants HR awareness.', cc:'HR' },
     { id:'CASE-FG-039', sev:'medium', family:'content', label:'Remove message', icon:'block', channel:'Slack', channelIcon:'forum', score:53, name:'Lior Azoulay', initials:'LA', role:'Support Engineer', dept:'Support', loc:'London', title:'Customer record pasted into a public Slack channel removed', desc:'AXIA removed a Slack message after a customer record was pasted into a public channel.', what:'A customer record was pasted into a public Slack channel.', why:'Removing the message limits exposure of customer data.' },
     { id:'CASE-FG-040', sev:'medium', family:'identity', label:'Step-up authentication', icon:'verified_user', channel:'Entra', channelIcon:'verified_user', score:50, name:'Shira Ben-David', initials:'SB', role:'HR Business Partner', dept:'HR', loc:'Tel Aviv', title:'Unrecognized device prompted a step-up challenge on the HR system', desc:'AXIA required an Entra step-up challenge after an unrecognized device attempted access to the HR system.', what:'An unrecognized device attempted access to the HR system.', why:'Step-up verification confirms the user without blocking legitimate work.' },
@@ -10903,6 +10943,24 @@ function addActionOption(family){
   var gateIndex = DEMO_IDS.indexOf(GATE_ID);
   window.AXIA_GATE_ID = GATE_ID;
   window.AXIA_DEMO_IDS = DEMO_IDS; // so renderDashboardCases can keep just-resolved cases visible (outcome)
+
+  // v7 V9: engagement lifecycle — sent ≠ resolved.
+  //  • DRAFT_IDS start 'drafted' (email written, awaiting the presenter's send-confirmation); excluded from
+  //    the auto-drive — the presenter sends them via the card's "Recommended action: Send …" control.
+  //  • Any engagement send goes to 'pending' (awaiting employee reply), NOT closed.
+  //  • REPLY_ID is the one pending case a later → resolves ("employee replied" → closed) to show the loop close.
+  //  • drafted + pending keep status:'open' so deriveTallies/closedCount never silently drop them.
+  var DRAFT_IDS = ['CASE-FG-022','CASE-FG-023'];
+  var REPLY_ID  = 'CASE-FG-020';
+  var sentDrafts = {}; // drafted cases the presenter has sent this run; cleared on reset()
+  window.AXIA_DRAFT_IDS = DRAFT_IDS;
+  function isEngagement(c){
+    if (!c) return false;
+    if (c.holdEmail) return true;
+    var fam = (c.remediation && c.remediation.family);
+    if (fam) return fam === 'engagement';
+    try { return caseNBA(c).family === 'engagement'; } catch(e){ return false; }
+  }
 
   function find(id){ return casesData.find(function(c){return c.id===id;}); }
 
@@ -10940,7 +10998,7 @@ function addActionOption(family){
       'engagement':  'AXIA is engaging the employee',
       'content':     'AXIA is holding the content',
       'identity':    'AXIA is revoking the credential',
-      'verdict-out': 'AXIA is serving the verdict'
+      'verdict-out': 'AXIA is forwarding to the SOC'
     })[fam] || 'AXIA is acting';
   }
 
@@ -10986,62 +11044,108 @@ function addActionOption(family){
     if (!c || c.id === GATE_ID) return false;
     try { return caseNBA(c).mode === 'manual'; } catch(e){ return false; }
   }
-  // Ordered list of AUTO (non-gated, non-manual) cases AXIA drives to closure, one per →.
+  // Ordered list of AUTO (non-gated, non-manual, non-draft) cases AXIA drives to closure, one per →.
   function autoIds(){
-    return DEMO_IDS.filter(function(id){ if (id === GATE_ID) return false; var c = find(id); return c && !isManualRest(c); });
+    return DEMO_IDS.filter(function(id){ if (id === GATE_ID) return false; if (DRAFT_IDS.indexOf(id) !== -1) return false; var c = find(id); return c && !isManualRest(c); });
   }
 
+  // Single chokepoint for "AXIA acts on a case." ENGAGEMENT cases (coaching / hold-email) land in
+  // 'pending' (sent → awaiting employee reply), NOT closed. Everything else closes with the outcome flash.
   function startActing(c){
     c.stage = 'acting'; c.status = 'open'; c.actionVerb = actionVerbFor(c); c._justClosed = 0;
     render();
+    var eng = isEngagement(c);
     var t = setTimeout(function(){
-      // v6 #3: close → outcome flash (owner/CC) for ~1.2s, then the card slides OUT of the open severity
-      // section so the queue visibly drains. The _justClosed stamp is STATE (survives render()'s innerHTML
-      // rebuild); after the window a follow-up render() excludes the card and the section shrinks.
-      c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); c._justClosed = Date.now();
-      render();
-      var t2 = setTimeout(function(){ render(); }, 1300); // drop it from the open section after the flash
-      timers.push(t2);
+      if (eng) {
+        // v7 V9: sent ≠ resolved — the engagement email is out; the case waits for the employee's reply.
+        c.stage = 'pending'; c.status = 'open'; c.outcome = null; c._justClosed = 0;
+        render();
+      } else {
+        // v6 #3: close → outcome flash (owner/CC) for ~1.2s, then the card slides OUT of the open severity
+        // section so the queue visibly drains. The _justClosed stamp survives render()'s innerHTML rebuild.
+        c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); c._justClosed = Date.now();
+        render();
+        var t2 = setTimeout(function(){ render(); }, 1300); // drop it from the open section after the flash
+        timers.push(t2);
+      }
     }, 2600);
     timers.push(t);
   }
   window.axiaApprove = function(id){ var c = find(id); if (c) startActing(c); }; // manual approve → act → resolve
+
+  // v7 V9: the scripted "employee replied" step — a pending engagement case closes the loop.
+  function replyResolve(c){
+    if (!c) return;
+    c.stage = 'acting'; c.status = 'open'; c.actionVerb = 'Employee replied — AXIA closing the loop'; c._justClosed = 0;
+    render();
+    var t = setTimeout(function(){
+      c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); c._justClosed = Date.now();
+      render();
+      var t2 = setTimeout(function(){ render(); }, 1300);
+      timers.push(t2);
+    }, 1800);
+    timers.push(t);
+  }
+  // v7 V9: presenter confirms sending a DRAFTED engagement email → it goes to 'pending'.
+  window.axiaSend = function(id){ var c = find(id); if (!c || DRAFT_IDS.indexOf(id) === -1) return; if (c.stage !== 'drafted') return; sentDrafts[id] = true; startActing(c); };
 
   // The board OPENS populated (all cases open). Each → drives AXIA to act on the next still-open AUTO
   // case (acting animation → auto-closes), so the queue visibly DRAINS. Manual cases rest open awaiting
   // approval; the Critical gate waits for "Approve containment". (Others open cases. AXIA drives closing them.)
   function advance(){
     var autos = autoIds();
-    if (drivenCount >= autos.length) { flashHotspot(); return; } // all auto cases driven; manuals/gate await you
-    var c = find(autos[drivenCount]);
-    drivenCount++;
-    if (c) startActing(c); else render();
+    var maxSteps = autos.length + 1; // v7 V9: +1 = the scripted "employee replied" step
+    if (drivenCount >= maxSteps) { flashHotspot(); return; } // everything driven; drafts/manuals/gate await you
+    if (drivenCount < autos.length) {
+      var c = find(autos[drivenCount]);
+      drivenCount++;
+      if (c) startActing(c); else render();
+    } else {
+      // reply step: resolve the designated pending engagement case
+      drivenCount++;
+      var rc = find(REPLY_ID);
+      if (rc && rc.stage === 'pending') replyResolve(rc); else render();
+    }
   }
 
   // Deterministic rebuild — used for the populated baseline, ← back, and R reset.
   // Baseline = every progression case OPEN (manuals open awaiting approval, gate awaiting); the first
   // `drivenCount` AUTO cases are CLOSED. Closed history cases (not in DEMO_IDS) are left as-is.
+  // v7 V9: this is the single PURE deterministic state function — back() and reset() both call it, and the
+  // forward animation paths (startActing/replyResolve) leave the board in exactly the state this would
+  // rebuild for the same drivenCount, so forward/back/reset stay symmetric. Engagement autos rebuild to
+  // 'pending' (sent, awaiting reply); the REPLY case rebuilds to 'closed' once the reply step has passed.
   function rebuildState(){
     clearTimers();
     var autos = autoIds();
     DEMO_IDS.forEach(function(id){
       var c = find(id); if (!c) return;
-      c._justClosed = 0; // v6 #3: deterministic rebuild (back/reset) → no exit-flash animation
+      c._justClosed = 0; // deterministic rebuild (back/reset) → no exit-flash animation
       if (id === GATE_ID) {
         if (gateConfirmed) { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
         else { c.stage = 'awaiting'; c.status = 'open'; c.outcome = null; }
         return;
       }
+      if (DRAFT_IDS.indexOf(id) !== -1) { // drafted (awaiting send) → pending once the presenter has sent it
+        if (sentDrafts[id]) { c.stage = 'pending'; c.status = 'open'; c.outcome = null; }
+        else { c.stage = 'drafted'; c.status = 'open'; c.outcome = null; }
+        return;
+      }
       if (isManualRest(c)) { c.stage = 'open'; c.status = 'open'; c.outcome = null; return; } // manual rests awaiting approval
-      var ai = autos.indexOf(id); // AUTO case: closed if among the first drivenCount, else open
-      if (ai > -1 && ai < drivenCount) { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
-      else { c.stage = 'open'; c.status = 'open'; c.outcome = null; }
+      var ai = autos.indexOf(id); // AUTO case
+      if (ai > -1 && ai < drivenCount) {
+        if (isEngagement(c)) {
+          // engagement auto driven → pending, unless it is the REPLY case and the reply step has passed
+          if (id === REPLY_ID && drivenCount > autos.length) { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
+          else { c.stage = 'pending'; c.status = 'open'; c.outcome = null; }
+        } else { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
+      } else { c.stage = 'open'; c.status = 'open'; c.outcome = null; }
     });
     render();
   }
 
   function back(){ if (drivenCount > 0) { drivenCount--; rebuildState(); } }
-  function reset(){ drivenCount = 0; gateConfirmed = false; rebuildState(); } // R → return to the populated load state
+  function reset(){ drivenCount = 0; gateConfirmed = false; sentDrafts = {}; rebuildState(); } // R → return to the populated load state
 
   window.axiaConfirm = function(id){
     var c = find(id);
@@ -11056,7 +11160,7 @@ function addActionOption(family){
     var pill = document.getElementById('axia-progress'); if(!pill) return;
     pill.classList.add('show');
     var done = closedCount(), total = DEMO_IDS.length;
-    var openN = DEMO_IDS.filter(function(id){ var c=find(id); return c && (c.stage === 'open' || c.stage === 'awaiting' || c.stage === 'acting'); }).length;
+    var openN = DEMO_IDS.filter(function(id){ var c=find(id); return c && (c.stage === 'open' || c.stage === 'awaiting' || c.stage === 'acting' || c.stage === 'pending' || c.stage === 'drafted'); }).length;
     var label;
     if (openN === 0) label = 'AXIA drove all ' + total + ' cases to closure. Read · Act · Close.';
     else label = 'AXIA driving the queue to closure — ' + done + ' closed · ' + openN + ' open';
@@ -11075,9 +11179,11 @@ function addActionOption(family){
     document.body.appendChild(help);
   }
 
-  // v6 #2: re-assert page focus so the arrow keys always reach the document, even if the page loaded
-  // without focus (background tab, iframe/preview, focus parked in the address bar).
-  function grabFocus(){ try { window.focus(); document.body.setAttribute('tabindex','-1'); document.body.focus(); } catch(e){} }
+  // v7 V4: make <body> focusable up front so a single real click anywhere in the page transfers keyboard
+  // focus into the document (the one gesture programmatic focus() cannot fake). re-assert focus on load /
+  // visibility / every pointerdown.
+  try { document.body.setAttribute('tabindex','-1'); } catch(e){}
+  function grabFocus(){ try { window.focus(); document.body.setAttribute('tabindex','-1'); document.body.focus({preventScroll:true}); } catch(e){} }
 
   function isTyping(e){ var t=e.target; if(!t) return false; var tn=(t.tagName||'').toUpperCase(); return tn==='INPUT'||tn==='TEXTAREA'||t.isContentEditable; }
   // v6 #2: bind to BOTH window and document. A per-event __axiaHandled flag guarantees a single real
@@ -11100,10 +11206,16 @@ function addActionOption(family){
     grabFocus();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
-  // v6 #2: re-grab focus on the events where a page commonly (re)gains visibility/interaction.
+  // v7 V4 (founder-locked: NO added UI). re-grab focus on visibility + EVERY pointerdown (capture phase,
+  // not {once}, and NOT preventDefault — a click on a card still opens it; a click on neutral chrome just
+  // grabs focus). The presenter clicks the window once (natural) and then → drives the deck.
+  // HONEST CAVEAT (browser security, unavoidable without UI): if the page is loaded by typing the URL in
+  // the address bar and the presenter presses → WITHOUT clicking first, the omnibox eats that first key —
+  // window.focus()/body.focus() cannot steal focus out of the address bar. One click (or Tab) fixes it.
+  // This is why only a HUMAN can sign this off; CDP/puppeteer always hand the page focus and false-pass.
   window.addEventListener('load', grabFocus);
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) grabFocus(); });
-  window.addEventListener('pointerdown', grabFocus, { once: true });
+  window.addEventListener('pointerdown', grabFocus, true);
 })();
 </script>
 </body>

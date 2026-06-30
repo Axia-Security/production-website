@@ -9421,30 +9421,75 @@ function renderConnectScreen() {
         ${connectedGroup('DLP &amp; Context Systems', 'database', systemsConnected)}
     `;
 
-    // Available to connect — the complete inventory from the v6 build, carried forward and grouped by
-    // function, minus anything already shown as connected above.
+    // Available to connect — the complete v6 systems inventory, carried forward and grouped by function,
+    // rendered in the reference's compact 2-col card grid (renderAddConnCard) with in-environment /
+    // available / coming-soon states. Anything already shown as connected above is deduped out.
     const connectedNames = new Set(connectedItems.map(c => (c.name || '').toLowerCase()));
     const connectedShort = new Set(connectedItems.map(c => (c.shortName || '').toLowerCase()));
     const AVAIL = {
-        'Inbound channels &amp; sensors': ['Microsoft 365','Gmail','Slack','Teams','Google Drive','Box','SharePoint','OneDrive','Dropbox','Atlassian','Salesforce','Cursor','GitHub','GitLab','Browser Guard'],
-        'DSPM &amp; labels': ['Microsoft Purview','Cyera','BigID','Varonis'],
-        'IRM / UBA &amp; PAM': ['DTEX','Purview IRM','CyberArk (PAM)'],
-        'Non-human identity (agent-risk priors)': ['Astrix','Token Security','Oasis'],
-        'Identity &amp; access': ['Entra','Okta','Ping','Entra Agent ID','Okta Cross-App Access'],
-        'Engagement': ['Org mailbox (soc@fundguard.com)'],
-        'SIEM · SOAR · ticketing': ['Splunk','Microsoft Sentinel','Splunk SOAR','Palo Alto XSOAR','Tines','ServiceNow','Jira']
+        'Inbound channels &amp; sensors': [
+            { name: 'Microsoft 365', icon: 'mail', status: 'in-environment' },
+            { name: 'Gmail', icon: 'mail', status: 'available' },
+            { name: 'Slack', icon: 'tag', status: 'available' },
+            { name: 'Teams', icon: 'forum', status: 'in-environment' },
+            { name: 'Google Drive', icon: 'add_to_drive', status: 'in-environment' },
+            { name: 'Box', icon: 'folder', status: 'available' },
+            { name: 'SharePoint', icon: 'description', status: 'in-environment' },
+            { name: 'OneDrive', icon: 'cloud_upload', status: 'in-environment' },
+            { name: 'Dropbox', icon: 'cloud', status: 'in-environment' },
+            { name: 'Atlassian', icon: 'hub', status: 'available' },
+            { name: 'Salesforce', icon: 'cloud_circle', status: 'available' },
+            { name: 'Cursor', icon: 'code', status: 'available' },
+            { name: 'GitHub', icon: 'code', status: 'available' },
+            { name: 'GitLab', icon: 'merge', status: 'available' },
+            { name: 'Browser Guard', icon: 'travel_explore', status: 'coming-soon' }
+        ],
+        'DSPM &amp; labels': [
+            { name: 'Microsoft Purview', icon: 'verified_user', status: 'in-environment' },
+            { name: 'Cyera', icon: 'data_usage', status: 'available' },
+            { name: 'BigID', icon: 'fingerprint', status: 'available' },
+            { name: 'Varonis', icon: 'shield', status: 'available' }
+        ],
+        'IRM / UBA &amp; PAM': [
+            { name: 'DTEX', icon: 'monitoring', status: 'available' },
+            { name: 'Purview IRM', icon: 'policy', status: 'in-environment' },
+            { name: 'CyberArk (PAM)', icon: 'vpn_key', status: 'available' }
+        ],
+        'Non-human identity (agent-risk priors)': [
+            { name: 'Astrix', icon: 'smart_toy', status: 'available' },
+            { name: 'Token Security', icon: 'key', status: 'available' },
+            { name: 'Oasis', icon: 'smart_toy', status: 'coming-soon' }
+        ],
+        'Identity &amp; access': [
+            { name: 'Entra', icon: 'badge', status: 'in-environment' },
+            { name: 'Okta', icon: 'verified_user', status: 'available' },
+            { name: 'Ping', icon: 'fingerprint', status: 'available' },
+            { name: 'Entra Agent ID', icon: 'badge', status: 'coming-soon' },
+            { name: 'Okta Cross-App Access', icon: 'sync_alt', status: 'coming-soon' }
+        ],
+        'Engagement': [
+            { name: 'Org mailbox (soc@fundguard.com)', icon: 'mark_email_read', status: 'in-environment' }
+        ],
+        'SIEM · SOAR · ticketing': [
+            { name: 'Splunk', icon: 'analytics', status: 'coming-soon' },
+            { name: 'Microsoft Sentinel', icon: 'security', status: 'available' },
+            { name: 'Splunk SOAR', icon: 'bolt', status: 'available' },
+            { name: 'Palo Alto XSOAR', icon: 'bolt', status: 'available' },
+            { name: 'Tines', icon: 'account_tree', status: 'available' },
+            { name: 'ServiceNow', icon: 'support_agent', status: 'in-environment' },
+            { name: 'Jira', icon: 'task', status: 'in-environment' }
+        ]
     };
-    const availChip = (n) => `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium bg-white border border-border-default text-text-primary"><span class="material-symbols-outlined text-[13px] text-text-muted">add_circle</span>${n}</span>`;
     let availHtml = '';
     Object.keys(AVAIL).forEach(group => {
-        const items = AVAIL[group].filter(n => {
-            const k = n.toLowerCase();
+        const items = AVAIL[group].filter(c => {
+            const k = c.name.toLowerCase();
             return !connectedNames.has(k) && !connectedShort.has(k);
         });
         if (!items.length) return;
-        availHtml += `<div class="mb-3">
-            <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-1.5">${group}</h4>
-            <div class="flex flex-wrap gap-1.5">${items.map(availChip).join('')}</div>
+        availHtml += `<div class="mb-4">
+            <h4 class="text-[11px] font-medium text-text-secondary mb-2">${group}</h4>
+            <div class="grid grid-cols-2 gap-2">${items.map(c => renderAddConnCard(c)).join('')}</div>
         </div>`;
     });
     additionalContainer.innerHTML = availHtml;

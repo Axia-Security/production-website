@@ -1588,7 +1588,7 @@
                         <span class="material-symbols-outlined text-text-secondary transition-transform duration-300 group-open:rotate-180">expand_more</span>
                     </summary>
                     <div class="border-t border-border-default bg-surface-elevated p-4 space-y-4">
-                        <p class="text-sm text-text-secondary">Upload organizational policies, acceptable use documents, and context files to help AXIA understand your specific risk tolerance and business context.</p>
+                        <!-- v6 #N7: intro paragraph removed -->
 
                         <!-- Uploaded Documents -->
                         <div class="space-y-2">
@@ -2753,49 +2753,52 @@ const DEMO_DATA = {
     // V6.25: Cases Timeline - per-period NEW cases (not cumulative)
     // Story: cases DECLINE over time as AXIA eliminates medium/low noise
     // Aligned with severityByTimeframe totals: 1d=8, 7d=30, 30d=105, 90d=340
+    // v6 #N8: per-period bars must match the cases + their status. Each timeframe satisfies ALL:
+    //   sum(closed)+sum(open) == KPI total (14/24/31/40); sum(open)==casesByStatus.open; sum(closed)==closed;
+    //   per-period severity sum == per-period (closed+open); severity-mode total == status-mode total.
     casesTimeline: {
         "1d": {
-            // 8 total: declining new cases through the day
+            // total 14 · open 4 · closed 10 · sev C5/H5/M2/L2
             labels: ['6h', '12h', '18h', '24h'],
-            closed: [2, 2, 1, 0],
-            open: [1, 0, 1, 1],
-            critical: [1, 1, 0, 0],
-            high: [1, 1, 1, 0],
-            medium: [1, 0, 1, 0],
-            low: [0, 0, 0, 1],
+            closed: [3, 3, 2, 2],            // =10
+            open:   [1, 1, 1, 1],            // =4   → per-period totals [4,4,3,3]=14
+            critical: [2, 1, 1, 1],          // =5
+            high:     [1, 2, 1, 1],          // =5
+            medium:   [1, 0, 1, 0],          // =2
+            low:      [0, 1, 0, 1],          // =2   → per-period sev [4,4,3,3]=14
             interactions: [1105, 1245, 1089, 1082]
         },
         "7d": {
-            // 30 total: early week = more cases (med/low noise), end = fewer (AXIA learned)
+            // total 24 · open 5 · closed 19 · sev C5/H7/M5/L7
             labels: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-            closed: [6, 5, 4, 3, 2, 1, 1],
-            open: [1, 1, 1, 1, 2, 2, 0],
-            critical: [1, 1, 1, 1, 2, 1, 1],
-            high: [2, 2, 2, 1, 1, 1, 0],
-            medium: [2, 2, 1, 1, 1, 1, 0],
-            low: [2, 1, 1, 1, 0, 0, 0],
+            closed: [3, 3, 3, 3, 3, 2, 2],   // =19
+            open:   [1, 1, 1, 1, 1, 0, 0],   // =5   → per-period totals [4,4,4,4,4,2,2]=24
+            critical: [1, 1, 1, 1, 1, 0, 0], // =5
+            high:     [1, 1, 1, 1, 1, 1, 1], // =7
+            medium:   [1, 1, 1, 1, 1, 0, 0], // =5
+            low:      [1, 1, 1, 1, 1, 1, 1], // =7   → per-period sev [4,4,4,4,4,2,2]=24
             interactions: [38420, 41230, 39580, 42150, 40890, 41560, 38626]
         },
         "30d": {
-            // 105 total: dramatic decline from week to week, med/low vanish
+            // total 31 · open 6 · closed 25 · sev C7/H9/M7/L8
             labels: ['Jan 10', 'Jan 17', 'Jan 24', 'Jan 31'],
-            closed: [38, 23, 16, 10],
-            open: [2, 5, 5, 6],
-            critical: [8, 6, 5, 3],
-            high: [10, 8, 6, 4],
-            medium: [13, 9, 7, 4],
-            low: [9, 5, 3, 5],
+            closed: [7, 6, 6, 6],            // =25
+            open:   [2, 2, 1, 1],            // =6   → per-period totals [9,8,7,7]=31
+            critical: [2, 2, 2, 1],          // =7
+            high:     [3, 2, 2, 2],          // =9
+            medium:   [2, 2, 2, 1],          // =7
+            low:      [2, 2, 1, 3],          // =8   → per-period sev [9,8,7,7]=31
             interactions: [278456, 312890, 298745, 358154]
         },
         "90d": {
-            // 340 total: Nov=142 (noisy baseline), Dec=112, Jan=86 (AXIA tuned)
+            // total 40 · open 7 · closed 33 · sev C9/H12/M9/L10
             labels: ['Nov', 'Dec', 'Jan'],
-            closed: [137, 100, 61],
-            open: [5, 12, 25],
-            critical: [15, 22, 23],
-            high: [25, 30, 30],
-            medium: [60, 42, 25],
-            low: [42, 18, 8],
+            closed: [11, 11, 11],            // =33
+            open:   [3, 2, 2],               // =7   → per-period totals [14,13,13]=40
+            critical: [3, 3, 3],             // =9
+            high:     [4, 4, 4],             // =12
+            medium:   [3, 3, 3],             // =9
+            low:      [4, 3, 3],             // =10  → per-period sev [14,13,13]=40
             interactions: [1124567, 1289456, 1342689]
         }
     },
@@ -5965,6 +5968,7 @@ function renderCaseCard(c, compact = false) {
     // AXIA in-place progression: derive lifecycle stage from the case's own status/stage field (reuses existing card)
     const stage = c.stage || (isOpen ? 'open' : 'closed');
     const rowActive = stage === 'judging' || stage === 'acting' || stage === 'awaiting';
+    const exiting = (stage === 'closed' && c._justClosed && (Date.now() - c._justClosed < 1200)); // v6 #3: outcome-flash then slide out
     const chip = (cls, iconHtml, text) => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold ${cls} min-h-[28px]">${iconHtml}${text}</span>`;
     const dot = (c2) => `<span class="w-1.5 h-1.5 rounded-full bg-${c2} animate-pulse"></span>`;
     const mIcon = (n) => `<span class="material-symbols-outlined text-[14px]">${n}</span>`;
@@ -5981,14 +5985,17 @@ function renderCaseCard(c, compact = false) {
     if (isOpen && c.remediation && typeof caseNBA === 'function' && stage !== 'closed') {
         const _nba = caseNBA(c);
         if (!_nba.gated && stage !== 'awaiting' && stage !== 'acting') {
+            // v6 #N1: Copy-for-personal only makes sense for engagement (there's an email to copy). Non-engagement → no Copy.
+            const _isEng = (c.holdEmail || (c.remediation && c.remediation.family === 'engagement'));
+            const _copyBtn = _isEng ? `<button type="button" onclick="event.stopPropagation(); axiaCopyNBA('${c.id}')" title="Copy for personal use" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-surface-hover text-text-secondary border border-border-default min-h-[28px] hover:text-text-primary transition-colors">${mIcon('content_copy')}Copy</button>` : '';
             nbaTrigger = (_nba.mode === 'manual')
-                ? `<button type="button" onclick="event.stopPropagation(); executeNBA('${c.id}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal text-white border border-ops-teal min-h-[28px] hover:opacity-90 transition-opacity">${mIcon('play_arrow')}Approve &amp; execute</button><button type="button" onclick="event.stopPropagation(); axiaCopyNBA('${c.id}')" title="Copy for personal use" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-surface-hover text-text-secondary border border-border-default min-h-[28px] hover:text-text-primary transition-colors">${mIcon('content_copy')}Copy</button>`
+                ? `<button type="button" onclick="event.stopPropagation(); executeNBA('${c.id}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal text-white border border-ops-teal min-h-[28px] hover:opacity-90 transition-opacity">${mIcon('play_arrow')}Approve &amp; execute</button>${_copyBtn}`
                 : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px]">${mIcon('auto_mode')}Auto</span>`;
         }
     }
 
     return `
-        <div data-case-id="${c.id}" data-stage="${stage}" class="case-card ${rowActive ? 'axia-row-active' : ''} flex items-start gap-3 p-4 ${compact ? 'border-b border-border-default' : 'bg-surface-card rounded-lg border border-border-default shadow-card'} hover:bg-surface-hover/50 transition-all cursor-pointer relative ${!isOpen ? 'opacity-75 hover:opacity-100' : ''}" onclick="viewCase('${c.id}')">
+        <div data-case-id="${c.id}" data-stage="${stage}" class="case-card ${rowActive ? 'axia-row-active' : ''} ${exiting ? 'axia-exiting' : ''} flex items-start gap-3 p-4 ${compact ? 'border-b border-border-default' : 'bg-surface-card rounded-lg border border-border-default shadow-card'} hover:bg-surface-hover/50 transition-all cursor-pointer relative ${!isOpen ? 'opacity-75 hover:opacity-100' : ''}" onclick="viewCase('${c.id}')">
             ${isOpen ? `<div class="absolute left-0 top-0 bottom-0 w-1 bg-${color} rounded-l-lg"></div>` : ''}
             <div class="shrink-0">
                 <div class="w-10 h-10 rounded-lg border-2 border-${color}${isOpen ? '' : '/60'} bg-${color}-bg flex items-center justify-center">
@@ -6010,12 +6017,13 @@ function renderCaseCard(c, compact = false) {
                     // Phase3 #4: split the crowded single wrap-row into (1) a status/CTA row and (2) a metadata row.
                     // Drop the redundant remediation chip in the awaiting/gated state (the Approve CTA already implies it); cap ≤4 tags/row.
                     const isEngageEmail = (c.holdEmail || (c.remediation && c.remediation.family === 'engagement'));
+                    // v6 #N2: promote the email to a distinct, clearly-labeled FILLED button (founder kept missing the tiny chip).
                     let emailChip = '';
                     if (isEngageEmail) {
                         const sentState = (stage === 'acting' || stage === 'closed');
-                        const lbl = sentState ? 'View sent message' : 'View email';
-                        const ic = sentState ? 'mark_email_read' : 'mail';
-                        emailChip = `<button type="button" onclick="event.stopPropagation(); axiaViewEmail('${c.id}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px] hover:bg-ops-teal/20 transition-colors">${mIcon(ic)}${lbl}</button>`;
+                        const lbl = sentState ? 'View sent message' : 'View suggested email';
+                        const ic = sentState ? 'mark_email_read' : 'outgoing_mail';
+                        emailChip = `<button type="button" onclick="event.stopPropagation(); axiaViewEmail('${c.id}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-bold bg-ops-teal text-white border border-ops-teal min-h-[28px] shadow-sm hover:opacity-90 transition-opacity">${mIcon(ic)}${lbl}</button>`;
                     }
                     const dlpBadge = (c.dlpAlerted && (typeof localStorage !== 'undefined' && localStorage.getItem('axia_show_dlp_badge') === 'true')) ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]"><span class="material-symbols-outlined text-[14px]">shield</span>${c.dlpSystem || 'DLP'}</span>` : '';
                     const actionsTags = (c.actions || []).map(a => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-primary/10 text-primary border border-primary/30 min-h-[28px]">${a}</span>`).join('');
@@ -6165,7 +6173,10 @@ function renderDashboardCases() {
     // visible so their outcome (owner + CC) stays on screen. No slice truncation — open rows must
     // always equal the open tally (single source of truth; avoids the 1-vs-4 mismatch).
     const demoIds = window.AXIA_DEMO_IDS || [];
-    const openCases = timeframeCases.filter(c => c.status === 'open' || (c.status === 'closed' && demoIds.includes(c.id)));
+    // v6 #3: a just-closed demo case stays in its section only during the ~1.2s outcome flash, then slides
+    // out so the section visibly shrinks. Steady state: section rows == open tally per severity.
+    const _now = Date.now();
+    const openCases = timeframeCases.filter(c => c.status === 'open' || (c.status === 'closed' && demoIds.includes(c.id) && c._justClosed && (_now - c._justClosed < 1200)));
 
     const bySev = (sev) => openCases.filter(c => c.severity === sev).sort((a, b) => {
         const aOpen = a.status === 'open' ? 0 : 1, bOpen = b.status === 'open' ? 0 : 1;
@@ -7851,45 +7862,77 @@ function renderCasesStackedBarChart(timeline, mode) {
 }
 
 // ==================== V6.25 WIDGET: AXIA Actions (Horizontal Bars - replaces donut) ====================
+// v6 #N4: grounded per-action counts. Engagement sub-actions use the real people keys; content/identity/
+// verdict-out actions are counted from the ACTUAL cases in the timeframe (bucketed by remediation.label).
+// Nothing is invented — every number traces to a key that already existed or to a real case.
+function axiaActionCounts(tf){
+    const a = DEMO_DATA.axiaActionsByTimeframe?.[tf] || {};
+    const counts = {
+        'coach-employee': a.employee || 0,
+        'notify-manager': a.manager || 0,
+        'notify-hr': a.hr || 0,
+        'escalate-legal': a.legal || 0
+    };
+    const ids = DEMO_DATA.casesByTimeframe?.[tf] || [];
+    (casesData || []).forEach(c => {
+        if (ids.length && ids.indexOf(c.id) === -1) return;
+        if (c.status !== 'open' && c.status !== 'closed') return;
+        const fam = c.remediation && c.remediation.family;
+        const lbl = ((c.remediation && c.remediation.label) || '').toLowerCase();
+        let aid = null;
+        if (fam === 'content') aid = /quarant/.test(lbl) ? 'quarantine-content' : /remov/.test(lbl) ? 'remove-content' : /revoke|share/.test(lbl) ? 'revoke-share' : 'hold-content';
+        else if (fam === 'identity') aid = /token|credential/.test(lbl) ? 'revoke-token' : /disable|session/.test(lbl) ? 'disable-identity' : 'stepup-auth';
+        else if (fam === 'verdict-out') aid = /logged|siem/.test(lbl) ? 'verdict-siem' : 'verdict-soar';
+        if (aid) counts[aid] = (counts[aid] || 0) + 1;
+    });
+    return counts;
+}
 function renderAxiaActionsHorizontal() {
     const container = document.getElementById('widget-axia-actions');
     if (!container) return;
 
-    const actions = DEMO_DATA.axiaActionsByTimeframe?.[dashboardTimeframe] || DEMO_DATA.axiaActionsByTimeframe?.['30d'] || {};
-    // Phase3 #9: re-cut by the 4 action families (people roll up under Engagement). Family-token colours
-    // match the Act catalog / case model: engagement=teal, content=high-orange, identity=purple, verdict=amber.
-    const engagementTotal = (actions.employee || 0) + (actions.manager || 0) + (actions.hr || 0) + (actions.legal || 0);
-    const data = [
-        { label: 'Engagement', value: engagementTotal, color: '#0D9488', icon: 'forum' },
-        { label: 'Content', value: actions.content || 0, color: '#dc2626', icon: 'lock' },
-        { label: 'Identity', value: actions.identity || 0, color: '#8b5cf6', icon: 'key' },
-        { label: 'Verdict-out', value: actions.verdictOut || 0, color: '#f59e0b', icon: 'sync_alt' }
-    ];
-    const total = data.reduce((sum, d) => sum + d.value, 0);
-    const maxVal = Math.max(...data.map(d => d.value), 1);
+    // v6 #N4: list EVERY configured action from the Act catalog (not a family rollup), grouped by family.
+    const famMeta = {
+        'engagement':  { color: '#0D9488', label: 'Engagement' },
+        'content':     { color: '#dc2626', label: 'Content' },
+        'identity':    { color: '#8b5cf6', label: 'Identity' },
+        'verdict-out': { color: '#f59e0b', label: 'Verdict-out' }
+    };
+    const order = ['engagement', 'content', 'identity', 'verdict-out'];
+    const counts = axiaActionCounts(dashboardTimeframe);
+    const catalog = (typeof caseActionOptions !== 'undefined' && Array.isArray(caseActionOptions)) ? caseActionOptions : [];
+    const total = Object.keys(counts).reduce((s, k) => s + (counts[k] || 0), 0);
+    const maxVal = Math.max(...Object.values(counts), 1);
 
-    // V6.25: Horizontal bars - readable at 3-col width, no cramped legend
+    let rows = '';
+    order.forEach(fam => {
+        const acts = catalog.filter(x => x.family === fam);
+        if (!acts.length) return;
+        rows += `<div class="text-[9px] font-bold uppercase tracking-wider mt-1.5 mb-0.5" style="color:${famMeta[fam].color}">${famMeta[fam].label}</div>`;
+        acts.forEach(act => {
+            const v = counts[act.id] || 0;
+            const pct = Math.round((v / maxVal) * 100);
+            rows += `
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[10px] text-text-secondary w-[92px] text-right truncate" title="${act.label}">${act.label}</span>
+                    <div class="flex-1 h-3 bg-surface-elevated rounded-full overflow-hidden relative">
+                        <div class="h-full rounded-full transition-all duration-500" style="width:${pct}%;background:${famMeta[fam].color};opacity:0.85"></div>
+                    </div>
+                    <span class="text-[10px] font-bold text-text-primary w-[24px] text-right font-mono">${v}</span>
+                </div>`;
+        });
+    });
+
     container.innerHTML = `
-        <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center justify-between mb-1.5">
             <h3 class="text-xs font-bold text-text-primary tracking-wide">AXIA Actions</h3>
             <span class="text-[10px] font-bold text-accent-teal">${total} total</span>
         </div>
-        <div class="flex-1 flex flex-col justify-center gap-2">
-            ${data.map(d => {
-                const pct = Math.round((d.value / maxVal) * 100);
-                return `
-                    <div class="flex items-center gap-1.5">
-                        <span class="text-[10px] text-text-secondary w-[64px] text-right truncate flex items-center justify-end gap-1"><span class="material-symbols-outlined text-[12px]" style="color:${d.color}">${d.icon}</span>${d.label}</span>
-                        <div class="flex-1 h-4 bg-surface-elevated rounded-full overflow-hidden relative">
-                            <div class="h-full rounded-full transition-all duration-500" style="width:${pct}%;background:${d.color};opacity:0.85"></div>
-                        </div>
-                        <span class="text-[10px] font-bold text-text-primary w-[28px] text-right font-mono">${d.value}</span>
-                    </div>
-                `;
-            }).join('')}
+        <div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-1" style="max-height:240px">
+            ${rows}
         </div>
         <div class="text-[9px] text-text-muted mt-1 pt-1 border-t border-border-subtle text-center">
-            Actions taken by AXIA, by family
+            Actions taken by AXIA, by individual action
         </div>
     `;
 }
@@ -9385,93 +9428,41 @@ function renderConnectScreen() {
         </div>
     `;
 
+    // v6 #N7: ONE complete systems inventory, grouped READ → ACT (4 families) → CLOSE, including every
+    // system discussed (Entra/Okta/Ping + agent rails, Splunk/Sentinel/Splunk-SOAR/XSOAR/Tines/ServiceNow/Jira,
+    // the org mailbox, DSPM/IRM-UBA/PAM/NHI). The two former Connect collapsibles are merged into this one.
+    const SYS = {
+        band: (tag, color, icon, text) =>
+            `<div class="mb-2 mt-3 flex items-center gap-2"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-${color}/15 text-${color} border border-${color}/30"><span class="material-symbols-outlined text-[12px]">${icon}</span>${tag}</span><span class="text-[11px] text-text-muted">${text}</span></div>`,
+        group: (label, icon, color, items, pill) =>
+            `<div class="mb-3">
+                <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-1.5 flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-${color}">${icon}</span>${label}</h4>
+                <div class="flex flex-wrap gap-1.5">
+                    ${items.map(n => `<span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium bg-white border border-border-default text-text-primary"><span class="w-1.5 h-1.5 rounded-full bg-status-success"></span>${n}</span>`).join('')}
+                    ${pill ? `<span class="inline-flex items-center px-1.5 py-1 rounded text-[10px] font-medium text-accent-teal bg-accent-teal/10">${pill}</span>` : ''}
+                </div>
+            </div>`
+    };
     activeContainer.innerHTML = `
-        <!-- Phase3 #8: READ band — inbound sources & priors (never required) -->
-        <div class="mb-3 flex items-center gap-2">
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-ops-teal/15 text-ops-teal border border-ops-teal/30"><span class="material-symbols-outlined text-[12px]">visibility</span>READ</span>
-            <span class="text-[11px] text-text-muted">Inbound channels &amp; context priors. DSPM categorizes the file · IRM/UBA profiles the user — read-only, never required.</span>
-        </div>
-        <!-- Email Channels -->
-        <div class="mb-4">
-            <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[14px]">mail</span>
-                Email Channels
-            </h4>
-            <div class="grid gap-2">
-                ${emailChannels.map(conn => renderConnectedCard(conn)).join('')}
-            </div>
-        </div>
+        ${SYS.band('READ', 'ops-teal', 'visibility', 'Sources &amp; priors AXIA reads — never required. DSPM categorizes the file · IRM/UBA profiles the user.')}
+        ${SYS.group('Inbound channels &amp; sensors', 'sensors', 'ops-teal', ['Microsoft 365','Gmail','Slack','Teams','Google Drive','Box','SharePoint','OneDrive','Dropbox','Atlassian','Salesforce','Cursor','GitHub','GitLab','Browser Guard'])}
+        ${SYS.group('DSPM &amp; labels', 'sell', 'ops-teal', ['Microsoft Purview','Cyera','BigID','Varonis'], 'Enrichment')}
+        ${SYS.group('IRM / UBA &amp; PAM', 'person_search', 'ops-teal', ['DTEX','Purview IRM','CyberArk (PAM)'], 'Enrichment')}
+        ${SYS.group('Non-human identity (agent-risk priors)', 'smart_toy', 'ops-teal', ['Astrix','Token Security','Oasis'], 'Enrichment')}
 
-        <!-- SaaS Channels -->
-        ${saasChannels.length > 0 ? `
-        <div class="mb-4">
-            <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[14px]">cloud</span>
-                SaaS Channels
-            </h4>
-            <div class="grid gap-2">
-                ${saasChannels.map(conn => renderConnectedCard(conn)).join('')}
-            </div>
-        </div>
-        ` : ''}
+        ${SYS.band('ACT', 'severity-high', 'bolt', 'The systems AXIA acts through — the four action families.')}
+        ${SYS.group('Engagement', 'forum', 'ops-teal', ['Org mailbox (soc@fundguard.com)'])}
+        ${SYS.group('Content (hold · remove · quarantine · revoke)', 'lock', 'severity-high', ['Box','Google Drive','SharePoint','OneDrive','Slack (Grid)','Teams','M365 email','Gmail','Dropbox','Atlassian','Salesforce'])}
+        ${SYS.group('Identity (step-up · disable — incl. agents)', 'key', 'ops-purple', ['Entra','Okta','Ping','Entra Agent ID','Okta Cross-App Access'])}
 
-        <!-- Context Sources -->
-        ${contextConnections.length > 0 ? `
-        <div>
-            <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[14px]">database</span>
-                Context Sources
-            </h4>
-            <div class="grid gap-2">
-                ${contextConnections.map(conn => `
-                    <div class="bg-white rounded-lg border border-border-default p-3 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-${conn.color}/20 flex items-center justify-center relative shrink-0">
-                                <span class="material-symbols-outlined text-${conn.color} text-[16px]">${conn.icon}</span>
-                                <span class="absolute -top-0.5 -right-0.5 w-3 h-3 bg-status-success rounded-full border-2 border-white flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-white text-[8px]" style="font-variation-settings: 'FILL' 1">check</span>
-                                </span>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <h4 class="text-sm font-medium text-text-primary truncate">${conn.name}</h4>
-                                <p class="text-[11px] text-text-secondary">${conn.stats.dataProcessed}</p>
-                            </div>
-                            <span class="text-[10px] font-medium text-accent-teal bg-accent-teal/10 px-1.5 py-0.5 rounded">Enrichment</span>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-        ` : ''}
+        ${SYS.band('CLOSE', 'severity-medium', 'sync_alt', 'Verdict served out + the learning loop. SIEM/SOAR logs &amp; responds.')}
+        ${SYS.group('Verdict-out (SIEM · SOAR · ticketing)', 'sync_alt', 'severity-medium', ['Splunk','Microsoft Sentinel','Splunk SOAR','Palo Alto XSOAR','Tines','ServiceNow','Jira'])}
     `;
 
-    additionalContainer.innerHTML = `
-        <!-- Phase3 #8: ACT band — the 4 action families AXIA executes through -->
-        <div class="mb-3 flex items-center gap-2">
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-severity-high/15 text-severity-high border border-severity-high/30"><span class="material-symbols-outlined text-[12px]">bolt</span>ACT</span>
-            <span class="text-[11px] text-text-muted">The 4 families: Engagement (org mailbox) · Content (hold/remove/quarantine/revoke) · Identity (Entra/Okta/Ping incl. agents) · Verdict-out.</span>
-        </div>
-        <div class="mb-3">
-            <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[14px]">key</span>
-                Identity &amp; Verdict-out rails
-            </h4>
-            ${renderAdditionalConnections('integration')}
-        </div>
-        <div class="mt-4">
-            <h4 class="text-[11px] font-bold text-text-secondary uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[14px]">lock</span>
-                Content enforcement &amp; DSPM
-            </h4>
-            <p class="text-[11px] text-text-muted mb-2">AXIA owns the content enforcement (hold · remove · quarantine · revoke); these systems feed and extend it rather than gate it.</p>
-            ${renderAdditionalConnections('dlp')}
-        </div>
-        <!-- Phase3 #8: CLOSE band — verdict served out + the learning loop -->
-        <div class="mt-4 pt-3 border-t border-border-default flex items-center gap-2">
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-severity-medium/15 text-severity-medium border border-severity-medium/30"><span class="material-symbols-outlined text-[12px]">sync_alt</span>CLOSE</span>
-            <span class="text-[11px] text-text-muted">Verdict pushed to SIEM/SOAR (Splunk · Sentinel → SOAR → ServiceNow/Jira) and case → prevention. SIEM/SOAR logs &amp; responds.</span>
-        </div>
-    `;
+    // Merge: the second collapsible is now redundant — empty it and hide its wrapper.
+    additionalContainer.innerHTML = '';
+    const addWrap = document.getElementById('connect-additional');
+    if (addWrap) addWrap.style.display = 'none';
 }
 
 // V6.20: Connection flow modal
@@ -10207,7 +10198,7 @@ var NBA_FAMILY = {
   'identity':    { label: 'Identity', icon: 'key',         exec: 'step-up · disable (incl. agents)',
                    text:'text-ops-purple',      bg:'bg-ops-purple/15',      border:'border-ops-purple/30',
                    channels:'Entra · Okta · Ping' },
-  'verdict-out': { label: 'Verdict-out', icon: 'sync_alt', exec: 'served to SIEM / SOAR',
+  'verdict-out': { label: 'Verdict-out', icon: 'sync_alt', exec: 'verdict served out',
                    text:'text-severity-medium', bg:'bg-severity-medium/15', border:'border-severity-medium/30',
                    channels:'Splunk · Sentinel → SOAR' }
 };
@@ -10357,7 +10348,7 @@ function renderNBAPanel(c){
   var trigger;
   if (executed) {
     trigger = '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-status-success/10 border border-status-success/30 text-status-success text-sm font-bold"><span class="material-symbols-outlined">check_circle</span>Executed'
-      + (nba.family === 'engagement' ? ' · sent via the org mailbox' : (nba.family === 'verdict-out' ? ' · verdict routed to SIEM / SOAR' : '')) + '</div>';
+      + (nba.family === 'engagement' ? ' · sent via the org mailbox' : (nba.family === 'verdict-out' ? ' · verdict served' : '')) + '</div>';
   } else if (nba.gated) {
     trigger = awaiting
       ? '<button type="button" onclick="axiaConfirm(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-2 h-11 px-4 rounded-lg bg-severity-critical text-white shadow-lg hover:opacity-90 transition-all font-bold text-sm"><span class="material-symbols-outlined">verified_user</span>Approve containment</button>'
@@ -10365,15 +10356,17 @@ function renderNBAPanel(c){
   } else if (nba.mode === 'manual') {
     trigger = '<button type="button" onclick="executeNBA(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-2 h-11 px-4 rounded-lg bg-primary text-white shadow-lg shadow-primary/25 hover:bg-primary-hover transition-all font-bold text-sm"><span class="material-symbols-outlined">play_arrow</span>Approve &amp; execute</button>';
   } else {
-    trigger = '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-ops-teal/10 border border-ops-teal/30 text-ops-teal text-sm font-medium"><span class="material-symbols-outlined">auto_mode</span>Automatic — AXIA executes this ' + (nba.family === 'engagement' ? 'via the org mailbox' : (nba.family === 'verdict-out' ? 'and routes the verdict to SIEM / SOAR' : 'on its own')) + '</div>';
+    trigger = '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-ops-teal/10 border border-ops-teal/30 text-ops-teal text-sm font-medium"><span class="material-symbols-outlined">auto_mode</span>Automatic — AXIA executes this ' + (nba.family === 'engagement' ? 'via the org mailbox' : (nba.family === 'verdict-out' ? 'and serves the verdict out' : 'on its own')) + '</div>';
   }
 
   // ---- Extras: copy-for-personal-use + suggested engagement email (engagement / hold-email) ----
   // Shown while the case is live in the panel (open / acting / awaiting); the panel itself only renders for open cases.
   var nbaExtras = '';
   {
-    // copy-for-personal-use is available whenever the NBA is viewable
-    nbaExtras += '<button type="button" onclick="axiaCopyNBA(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-2 h-9 px-3 rounded-lg bg-surface-hover text-text-secondary border border-border-default hover:text-text-primary transition-colors text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">content_copy</span>Copy for personal use</button>';
+    // v6 #N1: "Copy for personal use" only for engagement (there's an email to copy); non-engagement NBAs have nothing to copy.
+    if (nba.family === 'engagement' || c.holdEmail) {
+      nbaExtras += '<button type="button" onclick="axiaCopyNBA(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-2 h-9 px-3 rounded-lg bg-surface-hover text-text-secondary border border-border-default hover:text-text-primary transition-colors text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">content_copy</span>Copy for personal use</button>';
+    }
     // suggested engagement email for the engaging-people / hold-email path
     if (nba.family === 'engagement' || c.holdEmail) {
       var d = engagementEmailFor(c);
@@ -10428,7 +10421,7 @@ function executeNBA(id){
   if (!c) return;
   var nba = caseNBA(c);
   if (typeof showToast === 'function') {
-    var via = nba.family === 'engagement' ? ' — sent via org mailbox' : (nba.family === 'verdict-out' ? ' — verdict routed to SIEM/SOAR' : '');
+    var via = nba.family === 'engagement' ? ' — sent via org mailbox' : (nba.family === 'verdict-out' ? ' — verdict served' : '');
     showToast('AXIA executing: ' + nba.label + via, 'success');
   }
   // Preferred path: hand to the driver so the approve shows the live acting animation → auto-resolve
@@ -10539,14 +10532,11 @@ function actCard(a){
     +   '</div>'
     + '</div>';
   }
-  // systems / sender row — Phase3 #3: per-action systems (a.systems) preferred; family-coloured family icon; items-center align.
+  // systems / sender row — v6 #N6: removed the "Sender"/"Systems" text label; keep the family-coloured icon + the value.
   html += ''
   + '<div class="flex items-center gap-1.5 pt-2 border-t border-border-default mt-auto">'
   +   '<span class="material-symbols-outlined text-[14px] shrink-0 ' + meta.text + '">' + (meta.icon || 'hub') + '</span>'
-  +   '<div class="min-w-0">'
-  +     '<span class="text-[10px] font-bold text-text-secondary tracking-wide mr-1.5">' + (a.family==='engagement' ? 'Sender' : 'Systems') + '</span>'
-  +     '<span class="text-[11px] text-text-secondary">' + (a.systems || meta.channels || '—') + '</span>'
-  +   '</div>'
+  +   '<span class="text-[11px] text-text-secondary min-w-0">' + (a.systems || meta.channels || '—') + '</span>'
   + '</div>'
   + '</div>';
   return html;
@@ -10586,23 +10576,42 @@ function removeActionOption(id){
   if (i >= 0) caseActionOptions.splice(i, 1);
   renderConnectionsScreen();
 }
+// v6 #N5: enforce bottom-up contiguity. autoSeverities must always be a contiguous prefix of
+// [low, medium, high, critical] — AXIA may auto the LOWER severities and hold the TOP ones, never the
+// reverse (no "auto high while medium is held"). Normalizing to the highest-auto'd index guarantees it.
+var AXIA_SEV_ORDER = ['low','medium','high','critical'];
+function normalizeAutoContiguous(a){
+  if (!a || !Array.isArray(a.autoSeverities)) { if (a) a.autoSeverities = []; return; }
+  var maxIdx = -1;
+  a.autoSeverities.forEach(function(s){ var i = AXIA_SEV_ORDER.indexOf(s); if (i > maxIdx) maxIdx = i; });
+  a.autoSeverities = (maxIdx < 0) ? [] : AXIA_SEV_ORDER.slice(0, maxIdx + 1);
+}
 function toggleAutoSeverity(id, sev){
   var a = (caseActionOptions || []).find(function(x){ return x.id === id; });
   if (!a) return;
   if (!Array.isArray(a.autoSeverities)) a.autoSeverities = [];
   var j = a.autoSeverities.indexOf(sev);
   if (j >= 0) a.autoSeverities.splice(j, 1); else a.autoSeverities.push(sev);
+  normalizeAutoContiguous(a);
   renderConnectionsScreen();
 }
-// Phase3 #4: held-view inversion. A chip ON = HELD = severity NOT in autoSeverities.
-// Toggling: if currently auto (in autoSeverities) → remove (now held); else add (now auto).
-// Pure view-inversion over the same model, so caseNBA() (which reads autoSeverities) is untouched.
+// Phase3 #4 / v6 #N5: held-view inversion + contiguity. A chip ON = HELD = severity NOT in autoSeverities.
+// AUTO a severity → auto everything BELOW it too; HOLD a severity → hold everything ABOVE it too.
+// Pure model over autoSeverities, so caseNBA() (which reads autoSeverities) is untouched.
 function toggleHeldSeverity(id, sev){
   var a = (caseActionOptions || []).find(function(x){ return x.id === id; });
   if (!a) return;
   if (!Array.isArray(a.autoSeverities)) a.autoSeverities = [];
-  var j = a.autoSeverities.indexOf(sev);
-  if (j >= 0) a.autoSeverities.splice(j, 1); else a.autoSeverities.push(sev); // identical toggle; the LABEL/meaning is inverted in the UI
+  var i = AXIA_SEV_ORDER.indexOf(sev);
+  var isAuto = a.autoSeverities.indexOf(sev) !== -1;
+  if (isAuto) {
+    // currently auto → make it (and everything above) HELD: keep only severities strictly below i
+    a.autoSeverities = a.autoSeverities.filter(function(s){ return AXIA_SEV_ORDER.indexOf(s) < i; });
+  } else {
+    // currently held → make it (and everything below) AUTO: contiguous prefix up to i
+    a.autoSeverities = AXIA_SEV_ORDER.slice(0, i + 1);
+  }
+  normalizeAutoContiguous(a);
   renderConnectionsScreen();
 }
 window.toggleHeldSeverity = toggleHeldSeverity;
@@ -10656,30 +10665,19 @@ function addActionOption(family){
     0%,100% { box-shadow: 0 0 0 2px rgba(13,148,136,0.40), 0 0 12px rgba(13,148,136,0.16); }
     50%     { box-shadow: 0 0 0 2px rgba(13,148,136,0.80), 0 0 26px rgba(13,148,136,0.42); }
   }
-  #axia-hotspot { position:fixed; right:16px; bottom:16px; width:18px; height:18px; border-radius:50%;
-    background:rgba(13,148,136,0.16); border:1px solid rgba(13,148,136,0.42); z-index:9000; cursor:pointer; transition:all .2s; }
-  #axia-hotspot:hover { opacity:1; background:rgba(13,148,136,0.45); transform:scale(1.15); }
-  #axia-help { position:fixed; right:16px; bottom:44px; z-index:9002; max-width:248px; background:#fff; color:#111827;
+  /* v6 #1: visible chrome removed (no #axia-hotspot, #axia-ctrl, #axia-progress). Only the hidden ? help remains. */
+  #axia-help { position:fixed; right:16px; bottom:16px; z-index:9002; max-width:248px; background:#fff; color:#111827;
     border:1px solid #e5e7eb; border-radius:10px; padding:11px 13px; font:500 12px/1.55 ui-sans-serif,system-ui;
     box-shadow:0 10px 34px rgba(0,0,0,.20); display:none; }
   #axia-help.show { display:block; }
   #axia-help b { color:#09434e; }
-  #axia-progress { position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:9000;
-    background:rgba(255,255,255,.96); border:1px solid #e5e7eb; border-radius:999px; padding:7px 16px;
-    font:700 12px/1.1 ui-sans-serif,system-ui; color:#09434e; box-shadow:0 6px 20px rgba(0,0,0,.14); display:none; align-items:center; gap:8px; }
-  #axia-progress.show { display:inline-flex; }
-  #axia-progress .dot { width:7px; height:7px; border-radius:50%; background:#0D9488; box-shadow:0 0 8px rgba(13,148,136,.6); }
-  /* Phase3 fix #1: visible Prev/Next presenter control (bottom-center, above the progress pill) */
-  #axia-ctrl { position:fixed; left:50%; transform:translateX(-50%); bottom:52px; z-index:9001;
-    display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.97);
-    border:1px solid #e5e7eb; border-radius:999px; padding:5px 8px; box-shadow:0 6px 20px rgba(0,0,0,.14); }
-  #axia-ctrl button { width:30px; height:30px; border-radius:999px; border:1px solid #d1d5db; background:#fff;
-    color:#09434e; font:700 13px/1 ui-sans-serif,system-ui; cursor:pointer; transition:all .15s;
-    display:inline-flex; align-items:center; justify-content:center; }
-  #axia-ctrl button:hover { background:#0D9488; color:#fff; border-color:#0D9488; }
-  #axia-ctrl #axia-next { background:#0D9488; color:#fff; border-color:#0D9488; }
-  #axia-ctrl #axia-next:hover { background:#0b7d72; }
-  #axia-ctrl-label { font:700 11px/1 ui-sans-serif,system-ui; color:#09434e; padding:0 2px; letter-spacing:.02em; }
+  /* v6 #3: outcome-flash → slide-out as a closed case leaves its open severity section */
+  .axia-exiting { animation: axiaExit 1.15s ease-in forwards; }
+  @keyframes axiaExit {
+    0%   { opacity:1; transform:translateX(0); max-height:200px; }
+    70%  { opacity:.85; transform:translateX(0); }
+    100% { opacity:0; transform:translateX(14px); max-height:0; padding-top:0; padding-bottom:0; }
+  }
 </style>
 <script>
 (function(){
@@ -10706,12 +10704,12 @@ function addActionOption(family){
     'CASE-FG-014': {channel:'SharePoint / OneDrive',       channelIcon:'folder_shared', remediation:{family:'content',     label:'Hold file · restrict access',    icon:'lock'}},
     'CASE-FG-002': {channel:'Internal API · Box',     channelIcon:'folder',        remediation:{family:'identity',    label:'Step-up auth · revoke token',    icon:'key'}},
     'CASE-FG-004': {channel:'Google Drive',                channelIcon:'add_to_drive',  remediation:{family:'content',     label:'Revoke external share',              icon:'link_off'}},
-    'CASE-FG-017': {channel:'Dropbox',                     channelIcon:'cloud',         remediation:{family:'verdict-out', label:'Verdict → Sentinel → SOAR', icon:'sync_alt'}},
+    'CASE-FG-017': {channel:'Dropbox',                     channelIcon:'cloud',         remediation:{family:'verdict-out', label:'Verdict served', icon:'sync_alt'}},
     'CASE-FG-001': {channel:'Microsoft 365 → personal Gmail', channelIcon:'mail',  remediation:{family:'content',     label:'Hold email · revoke shares · Legal', icon:'gavel'}},
     // closed history cases — channel-coverage chips only
     'CASE-FG-006': {channel:'Slack',                       channelIcon:'forum',         remediation:{family:'content',     label:'Message removed',                    icon:'block'}},
     'CASE-FG-012': {channel:'Microsoft Teams',             channelIcon:'groups',        remediation:{family:'engagement',  label:'Coached employee',                   icon:'forum'}},
-    'CASE-FG-007': {channel:'GitHub / GitLab',             channelIcon:'code',          remediation:{family:'verdict-out', label:'Verdict logged to Splunk (SIEM)',     icon:'sync_alt'}},
+    'CASE-FG-007': {channel:'GitHub / GitLab',             channelIcon:'code',          remediation:{family:'verdict-out', label:'Verdict logged',     icon:'sync_alt'}},
     'CASE-FG-009': {channel:'Atlassian (Jira/Confluence)', channelIcon:'view_kanban',   remediation:{family:'content',     label:'Restricted page',                    icon:'lock'}},
     'CASE-FG-013': {channel:'GitHub (open source)',        channelIcon:'code',          remediation:{family:'engagement',  label:'Verified legitimate',                icon:'check'}},
     'CASE-FG-015': {channel:'Browser upload',             channelIcon:'public',        remediation:{family:'content',     label:'Upload quarantined',                 icon:'block'}},
@@ -10863,20 +10861,20 @@ function addActionOption(family){
     // ---- 7d Act-breadth: Identity (Okta, Ping) + Verdict-out (Splunk SOAR) ----
     { id:'CASE-FG-024', sev:'high', family:'identity', label:'Step-up authentication (Okta)', icon:'verified_user', channel:'Okta', channelIcon:'verified_user', score:78, name:'Noa Bar-Lev', initials:'NB', role:'Treasury Analyst', dept:'Finance', loc:'Tel Aviv', title:'Anomalous sign-in to the treasury console triggered an Okta step-up challenge', desc:'AXIA judged a high-risk sign-in pattern on the treasury console and required an Okta step-up challenge before access continued.', what:'A treasury-console sign-in showed impossible-travel and device-posture anomalies.', why:'Step-up authentication contains account-takeover risk without locking out a legitimate user.', cc:'manager', from:'noa.barlev@fundguard.com', to:'okta', subj:'step-up challenge issued' },
     { id:'CASE-FG-025', sev:'high', family:'identity', label:'Disable session (Ping)', icon:'person_off', channel:'Ping', channelIcon:'person_off', score:84, name:'Eitan Gross', initials:'EG', role:'Platform Engineer', dept:'Engineering', loc:'Tel Aviv', title:'Compromised session terminated via Ping after credential-stuffing indicators', desc:'AXIA disabled an active session through Ping after detecting credential-stuffing indicators against an engineering account.', what:'Credential-stuffing indicators against an engineering identity with an active privileged session.', why:'Disabling the session through Ping stops misuse immediately while the account is reset.', from:'eitan.gross@fundguard.com', to:'ping', subj:'session disabled' },
-    { id:'CASE-FG-026', sev:'medium', family:'verdict-out', label:'SOAR playbook (Splunk SOAR)', icon:'bolt', channel:'Splunk SOAR', channelIcon:'bolt', score:58, name:'Automated detection', initials:'SO', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict triggered a Splunk SOAR containment playbook for a bulk-download pattern', desc:'AXIA served its verdict to Splunk SOAR, which ran a containment playbook (isolate + ticket) for a bulk-download pattern.', what:'A bulk-download pattern matched a SOAR-eligible containment playbook.', why:'Serving the verdict to SOAR lets the SOC’s existing automation execute containment at machine speed.', from:'detections@fundguard.com', to:'splunk-soar', subj:'SOAR playbook fired' },
+    { id:'CASE-FG-026', sev:'medium', family:'verdict-out', label:'Verdict served', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:58, name:'Automated detection', initials:'SO', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict triggered a containment playbook for a bulk-download pattern', desc:'AXIA served its verdict, which triggered a containment playbook (isolate + ticket) for a bulk-download pattern.', what:'A bulk-download pattern matched a containment playbook.', why:'Serving the verdict out lets the SOC’s existing automation execute containment at machine speed.', from:'detections@fundguard.com', to:'soc', subj:'containment playbook fired' },
     // ---- 30d history (+7): C2 H2 M2 L1 ----
     { id:'CASE-FG-027', sev:'critical', family:'content', label:'Hold file · revoke share', icon:'lock', channel:'SharePoint', channelIcon:'folder_shared', score:93, name:'Liora Katz', initials:'LK', role:'Fund Controller', dept:'Finance', loc:'London', title:'Restricted NAV reconciliation workbook shared externally before quarter close', desc:'AXIA held the workbook and revoked the external share after a restricted NAV reconciliation file was shared outside the org.', what:'A restricted NAV reconciliation workbook was shared to an external address near quarter close.', why:'Quarter-close financial artifacts are highly sensitive; holding + revoking stops external exposure.', cc:'Legal', dlp:true },
     { id:'CASE-FG-028', sev:'critical', family:'identity', label:'Revoke agent token', icon:'key_off', channel:'Entra Agent ID', channelIcon:'smart_toy', score:91, name:'svc-report-sync', initials:'AI', role:'Automation service identity', dept:'Engineering', loc:'Non-human identity', title:'Service agent on an over-broad scope pulling investor reports off-baseline', desc:'AXIA revoked the agent credential after a reporting service identity began pulling investor reports far outside its baseline.', what:'A reporting service identity used an over-broad scope to pull investor reports off-baseline.', why:'Over-permissioned agents move data at machine speed; revoking the token contains it.' },
     { id:'CASE-FG-029', sev:'high', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:75, name:'Ron Shaked', initials:'RS', role:'Investor Relations', dept:'IR', loc:'London', title:'Investor allocation extract emailed to an unapproved external consultant', desc:'AXIA quarantined an outbound email carrying an investor allocation extract to an unapproved external consultant.', what:'An investor allocation extract was emailed to an unapproved external consultant.', why:'Investor allocation data leaving to an unvetted party is a reportable exposure.' },
     { id:'CASE-FG-030', sev:'high', family:'engagement', label:'Coach + brief manager', icon:'forum', channel:'Google email (Gmail)', channelIcon:'mail', score:72, name:'Tal Mizrahi', initials:'TM', role:'Quant Researcher', dept:'Research', loc:'Tel Aviv', title:'Model notebook forwarded to personal Gmail before a conference', desc:'AXIA coached the researcher and briefed the manager after a model notebook was forwarded to a personal address.', what:'A model notebook was forwarded to a personal Gmail before a conference.', why:'Model IP off the managed environment needs a coaching touch plus manager awareness.', cc:'manager' },
     { id:'CASE-FG-031', sev:'medium', family:'content', label:'Hold / restrict file', icon:'lock', channel:'Box', channelIcon:'folder', score:55, name:'Yael Adler', initials:'YA', role:'Operations Analyst', dept:'Operations', loc:'London', title:'Internal runbook with embedded credentials placed on hold in Box', desc:'AXIA placed an internal runbook on hold after detecting embedded credentials in a Box upload.', what:'An internal runbook containing embedded credentials was uploaded to Box.', why:'Credentials in shared docs are a lateral-movement risk; holding the file prevents spread.' },
-    { id:'CASE-FG-032', sev:'medium', family:'verdict-out', label:'Verdict → Sentinel', icon:'sync_alt', channel:'Microsoft Sentinel', channelIcon:'sync_alt', score:52, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict on repeated after-hours access routed to Sentinel for correlation', desc:'AXIA served a verdict on a repeated after-hours access pattern to Microsoft Sentinel for SOC correlation.', what:'A repeated after-hours access pattern met the threshold for SIEM correlation.', why:'Routing the verdict to Sentinel lets the SOC correlate it with other signals.' },
+    { id:'CASE-FG-032', sev:'medium', family:'verdict-out', label:'Verdict served', icon:'sync_alt', channel:'Security Ops', channelIcon:'sync_alt', score:52, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict on repeated after-hours access served for correlation', desc:'AXIA served a verdict on a repeated after-hours access pattern for SOC correlation.', what:'A repeated after-hours access pattern met the threshold for correlation.', why:'Serving the verdict out lets the SOC correlate it with other signals.' },
     { id:'CASE-FG-033', sev:'low', family:'engagement', label:'Coach employee', icon:'forum', channel:'Microsoft 365 email', channelIcon:'mail', score:22, name:'Gil Peretz', initials:'GP', role:'Sales Associate', dept:'Sales', loc:'London', title:'Internal pricing sheet emailed to a personal address for a commute read', desc:'AXIA auto-coached the associate after an internal pricing sheet was sent to a personal address.', what:'An internal pricing sheet was emailed to a personal address.', why:'Low-harm habit worth a light automatic nudge.' },
     // ---- 90d history (+9): C2 H3 M2 L2 ----
     { id:'CASE-FG-034', sev:'critical', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:95, name:'Dana Friedman', initials:'DF', role:'Senior Fund Accountant', dept:'Finance', loc:'New York', title:'Full investor KYC pack emailed externally days before resignation', desc:'AXIA quarantined an outbound email containing a full investor KYC pack sent externally shortly before the sender resigned.', what:'A full investor KYC pack was emailed externally just before a resignation.', why:'Departure-adjacent bulk PII exfiltration is the highest-harm pattern.', cc:'Legal', dlp:true },
     { id:'CASE-FG-035', sev:'critical', family:'identity', label:'Disable user session', icon:'person_off', channel:'Entra', channelIcon:'key_off', score:90, name:'Omer Levi', initials:'OL', role:'Database Administrator', dept:'Engineering', loc:'Tel Aviv', title:'DBA session disabled after mass export from the investor database', desc:'AXIA disabled an administrator session via Entra after a mass export from the investor database off-baseline.', what:'A DBA session performed a mass export from the investor database far off-baseline.', why:'Privileged mass export needs immediate session containment.' },
     { id:'CASE-FG-036', sev:'high', family:'content', label:'Revoke external share', icon:'link_off', channel:'Google Drive', channelIcon:'add_to_drive', score:74, name:'Maya Stern', initials:'MS', role:'Client Solutions', dept:'Client Operations', loc:'London', title:'Client onboarding folder shared to a personal Google account', desc:'AXIA revoked an external share after a client onboarding folder was shared to a personal Google account.', what:'A client onboarding folder was shared to a personal Google account.', why:'Client data on personal storage is an exposure that revocation closes.' },
-    { id:'CASE-FG-037', sev:'high', family:'verdict-out', label:'Verdict → SOAR playbook', icon:'bolt', channel:'Palo Alto XSOAR', channelIcon:'bolt', score:80, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict triggered an XSOAR playbook for repeated DLP-evasion attempts', desc:'AXIA served a verdict to Palo Alto XSOAR, which ran a containment playbook for repeated DLP-evasion attempts.', what:'Repeated DLP-evasion attempts matched an XSOAR containment playbook.', why:'SOAR automation contains evasion attempts at machine speed.' },
+    { id:'CASE-FG-037', sev:'high', family:'verdict-out', label:'Verdict served', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:80, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Verdict triggered a containment playbook for repeated DLP-evasion attempts', desc:'AXIA served a verdict, which triggered a containment playbook for repeated DLP-evasion attempts.', what:'Repeated DLP-evasion attempts matched a containment playbook.', why:'Serving the verdict out contains evasion attempts at machine speed.' },
     { id:'CASE-FG-038', sev:'high', family:'engagement', label:'Notify HR', icon:'badge', channel:'Microsoft Teams', channelIcon:'groups', score:70, name:'Avi Cohen', initials:'AC', role:'Portfolio Manager', dept:'Investments', loc:'New York', title:'Sensitive performance figures posted in a broad Teams channel', desc:'AXIA engaged the employee and notified HR after sensitive performance figures were posted in an over-broad Teams channel.', what:'Sensitive performance figures were posted in a broad internal Teams channel.', why:'Over-sharing sensitive figures internally warrants HR awareness.', cc:'HR' },
     { id:'CASE-FG-039', sev:'medium', family:'content', label:'Remove message', icon:'block', channel:'Slack', channelIcon:'forum', score:53, name:'Lior Azoulay', initials:'LA', role:'Support Engineer', dept:'Support', loc:'London', title:'Customer record pasted into a public Slack channel removed', desc:'AXIA removed a Slack message after a customer record was pasted into a public channel.', what:'A customer record was pasted into a public Slack channel.', why:'Removing the message limits exposure of customer data.' },
     { id:'CASE-FG-040', sev:'medium', family:'identity', label:'Step-up authentication', icon:'verified_user', channel:'Entra', channelIcon:'verified_user', score:50, name:'Shira Ben-David', initials:'SB', role:'HR Business Partner', dept:'HR', loc:'Tel Aviv', title:'Unrecognized device prompted a step-up challenge on the HR system', desc:'AXIA required an Entra step-up challenge after an unrecognized device attempted access to the HR system.', what:'An unrecognized device attempted access to the HR system.', why:'Step-up verification confirms the user without blocking legitimate work.' },
@@ -10937,11 +10935,12 @@ function addActionOption(family){
   function actionVerbFor(c){
     if (c.holdEmail) return 'AXIA is holding the email and asking the sender to verify it';
     var fam = (c.remediation && c.remediation.family) || 'engagement';
+    // v6 #N3: no SIEM/SOAR system names in per-case narration — system-agnostic verb.
     return ({
       'engagement':  'AXIA is engaging the employee',
       'content':     'AXIA is holding the content',
       'identity':    'AXIA is revoking the credential',
-      'verdict-out': 'AXIA is serving the verdict to SIEM / SOAR'
+      'verdict-out': 'AXIA is serving the verdict'
     })[fam] || 'AXIA is acting';
   }
 
@@ -10993,11 +10992,16 @@ function addActionOption(family){
   }
 
   function startActing(c){
-    c.stage = 'acting'; c.status = 'open'; c.actionVerb = actionVerbFor(c);
+    c.stage = 'acting'; c.status = 'open'; c.actionVerb = actionVerbFor(c); c._justClosed = 0;
     render();
     var t = setTimeout(function(){
-      c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c);
+      // v6 #3: close → outcome flash (owner/CC) for ~1.2s, then the card slides OUT of the open severity
+      // section so the queue visibly drains. The _justClosed stamp is STATE (survives render()'s innerHTML
+      // rebuild); after the window a follow-up render() excludes the card and the section shrinks.
+      c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); c._justClosed = Date.now();
       render();
+      var t2 = setTimeout(function(){ render(); }, 1300); // drop it from the open section after the flash
+      timers.push(t2);
     }, 2600);
     timers.push(t);
   }
@@ -11022,6 +11026,7 @@ function addActionOption(family){
     var autos = autoIds();
     DEMO_IDS.forEach(function(id){
       var c = find(id); if (!c) return;
+      c._justClosed = 0; // v6 #3: deterministic rebuild (back/reset) → no exit-flash animation
       if (id === GATE_ID) {
         if (gateConfirmed) { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
         else { c.stage = 'awaiting'; c.status = 'open'; c.outcome = null; }
@@ -11061,46 +11066,45 @@ function addActionOption(family){
   function flashHotspot(){ var h=document.getElementById('axia-hotspot'); if(!h) return; h.style.background='rgba(231,76,60,0.55)'; setTimeout(function(){ h.style.background=''; }, 350); }
 
   // ---------- 4. Presenter affordances + input ----------
+  // v6 #1: NO visible chrome (no Prev/Next control, no progress pill, no corner hotspot) — the demo
+  // "looks live" and is driven purely by the invisible arrow keys. Keep only the hidden `?` help overlay.
   function buildAffordances(){
-    if (document.getElementById('axia-hotspot')) return;
-    var hs = document.createElement('div'); hs.id='axia-hotspot'; hs.title='AXIA — advance (→ / Space)';
-    hs.addEventListener('click', function(){ advance(false); });
-    document.body.appendChild(hs);
-    var pg = document.createElement('div'); pg.id='axia-progress'; document.body.appendChild(pg);
-    // Phase3 fix #1: a VISIBLE Prev / Next control so a press is never ambiguous (the corner dot stays too).
-    var ctrl = document.createElement('div'); ctrl.id='axia-ctrl';
-    ctrl.innerHTML =
-      '<button type="button" id="axia-prev" title="Step back (←)" aria-label="Step back">◀</button>'
-      + '<span id="axia-ctrl-label">Prev / Next</span>'
-      + '<button type="button" id="axia-next" title="Advance (→ / Space)" aria-label="Advance">▶</button>'
-      + '<button type="button" id="axia-replay" title="Reset / replay (R)" aria-label="Reset">↻</button>';
-    document.body.appendChild(ctrl);
-    ctrl.querySelector('#axia-prev').addEventListener('click', function(){ back(); });
-    ctrl.querySelector('#axia-next').addEventListener('click', function(){ advance(false); });
-    ctrl.querySelector('#axia-replay').addEventListener('click', function(){ reset(); });
+    if (document.getElementById('axia-help')) return;
     var help = document.createElement('div'); help.id='axia-help';
-    help.innerHTML = '<b>Presenter keys</b><br>→ / Space — advance<br>← — step back<br>R — reset / replay<br>? — this help<br>Click the corner dot to advance.<br><i>Critical case waits for your “Approve containment”.</i>';
+    help.innerHTML = '<b>Presenter keys</b><br>→ / Space — advance<br>← — step back<br>R — reset / replay<br>? — this help<br><i>Critical case waits for your “Approve containment”.</i>';
     document.body.appendChild(help);
   }
 
+  // v6 #2: re-assert page focus so the arrow keys always reach the document, even if the page loaded
+  // without focus (background tab, iframe/preview, focus parked in the address bar).
+  function grabFocus(){ try { window.focus(); document.body.setAttribute('tabindex','-1'); document.body.focus(); } catch(e){} }
+
   function isTyping(e){ var t=e.target; if(!t) return false; var tn=(t.tagName||'').toUpperCase(); return tn==='INPUT'||tn==='TEXTAREA'||t.isContentEditable; }
-  document.addEventListener('keydown', function(e){
+  // v6 #2: bind to BOTH window and document. A per-event __axiaHandled flag guarantees a single real
+  // keystroke advances exactly once even though it reaches both listeners (window catches it even when
+  // no in-page element is focused; document catches the normal bubbling path).
+  function onKey(e){
+    if (e.__axiaHandled) return; e.__axiaHandled = true;
     if (isTyping(e)) return;
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Spacebar'){ e.preventDefault(); advance(false); }
     else if (e.key === 'ArrowLeft'){ e.preventDefault(); back(); }
     else if (e.key === 'r' || e.key === 'R'){ reset(); }
     else if (e.key === '?'){ var h=document.getElementById('axia-help'); if(h) h.classList.toggle('show'); }
-  });
+  }
+  window.addEventListener('keydown', onKey, true);   // capture on window — fires even with nothing focused in-page
+  document.addEventListener('keydown', onKey, true); // belt-and-suspenders; dedup via e.__axiaHandled
 
   function boot(){
     buildAffordances();
     reset(); // populated baseline (open queue) + render
-    // Phase3 fix #1: make the page itself focusable + focused so document-level keydown is reliable.
-    try { document.body.setAttribute('tabindex','-1'); document.body.focus(); } catch(e){}
+    grabFocus();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  // v6 #2: re-grab focus on the events where a page commonly (re)gains visibility/interaction.
+  window.addEventListener('load', grabFocus);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) grabFocus(); });
+  window.addEventListener('pointerdown', grabFocus, { once: true });
 })();
 </script>
-<!-- Phase3 fix #1: progress pill un-hidden (the override #axia-progress{display:none} was removed so AXIA's "driving the queue" feedback is visible) -->
 </body>
 </html>

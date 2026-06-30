@@ -10761,8 +10761,8 @@ function addActionOption(family){
   }
   window.axiaSyncRender = render; // used by executeNBA (manual approve) to keep tallies in sync
 
-  var revealedCount = 0;     // how many cases have been pressed-in (0..N)
   var gateConfirmed = false; // has the human confirmed the Critical case?
+  var drivenCount = 0;       // how many AUTO cases AXIA has driven to closure (0..autoCount)
   var timers = [];
   function clearTimers(){ timers.forEach(function(t){ clearTimeout(t); }); timers = []; }
 
@@ -10770,6 +10770,10 @@ function addActionOption(family){
   function isManualRest(c){
     if (!c || c.id === GATE_ID) return false;
     try { return caseNBA(c).mode === 'manual'; } catch(e){ return false; }
+  }
+  // Ordered list of AUTO (non-gated, non-manual) cases AXIA drives to closure, one per →.
+  function autoIds(){
+    return DEMO_IDS.filter(function(id){ if (id === GATE_ID) return false; var c = find(id); return c && !isManualRest(c); });
   }
 
   function startActing(c){
@@ -10783,45 +10787,40 @@ function addActionOption(family){
   }
   window.axiaApprove = function(id){ var c = find(id); if (c) startActing(c); }; // manual approve → act → resolve
 
+  // The board OPENS populated (all cases open). Each → drives AXIA to act on the next still-open AUTO
+  // case (acting animation → auto-closes), so the queue visibly DRAINS. Manual cases rest open awaiting
+  // approval; the Critical gate waits for "Approve containment". (Others open cases. AXIA drives closing them.)
   function advance(){
-    if (revealedCount >= DEMO_IDS.length) { flashHotspot(); return; } // nothing left (gate / manuals may be awaiting)
-    var id = DEMO_IDS[revealedCount];
-    var c = find(id);
-    revealedCount++;
-    if (!c) { render(); return; }
-    if (id === GATE_ID) {
-      // appears already-judged/open, waiting for the human to confirm before AXIA acts
-      c.stage = 'awaiting'; c.status = 'open'; render(); flashHotspot();
-      return;
-    }
-    if (isManualRest(c)) {
-      // MANUAL = you approve. The case appears and RESTS at open with its NBA visible (View / Copy /
-      // Approve→execute) in both Cases and Command. It does NOT auto-act.
-      c.stage = 'open'; c.status = 'open'; c.outcome = null; render();
-      return;
-    }
-    startActing(c); // AUTO: case appears + acts + auto-completes within this single press
+    var autos = autoIds();
+    if (drivenCount >= autos.length) { flashHotspot(); return; } // all auto cases driven; manuals/gate await you
+    var c = find(autos[drivenCount]);
+    drivenCount++;
+    if (c) startActing(c); else render();
   }
 
+  // Deterministic rebuild — used for the populated baseline, ← back, and R reset.
+  // Baseline = every progression case OPEN (manuals open awaiting approval, gate awaiting); the first
+  // `drivenCount` AUTO cases are CLOSED. Closed history cases (not in DEMO_IDS) are left as-is.
   function rebuildState(){
     clearTimers();
-    DEMO_IDS.forEach(function(id, i){
+    var autos = autoIds();
+    DEMO_IDS.forEach(function(id){
       var c = find(id); if (!c) return;
-      if (i >= revealedCount) { c.stage = 'incoming'; c.status = 'incoming'; c.outcome = null; }
-      else if (id === GATE_ID && !gateConfirmed) { c.stage = 'awaiting'; c.status = 'open'; c.outcome = null; }
-      else if (isManualRest(c)) { c.stage = 'open'; c.status = 'open'; c.outcome = null; } // manual rests awaiting approval
-      else { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); } // auto cases settle closed
+      if (id === GATE_ID) {
+        if (gateConfirmed) { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
+        else { c.stage = 'awaiting'; c.status = 'open'; c.outcome = null; }
+        return;
+      }
+      if (isManualRest(c)) { c.stage = 'open'; c.status = 'open'; c.outcome = null; return; } // manual rests awaiting approval
+      var ai = autos.indexOf(id); // AUTO case: closed if among the first drivenCount, else open
+      if (ai > -1 && ai < drivenCount) { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
+      else { c.stage = 'open'; c.status = 'open'; c.outcome = null; }
     });
     render();
   }
 
-  function back(){
-    if (revealedCount <= 0) return;
-    revealedCount--;
-    if (revealedCount <= gateIndex) gateConfirmed = false;
-    rebuildState();
-  }
-  function reset(){ revealedCount = 0; gateConfirmed = false; rebuildState(); }
+  function back(){ if (drivenCount > 0) { drivenCount--; rebuildState(); } }
+  function reset(){ drivenCount = 0; gateConfirmed = false; rebuildState(); } // R → return to the populated load state
 
   window.axiaConfirm = function(id){
     var c = find(id);
@@ -10834,14 +10833,12 @@ function addActionOption(family){
   function closedCount(){ return DEMO_IDS.filter(function(id){ var c=find(id); return c && c.status==='closed'; }).length; }
   function updateProgress(){
     var pill = document.getElementById('axia-progress'); if(!pill) return;
-    if (revealedCount <= 0){ pill.classList.remove('show'); return; }
     pill.classList.add('show');
     var done = closedCount(), total = DEMO_IDS.length;
-    var awaiting = DEMO_IDS.filter(function(id){ var c=find(id); return c && (c.stage === 'open' || c.stage === 'awaiting'); }).length;
+    var openN = DEMO_IDS.filter(function(id){ var c=find(id); return c && (c.stage === 'open' || c.stage === 'awaiting' || c.stage === 'acting'); }).length;
     var label;
-    if (done >= total) label = 'AXIA drove all ' + total + ' cases to closure. Read · Act · Close.';
-    else if (revealedCount >= total && awaiting > 0) label = 'AXIA auto-closed ' + done + ' · ' + awaiting + ' awaiting your approval. Read · Act · Close.';
-    else label = 'AXIA working cases — ' + done + ' closed · ' + awaiting + ' awaiting approval';
+    if (openN === 0) label = 'AXIA drove all ' + total + ' cases to closure. Read · Act · Close.';
+    else label = 'AXIA driving the queue to closure — ' + done + ' closed · ' + openN + ' open';
     pill.innerHTML = '<span class="dot"></span>' + label;
   }
 

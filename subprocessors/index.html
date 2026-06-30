@@ -1,0 +1,28 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+<title>AXIA Sub-processors</title><style>body{font-family:'Manrope',Segoe UI,sans-serif;max-width:860px;margin:0 auto;padding:40px 28px 80px;line-height:1.6;color:#0f172a}h1{color:#0b7d72;border-bottom:3px solid #0D9488;padding-bottom:10px}h2{color:#0b7d72}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid #e2e8f0;padding:7px;text-align:left;vertical-align:top}th{background:#f0fdfa}blockquote{border-left:4px solid #0D9488;background:#f8fafc;padding:8px 16px;color:#475569}a{color:#0D9488}</style></head><body><div style='font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#0D9488;font-weight:800;margin-bottom:4px'>AXIA</div><h1>AXIA Sub-processors</h1>
+<p><b>Version 1.0</b> · Last updated: 2026-06-30</p>
+<hr>
+<h2>1. Product deployment — no sub-processors with access to customer data</h2>
+<p>The AXIA product is deployed <b>inside the customer&#x27;s own controlled environment</b> (on-premises or the customer&#x27;s own cloud tenant). AXIA does <b>not</b> offer a SaaS deployment, and the language model is always customer-provided (a cloud LLM the customer contracts for, or a customer-managed/approved endpoint); <b>AXIA never hosts the model</b>. As a result:</p>
+<ul>
+<li>Customer production data resides and is processed <b>only within the customer&#x27;s own environment</b>, with no egress to AXIA-controlled infrastructure for inference, logging, telemetry, or training.</li>
+<li>The <b>cloud infrastructure provider</b> and the <b>foundation-model service</b> used for inference are the <b>customer&#x27;s own direct counterparties</b> — they are not AXIA sub-processors.</li>
+<li>Accordingly, in the standard (and only) product deployment model, <b>AXIA engages no sub-processors that process or have access to customer production data.</b></li>
+</ul>
+<hr>
+<h2>2. Website &amp; business operations — AXIA&#x27;s own sub-processors</h2>
+<p>For its corporate website and business operations (Context A in our <a href="/privacy">Privacy Policy</a>) — for example, demo bookings and correspondence — AXIA relies on the following service providers, which may process limited personal data such as names, email addresses, and meeting details:</p>
+<table>
+<tr><th>Sub-processor</th><th>Service provided</th><th>Data processed</th><th>Primary processing location</th></tr>
+<tr><td>GitHub, Inc. (GitHub Pages)</td><td>Static website hosting</td><td>Website request metadata (the site is static, no accounts or analytics cookies)</td><td>United States</td></tr>
+<tr><td>Calendly LLC</td><td>Demo / meeting scheduling</td><td>Name, email, meeting details provided by the booker</td><td>United States</td></tr>
+<tr><td>Google LLC (Google Workspace)</td><td>Business email</td><td>Correspondence content and contact details</td><td>United States / global</td></tr>
+</table>
+<p>Where personal data of individuals in the EEA, the UK, or Switzerland is transferred outside those areas, AXIA relies on appropriate safeguards (such as our providers&#x27; standard contractual clauses / data-processing terms), as described in the <a href="/privacy">Privacy Policy</a>.</p>
+<hr>
+<h2>3. Changes &amp; notification</h2>
+<p>We may update this list to reflect changes in our providers. The version and date appear at the top. Where a customer Data Processing Addendum provides for advance notice of new sub-processors, AXIA will give notice in accordance with that addendum. For questions about this list, contact <a href="mailto:security@axiasecurity.io">security@axiasecurity.io</a>.</p>
+<hr>
+<p style="font-size:13px;color:#475569">See also: <a href="/privacy">Privacy Policy</a> · <a href="/trust">Security &amp; Trust Centre</a></p>
+</body></html>

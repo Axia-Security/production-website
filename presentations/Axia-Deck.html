@@ -805,7 +805,7 @@ h3 {
 </div>
 <script>
   (function() {
-    var EXPIRY = new Date('2026-06-30T23:59:59');
+    var EXPIRY = new Date('2026-07-30T23:59:59');
     if (new Date() > EXPIRY) {
       document.getElementById('gate-input').style.display = 'none';
       document.querySelector('#axia-gate button').style.display = 'none';
@@ -817,7 +817,7 @@ h3 {
     });
   })();
   function gateCheck() {
-    if (new Date() > new Date('2026-06-30T23:59:59')) return;
+    if (new Date() > new Date('2026-07-30T23:59:59')) return;
     if (document.getElementById('gate-input').value === 'Axia180!') {
       document.getElementById('axia-gate').style.display = 'none';
     } else {

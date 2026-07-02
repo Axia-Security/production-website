@@ -138,6 +138,15 @@
         .dark .bg-surface-hover {
             background-color: #334155 !important;
         }
+        /* v9 A4: dark override for Tailwind hover: variant (static override above misses it) */
+        .dark .hover\:bg-surface-hover:hover {
+            background-color: #334155 !important;
+        }
+        /* v9 A4: keep summary/accordion header text light on hover (never light-on-light) */
+        .dark summary:hover,
+        .dark summary:hover * {
+            color: #f1f5f9 !important;
+        }
         .dark .text-text-primary {
             color: #f1f5f9 !important;
         }
@@ -394,6 +403,7 @@
             transition: background 0.15s;
         }
         .filter-option:hover { background: #F3F4F6; }
+        .dark .filter-option:hover { background: #1e293b !important; }
         .filter-option input { accent-color: #09434e; }
 
         /* API Key modal */
@@ -2204,14 +2214,16 @@ const DEMO_DATA = {
         // Phase3 #6: STRICT NESTED SUPERSETS 1d ⊂ 7d ⊂ 30d ⊂ 90d so each timeframe shows a distinct,
         // increasing case volume. 1d = the 14 live-drain cases (C5/H5/M2/L2). 7d/30d/90d add CLOSED
         // history cases (defined in the progression driver, NOT in DEMO_IDS) → 14 → 24 → 31 → 40.
-        // 1d live set (14): C=001,002,004,017,018 · H=003,005,011,014,019 · M=020,021 · L=022,023
-        "1d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023"],
-        // 7d (24) = 1d + existing closed history (006,007,009,012,013,015,016) + Act-breadth closed (024 Okta,025 Ping,026 Splunk-SOAR)
-        "7d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-006","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-015","CASE-FG-016","CASE-FG-024","CASE-FG-025","CASE-FG-026"],
-        // 30d (31) = 7d + 7 closed history (027–033)
-        "30d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-006","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-015","CASE-FG-016","CASE-FG-024","CASE-FG-025","CASE-FG-026","CASE-FG-027","CASE-FG-028","CASE-FG-029","CASE-FG-030","CASE-FG-031","CASE-FG-032","CASE-FG-033"],
-        // 90d (40) = 30d + 9 closed history (034–042)
-        "90d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-006","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-015","CASE-FG-016","CASE-FG-024","CASE-FG-025","CASE-FG-026","CASE-FG-027","CASE-FG-028","CASE-FG-029","CASE-FG-030","CASE-FG-031","CASE-FG-032","CASE-FG-033","CASE-FG-034","CASE-FG-035","CASE-FG-036","CASE-FG-037","CASE-FG-038","CASE-FG-039","CASE-FG-040","CASE-FG-041","CASE-FG-042"]
+        // v9 A2: 1d = 22 (open 14 = 4C/4H/3M/3L + closed 8). Nested magnitudes 22 -> 30 -> 35 -> 40.
+        // 1d open: C=001(gate),002,004,018 · H=003,005,011,014 · M=020,021,026 · L=022,023,033
+        // 1d closed(8): C=017(i),028(h) · H=019(i),024(g),030(c) · M=006(e),031(d) · L=041(a)
+        "1d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041"],
+        // 7d (30) = 1d + 8 closed history (007,009,012,013,025,027,029,032)
+        "7d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032"],
+        // 30d (35) = 7d + 5 closed history (015,016,034,036,037)
+        "30d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-036","CASE-FG-037"],
+        // 90d (40) = 30d + 5 closed history (035,038,039,040,042) = all 40
+        "90d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-036","CASE-FG-037","CASE-FG-035","CASE-FG-038","CASE-FG-039","CASE-FG-040","CASE-FG-042"]
     },
 
     // ==================== V5.13: CONNECTION STATS BY TIMEFRAME ====================
@@ -6014,7 +6026,14 @@ function renderCaseCard(c, compact = false) {
                     }
                     const dlpBadge = (c.dlpAlerted && (typeof localStorage !== 'undefined' && localStorage.getItem('axia_show_dlp_badge') === 'true')) ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]"><span class="material-symbols-outlined text-[14px]">shield</span>${c.dlpSystem || 'DLP'}</span>` : '';
                     const actionsTags = (c.actions || []).map(a => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-primary/10 text-primary border border-primary/30 min-h-[28px]">${a}</span>`).join('');
-                    const channelRow = `${channelChip}${dlpBadge}${actionsTags}`;
+                    // v9 N4: Phase-2 attribution tags (Verified/Confirmed/Approved-by) — metadata, no authority.
+                    const attribTags = (c.attribs || []).map(t => {
+                        const ic = t.type === 'Verified-by' ? 'verified' : (t.type === 'Confirmed-by' ? 'task_alt' : 'how_to_reg');
+                        const srcIc = t.source === 'auto' ? 'auto_awesome' : 'person';
+                        const ttl = `${t.type} ${t.person} (${t.source})${t.evidence ? ' — ' + t.evidence : ''}`;
+                        return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-accent-teal/10 text-accent-teal border border-accent-teal/30 min-h-[28px]" title="${ttl}">${mIcon(ic)}${t.type} ${t.person}<span class="material-symbols-outlined text-[12px] opacity-70">${srcIc}</span></span>`;
+                    }).join('');
+                    const channelRow = `${channelChip}${dlpBadge}${actionsTags}${attribTags}`;
                     return `
                     ${channelRow.trim() ? `<div class="flex items-center gap-2 mt-2 flex-wrap">${channelRow}</div>` : ''}
                     <div class="flex items-center gap-2 mt-1.5 flex-wrap">
@@ -6146,6 +6165,12 @@ function updateAccordionHeaders() {
     });
 }
 
+// v9 N2: global flag for the "Show recently closed" toggle in Command. Off by default (operational
+// board stays open-only). Accordion tallies read severityByTimeframe independently, so showing closed
+// cards in the list NEVER changes the open counts.
+let showRecentlyClosed = false;
+window.axiaToggleClosed = function(v){ showRecentlyClosed = !!v; renderDashboardCases(); };
+
 function renderDashboardCases() {
     // V5.15: Filter cases by timeframe
     // V6.9: Also filter to show only OPEN cases (hide closed from operational list)
@@ -6153,6 +6178,36 @@ function renderDashboardCases() {
     const timeframeCases = caseIds.length > 0
         ? casesData.filter(c => caseIds.includes(c.id))
         : casesData;
+
+    // v9 N2: ensure the "Show recently closed" checkbox exists once, just above the accordions.
+    (function ensureClosedToggle(){
+        if (document.getElementById('show-closed-toggle-wrap')) {
+            const cb = document.getElementById('show-closed-toggle');
+            if (cb) cb.checked = showRecentlyClosed;
+            return;
+        }
+        const bar = document.getElementById('command-totals-bar');
+        if (!bar || !bar.parentNode) return;
+        const wrap = document.createElement('div');
+        wrap.id = 'show-closed-toggle-wrap';
+        wrap.className = 'flex items-center justify-end mt-2 mb-1';
+        wrap.innerHTML = '<label class="inline-flex items-center gap-2 cursor-pointer text-xs font-medium text-text-secondary select-none px-2 py-1 rounded hover:bg-surface-hover">' +
+            '<input type="checkbox" id="show-closed-toggle" class="w-4 h-4" style="accent-color:#0D9488" ' + (showRecentlyClosed ? 'checked' : '') + ' onchange="window.axiaToggleClosed(this.checked)">' +
+            '<span class="material-symbols-outlined text-[15px]">history</span>Show recently closed</label>';
+        bar.parentNode.insertBefore(wrap, bar.nextSibling);
+    })();
+    // v9 N2: a 2-item closed preview per severity, shown after the open cards when the toggle is on.
+    // Seeded/closed cards carry _justClosed=0 so they render with the clean A1 styling (never axia-exiting).
+    const closedSliceFor = (sev) => {
+        if (!showRecentlyClosed) return '';
+        const slice = timeframeCases
+            .filter(c => c.severity === sev && c.status === 'closed')
+            .sort((a, b) => (b.score || 0) - (a.score || 0))
+            .slice(0, 2);
+        if (!slice.length) return '';
+        return '<div class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-muted bg-surface-elevated border-t border-border-default">Recently closed</div>' +
+            slice.map(c => renderCaseCard(c, true)).join('');
+    };
 
     // V6.9: operational Command screen shows OPEN cases. Phase 3: also keep just-resolved demo cases
     // visible so their outcome (owner + CC) stays on screen. No slice truncation — open rows must
@@ -6172,7 +6227,7 @@ function renderDashboardCases() {
     const mediumCases = bySev('medium');
     const lowCases = bySev('low');
 
-    document.getElementById('critical-cases-list').innerHTML = criticalCases.map(c => renderCaseCard(c, true)).join('') + `
+    document.getElementById('critical-cases-list').innerHTML = criticalCases.map(c => renderCaseCard(c, true)).join('') + closedSliceFor('critical') + `
         <div class="p-3 flex justify-center border-t border-border-default bg-surface-card/50">
             <button onclick="filterBySeverity('critical')" class="text-xs font-bold text-primary hover:text-primary-hover transition-colors px-4 py-2 rounded-lg hover:bg-surface-hover w-full flex items-center justify-center gap-2">
                 <span>View all critical cases</span>
@@ -6181,7 +6236,7 @@ function renderDashboardCases() {
         </div>
     `;
 
-    document.getElementById('high-cases-list').innerHTML = highCases.map(c => renderCaseCard(c, true)).join('') + `
+    document.getElementById('high-cases-list').innerHTML = highCases.map(c => renderCaseCard(c, true)).join('') + closedSliceFor('high') + `
         <div class="p-3 flex justify-center border-t border-border-default bg-surface-card/50">
             <button onclick="filterBySeverity('high')" class="text-xs font-bold text-primary hover:text-primary-hover transition-colors px-4 py-2 rounded-lg hover:bg-surface-hover w-full flex items-center justify-center gap-2">
                 <span>View all high cases</span>
@@ -6190,7 +6245,7 @@ function renderDashboardCases() {
         </div>
     `;
 
-    document.getElementById('medium-cases-list').innerHTML = mediumCases.map(c => renderCaseCard(c, true)).join('') + `
+    document.getElementById('medium-cases-list').innerHTML = mediumCases.map(c => renderCaseCard(c, true)).join('') + closedSliceFor('medium') + `
         <div class="p-3 flex justify-center border-t border-border-default bg-surface-card/50">
             <button onclick="filterBySeverity('medium')" class="text-xs font-bold text-primary hover:text-primary-hover transition-colors px-4 py-2 rounded-lg hover:bg-surface-hover w-full flex items-center justify-center gap-2">
                 <span>View all medium cases</span>
@@ -6199,7 +6254,7 @@ function renderDashboardCases() {
         </div>
     `;
 
-    document.getElementById('low-cases-list').innerHTML = lowCases.map(c => renderCaseCard(c, true)).join('') + `
+    document.getElementById('low-cases-list').innerHTML = lowCases.map(c => renderCaseCard(c, true)).join('') + closedSliceFor('low') + `
         <div class="p-3 flex justify-center border-t border-border-default bg-surface-card/50">
             <button onclick="filterBySeverity('low')" class="text-xs font-bold text-primary hover:text-primary-hover transition-colors px-4 py-2 rounded-lg hover:bg-surface-hover w-full flex items-center justify-center gap-2">
                 <span>View all low cases</span>
@@ -6502,7 +6557,7 @@ function renderCaseDetails(caseId) {
             <div class="border-t border-border-default p-4">
                 <div class="relative pl-4">
                     <div class="absolute left-[7px] top-1 bottom-1 w-px bg-border-default"></div>
-                    ${(() => { const _tl = (c.analysis && c.analysis.timeline) || c.timeline || []; return _tl.map((t, i) => `
+                    ${(() => { const _base = (c.analysis && c.analysis.timeline) || c.timeline || []; const _tl = [..._base, ...((typeof axiaDecisionTimeline === 'function') ? axiaDecisionTimeline(c) : [])]; return _tl.map((t, i) => `
                         <div class="relative flex gap-3 ${i < _tl.length - 1 ? 'pb-4' : ''}">
                             <div class="absolute -left-[1px] mt-1 h-4 w-4 rounded-full border-2 border-surface-dark bg-${t.color || 'text-secondary'} z-10"></div>
                             <div class="pl-4">
@@ -6520,6 +6575,65 @@ function renderCaseDetails(caseId) {
 // Placeholder for old function signature - removed timeline section
 function renderCaseDetailsTimeline() {
     // V6.11: Timeline is now integrated into main renderCaseDetails
+}
+
+// ==================== v9 N3: decision-aware timeline (ALL cases) ====================
+// Pure function of case data — appended to any stored forensic timeline in renderCaseDetails so EVERY
+// case (incl. 017-042 which ship timeline:[]) shows the action DECISION: recommended -> approved/auto/
+// awaiting/sent -> executed/replied -> closed. Driven by stage + caseNBA(c) + closePath (N1). N4
+// attribution tags are folded in as attributed events. Reuses the existing {event,time,source,color} shape.
+function axiaDecisionTimeline(c){
+    if (!c) return [];
+    const nba = (typeof caseNBA === 'function') ? caseNBA(c) : { label: (c.remediation && c.remediation.label) || '', mode: 'manual', gated: false };
+    const label = nba.label || (c.remediation && c.remediation.label) || 'the recommended action';
+    const first = (((c.entity && c.entity.name) || 'the employee').split(' ')[0]) || 'the employee';
+    const rec = { event: 'AXIA recommended ' + label, time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' };
+    const out = c.outcome ? (' · ' + c.outcome) : '';
+    const stage = c.stage || (c.status === 'open' ? 'open' : 'closed');
+    let ev = [];
+    if (c.status !== 'closed') {
+        if (stage === 'awaiting' || nba.gated) {
+            ev = [rec, { event: 'Awaiting your confirmation — containment gate', time: 'now', source: 'Human-in-the-loop', color: 'severity-critical' }];
+        } else if (stage === 'pending') {
+            ev = [rec,
+                { event: 'Engagement email sent to ' + first, time: 'moments later', source: 'Org mailbox', color: 'ops-teal' },
+                { event: 'Awaiting reply from ' + first, time: 'now', source: 'Engagement', color: 'severity-medium' }];
+        } else if (nba.mode === 'automated') {
+            ev = [rec, { event: 'Ready to auto-execute per policy', time: 'now', source: 'Policy', color: 'ops-teal' }];
+        } else {
+            ev = [rec, { event: 'Awaiting your approval', time: 'now', source: 'Human-in-the-loop', color: 'severity-medium' }];
+        }
+    } else {
+        const p = c.closePath || 'b';
+        if (p === 'a') {
+            ev = [rec,
+                { event: 'Auto-executed per policy', time: 'moments later', source: 'Policy', color: 'ops-teal' },
+                { event: 'Case closed' + out, time: 'done', source: 'AXIA', color: 'status-success' }];
+        } else if (p === 'c') {
+            ev = [rec,
+                { event: 'Engagement email sent to ' + first, time: 'moments later', source: 'Org mailbox', color: 'ops-teal' },
+                { event: first + ' replied — confirmed', time: 'later', source: 'Reply comprehension', color: 'status-success' },
+                { event: 'Case closed' + out, time: 'done', source: 'AXIA', color: 'status-success' }];
+        } else if (p === 'd') {
+            ev = [{ event: 'AXIA held the content · asked ' + first + ' to verify', time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' },
+                { event: first + ' confirmed safe — AXIA released', time: 'later', source: 'Reply comprehension', color: 'status-success' },
+                { event: 'Case closed' + out, time: 'done', source: 'AXIA', color: 'status-success' }];
+        } else if (p === 'j') {
+            ev = [rec,
+                { event: 'Analyst confirmed containment — AXIA executed', time: 'moments later', source: 'Human-in-the-loop', color: 'severity-critical' },
+                { event: 'Case closed' + out, time: 'done', source: 'AXIA', color: 'status-success' }];
+        } else {
+            // b/e/f/g/h/i — analyst approved -> AXIA executed -> closed
+            ev = [rec,
+                { event: 'Analyst approved → AXIA executed ' + label, time: 'moments later', source: 'Human-in-the-loop', color: 'ops-teal' },
+                { event: 'Case closed' + out, time: 'done', source: 'AXIA', color: 'status-success' }];
+        }
+    }
+    // v9 N4: fold attribution tags in as attributed timeline events
+    (c.attribs || []).forEach(function(a){
+        ev.push({ event: a.type + ' ' + a.person + (a.source === 'auto' ? ' (auto — reply comprehension)' : ' (manual)'), time: 'on record', source: (a.evidence || 'attribution tag'), color: 'accent-teal' });
+    });
+    return ev;
 }
 
 // ==================== CONNECTIONS OVERVIEW (Dashboard) ====================
@@ -7851,26 +7965,16 @@ function renderCasesStackedBarChart(timeline, mode) {
 // verdict-out actions are counted from the ACTUAL cases in the timeframe (bucketed by remediation.label).
 // Nothing is invented — every number traces to a key that already existed or to a real case.
 function axiaActionCounts(tf){
-    const a = DEMO_DATA.axiaActionsByTimeframe?.[tf] || {};
-    const counts = {
-        'coach-employee': a.employee || 0,
-        'notify-manager': a.manager || 0,
-        'notify-hr': a.hr || 0,
-        'escalate-legal': a.legal || 0
+    // v9 A3: grounded per-action breakdown (reviewer-provided table, review-v9-scope §A3). Coach stays
+    // highest; every action bar > 0. Replaces the tiny in-timeframe case-scan, which left every non-coach/
+    // manager bar near-zero because only ~14-40 cases were in scope. Numbers are the grounded spec values.
+    const BREAKDOWN = {
+        '1d':  { 'coach-employee':4,   'notify-manager':3,   'hold-content':3,   'quarantine-content':2,  'revoke-share':2,  'stepup-auth':2,  'disable-identity':1,  'revoke-token':1,  'verdict-siem':2 },
+        '7d':  { 'coach-employee':22,  'notify-manager':16,  'hold-content':8,   'quarantine-content':7,  'revoke-share':5,  'stepup-auth':4,  'disable-identity':2,  'revoke-token':2,  'verdict-siem':4 },
+        '30d': { 'coach-employee':94,  'notify-manager':68,  'hold-content':34,  'quarantine-content':30, 'revoke-share':22, 'stepup-auth':12, 'disable-identity':6,  'revoke-token':5,  'verdict-siem':7 },
+        '90d': { 'coach-employee':298, 'notify-manager':212, 'hold-content':100, 'quarantine-content':88, 'revoke-share':62, 'stepup-auth':34, 'disable-identity':16, 'revoke-token':14, 'verdict-siem':12 }
     };
-    const ids = DEMO_DATA.casesByTimeframe?.[tf] || [];
-    (casesData || []).forEach(c => {
-        if (ids.length && ids.indexOf(c.id) === -1) return;
-        if (c.status !== 'open' && c.status !== 'closed') return;
-        const fam = c.remediation && c.remediation.family;
-        const lbl = ((c.remediation && c.remediation.label) || '').toLowerCase();
-        let aid = null;
-        if (fam === 'content') aid = /quarant/.test(lbl) ? 'quarantine-content' : /remov/.test(lbl) ? 'remove-content' : /revoke|share/.test(lbl) ? 'revoke-share' : 'hold-content';
-        else if (fam === 'identity') aid = /token|credential/.test(lbl) ? 'revoke-token' : /disable|session/.test(lbl) ? 'disable-identity' : 'stepup-auth';
-        else if (fam === 'verdict-out') aid = /logged|siem/.test(lbl) ? 'verdict-siem' : 'verdict-soar';
-        if (aid) counts[aid] = (counts[aid] || 0) + 1;
-    });
-    return counts;
+    return BREAKDOWN[tf] || BREAKDOWN['7d'];
 }
 function renderAxiaActionsHorizontal() {
     const container = document.getElementById('widget-axia-actions');
@@ -7882,8 +7986,9 @@ function renderAxiaActionsHorizontal() {
     const counts = axiaActionCounts(dashboardTimeframe);
     const catalog = (typeof caseActionOptions !== 'undefined' && Array.isArray(caseActionOptions)) ? caseActionOptions : [];
     const byId = {}; catalog.forEach(a => { byId[a.id] = a; });
-    const SHOW = ['coach-employee','notify-manager','hold-content','quarantine-content','revoke-share','stepup-auth','revoke-token','verdict-siem'];
+    const SHOW = ['coach-employee','notify-manager','hold-content','quarantine-content','revoke-share','stepup-auth','disable-identity','revoke-token','verdict-siem'];
     const rowsData = SHOW.filter(id => byId[id]).map(id => ({ label: byId[id].label, value: counts[id] || 0 }));
+    rowsData.sort((a, b) => b.value - a.value); // v9 A3: sort bars descending by count (Coach stays top)
     const total = Object.keys(counts).reduce((s, k) => s + (counts[k] || 0), 0);
     const maxVal = Math.max(...rowsData.map(r => r.value), 1);
 
@@ -10515,6 +10620,9 @@ function executeNBA(id){
   // Fallback (driver absent): close immediately with a SOC-analyst owner, never the subject employee.
   c.stage = 'closed'; c.status = 'closed';
   c.outcome = (typeof window.axiaOutcomeFor === 'function') ? window.axiaOutcomeFor(c) : 'Owner: SOC analyst (Security Ops)';
+  // v9 A1: stamp _justClosed so the card animates out via the clean dark fade+slide (axiaExit)
+  // instead of popping instantly. Under the 1200ms `exiting` window (line ~5972).
+  c._justClosed = Date.now();
   if (typeof window.axiaSyncRender === 'function') { try { window.axiaSyncRender(); } catch(e){} }
   try { if (typeof renderCaseDetails === 'function') renderCaseDetails(id); } catch(e){}
   try { renderCaseList(); } catch(e){}
@@ -10756,15 +10864,13 @@ function addActionOption(family){
     box-shadow:0 10px 34px rgba(0,0,0,.20); display:none; }
   #axia-help.show { display:block; }
   #axia-help b { color:#09434e; }
-  /* v7 V5: pronounced EXIT — amber flash + ring, then a clear slide-right + collapse so the queue
-     visibly drains. Kept at 1.0s, under the 1300ms render-drop timer in startActing() so it never gets
-     yanked mid-animation. */
-  .axia-exiting { animation: axiaExit 1.0s ease-in forwards; }
+  /* v9 A1: clean dark-appropriate EXIT — no amber flash, no light ring. Just a subtle
+     opacity fade + small slide-right + height collapse so the queue drains cleanly on dark.
+     0.5s, under the 1200ms `exiting` window so it never gets yanked mid-animation. */
+  .axia-exiting { animation: axiaExit 0.5s ease-in forwards; overflow: hidden; }
   @keyframes axiaExit {
-    0%   { opacity:1; transform:translateX(0) scale(1); max-height:200px; background-color: rgba(245,158,11,0.18); box-shadow: 0 0 0 2px rgba(245,158,11,0.5); }
-    25%  { opacity:1; transform:translateX(0) scale(1.01); background-color: rgba(245,158,11,0.22); }
-    55%  { opacity:.9; transform:translateX(10px); }
-    100% { opacity:0; transform:translateX(48px) scale(.97); max-height:0; padding-top:0; padding-bottom:0; margin-bottom:0; }
+    0%   { opacity:1; transform:translateX(0); max-height:200px; }
+    100% { opacity:0; transform:translateX(16px); max-height:0; padding-top:0; padding-bottom:0; margin-bottom:0; }
   }
 </style>
 <script>
@@ -10993,7 +11099,9 @@ function addActionOption(family){
     'CASE-FG-004': {owner:'Alex Rivera (SOC)',       cc:null},
     'CASE-FG-017': {owner:'Priya Nair (SOC)',        cc:null},
     'CASE-FG-018': {owner:'Marcus Webb (SOC)',       cc:null},
-    'CASE-FG-001': {owner:'Sam Okafor (SOC)',        cc:'Legal'}
+    'CASE-FG-001': {owner:'Sam Okafor (SOC)',        cc:'Legal'},
+    'CASE-FG-026': {owner:'Marcus Webb (SOC)',       cc:null},   // v9 A2: newly-opened, may be user-closed
+    'CASE-FG-033': {owner:'Dana Cohen (Security Ops)', cc:null}  // v9 A2: newly-opened, may be user-closed
   };
   function outcomeFor(c){
     // Default owner is a SOC analyst (derived from case id hash), never the subject employee.
@@ -11038,17 +11146,22 @@ function addActionOption(family){
   // ---------- v8 STATIC SEED (replaces the old reset()/rebuildState progression) ----------
   // Fixed, believable "live snapshot": a realistic mix of open / engaged-awaiting-reply (pending) /
   // closed across the 14 live (1d) cases. No timers, no keys, no focus code -- nothing moves on load.
+  // v9 A2 + N1: 22 cases in the 1d snapshot. 14 open (4C/4H/3M/3L) + 8 closed, the 8 closed
+  // diversified across close-paths (see CLOSEPATH below). Only the ids whose default status/stage
+  // differs from the seed need an entry; the rest of the 40-case history keeps its shipped status.
   var SEED = {
-    // Critical (5): open 2 (incl. the awaiting gate) / closed 3
-    'CASE-FG-001':'awaiting', 'CASE-FG-004':'open',
-    'CASE-FG-002':'closed', 'CASE-FG-017':'closed', 'CASE-FG-018':'closed',
-    // High (5): open 3 (1 open + 2 engaged-pending) / closed 2
-    'CASE-FG-014':'open', 'CASE-FG-011':'pending', 'CASE-FG-003':'pending',
-    'CASE-FG-005':'closed', 'CASE-FG-019':'closed',
-    // Medium (2): open 2 (both engaged-awaiting-reply) / closed 0
-    'CASE-FG-020':'pending', 'CASE-FG-021':'pending',
-    // Low (2): open 0 / closed 2
-    'CASE-FG-022':'closed', 'CASE-FG-023':'closed'
+    // Critical (6): open 4 (001 = the awaiting gate) / closed 2
+    'CASE-FG-001':'awaiting', 'CASE-FG-002':'open', 'CASE-FG-004':'open', 'CASE-FG-018':'open',
+    'CASE-FG-017':'closed', 'CASE-FG-028':'closed',
+    // High (7): open 4 (2 open + 2 engaged-pending) / closed 3
+    'CASE-FG-014':'open', 'CASE-FG-005':'open', 'CASE-FG-011':'pending', 'CASE-FG-003':'pending',
+    'CASE-FG-019':'closed', 'CASE-FG-024':'closed', 'CASE-FG-030':'closed',
+    // Medium (5): open 3 (2 engaged-awaiting-reply + 1 open) / closed 2
+    'CASE-FG-020':'pending', 'CASE-FG-021':'pending', 'CASE-FG-026':'open',
+    'CASE-FG-006':'closed', 'CASE-FG-031':'closed',
+    // Low (4): open 3 / closed 1
+    'CASE-FG-022':'open', 'CASE-FG-023':'open', 'CASE-FG-033':'open',
+    'CASE-FG-041':'closed'
   };
   Object.keys(SEED).forEach(function(id){
     var c = casesData.find(function(x){ return x.id === id; });
@@ -11058,7 +11171,43 @@ function addActionOption(family){
     if (c.stage === 'closed') { c.status = 'closed'; c.outcome = outcomeFor(c); }
     else { c.status = 'open'; c.outcome = null; } // open / awaiting / pending all keep status:'open'
   });
-  // closed history 024-042 already ship status:'closed',stage:'closed' -- left untouched.
+  // closed history 007,009,012,013,015,016,025,027,029,032,034-040,042 already ship status:'closed'.
+
+  // ---------- v9 N1: close-path (lifecycle) tag on every closed case + N4 attribution tags ----------
+  // closePath (a-j) = the single source of truth for BOTH which lifecycle a closed case demonstrates
+  // AND its N3 decision-aware timeline branch. Applied to ALL closed cases (open cases use `stage`).
+  // a auto-coached · b manager/HR/Legal notified · c engage->replied · d hold->released-after-verify ·
+  // e removed/quarantined · f external share revoked · g step-up/session-disabled · h token/agent revoked ·
+  // i forwarded to SOC (SIEM/SOAR) · j human-confirmed containment (gate).
+  var CLOSEPATH = {
+    'CASE-FG-006':'e','CASE-FG-007':'i','CASE-FG-009':'e','CASE-FG-012':'a','CASE-FG-013':'a',
+    'CASE-FG-015':'e','CASE-FG-016':'e','CASE-FG-017':'i','CASE-FG-019':'i','CASE-FG-024':'g',
+    'CASE-FG-025':'g','CASE-FG-027':'b','CASE-FG-028':'h','CASE-FG-029':'e','CASE-FG-030':'c',
+    'CASE-FG-031':'d','CASE-FG-032':'i','CASE-FG-034':'j','CASE-FG-035':'g','CASE-FG-036':'f',
+    'CASE-FG-037':'i','CASE-FG-038':'b','CASE-FG-039':'e','CASE-FG-040':'g','CASE-FG-041':'a',
+    'CASE-FG-042':'e'
+  };
+  // Bespoke close labels for the paths whose stock 'Resolved' would not read the story (c/d/j).
+  var CLOSELABEL = {
+    'CASE-FG-030':'Replied — confirmed',   // c: engagement -> employee replied -> closed
+    'CASE-FG-031':'Released after verify',        // d: content held -> sender verified -> released
+    'CASE-FG-034':'Containment confirmed'         // j: human-confirmed containment (gate mirror)
+  };
+  // v9 N4: Phase-2 PRD attribution tags (Verified-by / Confirmed-by / Approved-by). Metadata only,
+  // no authority, not a gate. `auto` = reply-comprehension on engage->replied / hold-verify paths;
+  // `manual` = analyst/approver action on gate + notified/Legal paths. Attributed to the identity whose
+  // existing story supports it (never invented; fits each case's shipped copy).
+  var ATTRIBS = {
+    'CASE-FG-030': [{type:'Confirmed-by', person:'Tal Mizrahi', source:'auto',   evidence:'reply: "removed the notebook from my personal drive"'}],
+    'CASE-FG-031': [{type:'Confirmed-by', person:'Yael Adler',  source:'auto',   evidence:'reply: "confirmed the runbook is safe to release"'}],
+    'CASE-FG-034': [{type:'Approved-by',  person:'Sam Okafor (SOC)',  source:'manual', evidence:'analyst confirmed containment before execute'}],
+    'CASE-FG-027': [{type:'Approved-by',  person:'Marcus Webb (SOC)', source:'manual', evidence:'analyst approved hold + external-share revoke; Legal notified'}]
+  };
+  casesData.forEach(function(c){
+    if (CLOSEPATH[c.id]) c.closePath = CLOSEPATH[c.id];
+    if (CLOSELABEL[c.id]) c.closeLabel = CLOSELABEL[c.id];
+    if (ATTRIBS[c.id]) c.attribs = ATTRIBS[c.id];
+  });
 
   // v8 static shims: the manual Recommended-action control and the case-details NBA panel used to route
   // into the (now-removed) progression driver. Route them straight to executeNBA, which closes that one

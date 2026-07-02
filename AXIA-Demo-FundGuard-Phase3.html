@@ -2707,37 +2707,38 @@ const DEMO_DATA = {
         }
     },
 
-    // V6.25: Cases by Status - ALIGNED with metricsByTimeframe (1d=8, 7d=30, 30d=105, 90d=340)
-    // Phase3 #6: case-volume per timeframe kept CONSISTENT with the Command severity totals (14/24/31/40).
+    // V6.25: Cases by Status - ALIGNED with metricsByTimeframe.
+    // v9 audit fix: case-volume per timeframe kept CONSISTENT with the Command severity totals
+    // (22/30/35/40); open stays 14 across all timeframes (matching the board), closed history grows.
     casesByStatus: {
-        "1d": { open: 4, assigned: 0, unassigned: 0, closed: 10 },
-        "7d": { open: 5, assigned: 0, unassigned: 0, closed: 19 },
-        "30d": { open: 6, assigned: 0, unassigned: 0, closed: 25 },
-        "90d": { open: 7, assigned: 0, unassigned: 0, closed: 33 }
+        "1d": { open: 14, assigned: 0, unassigned: 0, closed: 8 },
+        "7d": { open: 14, assigned: 0, unassigned: 0, closed: 16 },
+        "30d": { open: 14, assigned: 0, unassigned: 0, closed: 21 },
+        "90d": { open: 14, assigned: 0, unassigned: 0, closed: 26 }
     },
 
     // V6.27: Top Case Types by timeframe — FundGuard-specific categories
     caseTypesByTimeframe: {
         "1d": [
-            { type: 'IP Exfiltration', count: 4, icon: 'code' },
-            { type: 'Client Data Exposure', count: 3, icon: 'group' },
-            { type: 'Departure Risk', count: 2, icon: 'exit_to_app' },
-            { type: 'Compliance Violation', count: 2, icon: 'gavel' },
+            { type: 'IP Exfiltration', count: 7, icon: 'code' },
+            { type: 'Client Data Exposure', count: 5, icon: 'group' },
+            { type: 'Departure Risk', count: 4, icon: 'exit_to_app' },
+            { type: 'Compliance Violation', count: 3, icon: 'gavel' },
             { type: 'Reputation Risk', count: 2, icon: 'trending_down' },
             { type: 'Context-Validated', count: 1, icon: 'verified' }
         ],
         "7d": [
-            { type: 'IP Exfiltration', count: 6, icon: 'code' },
-            { type: 'Client Data Exposure', count: 5, icon: 'group' },
-            { type: 'Departure Risk', count: 4, icon: 'exit_to_app' },
-            { type: 'Compliance Violation', count: 3, icon: 'gavel' },
+            { type: 'IP Exfiltration', count: 9, icon: 'code' },
+            { type: 'Client Data Exposure', count: 6, icon: 'group' },
+            { type: 'Departure Risk', count: 5, icon: 'exit_to_app' },
+            { type: 'Compliance Violation', count: 4, icon: 'gavel' },
             { type: 'Reputation Risk', count: 3, icon: 'trending_down' },
             { type: 'Context-Validated', count: 3, icon: 'verified' }
         ],
         "30d": [
-            { type: 'IP Exfiltration', count: 8, icon: 'code' },
-            { type: 'Client Data Exposure', count: 6, icon: 'group' },
-            { type: 'Departure Risk', count: 5, icon: 'exit_to_app' },
+            { type: 'IP Exfiltration', count: 10, icon: 'code' },
+            { type: 'Client Data Exposure', count: 7, icon: 'group' },
+            { type: 'Departure Risk', count: 6, icon: 'exit_to_app' },
             { type: 'Compliance Violation', count: 5, icon: 'gavel' },
             { type: 'Reputation Risk', count: 4, icon: 'trending_down' },
             { type: 'Context-Validated', count: 3, icon: 'verified' }
@@ -7987,7 +7988,14 @@ function renderAxiaActionsHorizontal() {
     const catalog = (typeof caseActionOptions !== 'undefined' && Array.isArray(caseActionOptions)) ? caseActionOptions : [];
     const byId = {}; catalog.forEach(a => { byId[a.id] = a; });
     const SHOW = ['coach-employee','notify-manager','hold-content','quarantine-content','revoke-share','stepup-auth','disable-identity','revoke-token','verdict-siem'];
-    const rowsData = SHOW.filter(id => byId[id]).map(id => ({ label: byId[id].label, value: counts[id] || 0 }));
+    // v9 audit fix: short widget labels so none truncate in the narrow Insights card, and unify the
+    // verdict-out action to "Forward to SOC" here (matching the case cards). Catalog labels are unchanged.
+    const SHORT = {
+        'coach-employee':'Coach employee', 'notify-manager':'Notify manager', 'hold-content':'Hold / restrict',
+        'quarantine-content':'Quarantine', 'revoke-share':'Revoke share', 'stepup-auth':'Step-up auth',
+        'disable-identity':'Disable session', 'revoke-token':'Revoke token', 'verdict-siem':'Forward to SOC'
+    };
+    const rowsData = SHOW.filter(id => byId[id]).map(id => ({ label: SHORT[id] || byId[id].label, value: counts[id] || 0 }));
     rowsData.sort((a, b) => b.value - a.value); // v9 A3: sort bars descending by count (Coach stays top)
     const total = Object.keys(counts).reduce((s, k) => s + (counts[k] || 0), 0);
     const maxVal = Math.max(...rowsData.map(r => r.value), 1);
@@ -8002,7 +8010,7 @@ function renderAxiaActionsHorizontal() {
                 const pct = Math.round((r.value / maxVal) * 100);
                 return `
                     <div class="flex items-center gap-1.5">
-                        <span class="text-[10px] text-text-secondary w-[92px] text-right truncate" title="${r.label}">${r.label}</span>
+                        <span class="text-[10px] text-text-secondary w-[108px] text-right truncate" title="${r.label}">${r.label}</span>
                         <div class="flex-1 h-3 bg-surface-elevated rounded-full overflow-hidden relative">
                             <div class="h-full rounded-full transition-all duration-500" style="width:${pct}%;background:#0D9488;opacity:0.85"></div>
                         </div>

@@ -2216,14 +2216,14 @@ const DEMO_DATA = {
         // history cases (defined in the progression driver, NOT in DEMO_IDS) → 14 → 24 → 31 → 40.
         // v9 A2: 1d = 22 (open 14 = 4C/4H/3M/3L + closed 8). Nested magnitudes 22 -> 30 -> 35 -> 40.
         // 1d open: C=001(gate),002,004,018 · H=003,005,011,014 · M=020,021,026 · L=022,023,033
-        // 1d closed(8): C=017(i),028(h) · H=019(i),024(g),030(c) · M=006(e),031(d) · L=041(a)
-        "1d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041"],
+        // 1d closed(8): C=017(i),028(k) · H=043(k),024(g),030(c) · M=006(e),031(d) · L=041(a)
+        "1d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-043","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041"],
         // 7d (30) = 1d + 8 closed history (007,009,012,013,025,027,029,032)
-        "7d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032"],
+        "7d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-043","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032"],
         // 30d (35) = 7d + 5 closed history (015,016,034,036,037)
-        "30d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-036","CASE-FG-037"],
+        "30d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-043","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-036","CASE-FG-037"],
         // 90d (40) = 30d + 5 closed history (035,038,039,040,042) = all 40
-        "90d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-019","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-036","CASE-FG-037","CASE-FG-035","CASE-FG-038","CASE-FG-039","CASE-FG-040","CASE-FG-042"]
+        "90d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-043","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-036","CASE-FG-037","CASE-FG-035","CASE-FG-038","CASE-FG-039","CASE-FG-040","CASE-FG-042"]
     },
 
     // ==================== V5.13: CONNECTION STATS BY TIMEFRAME ====================
@@ -5069,24 +5069,26 @@ const DEMO_DATA = {
     // V6.31.0-v4 FULL PIVOT: typed action catalog, four families. on/off + manual/auto per action.
     // No per-action severity — the LLM decides which action fits a case. No DLP / Smart-Block.
     caseActionOptions: [
-        // Engagement / Communication (executed via the org mailbox). autoSeverities only read when mode==='automated'; Critical/Legal can never appear.
+        // Engagement / Communication (executed via the org mailbox). defaults.person read only when mode==='automated'; Critical/Legal can never appear.
         // Phase3 #3: per-action `systems` (the specific systems THAT action touches; deck slides 5-8/14-16) — render takes precedence over the family-level line.
-        { id: 'coach-employee', label: 'Coach employee', icon: 'forum', mode: 'automated', family: 'engagement', autoSeverities: ['low','medium'], systems: 'soc@fundguard.com (org mailbox) → employee' },
-        { id: 'notify-manager', label: 'Notify manager', icon: 'supervisor_account', mode: 'automated', family: 'engagement', autoSeverities: ['low','medium','high'], systems: 'soc@fundguard.com → manager' },
-        { id: 'escalate-legal', label: 'Escalate to Legal', icon: 'gavel', mode: 'manual', family: 'engagement', autoSeverities: [], systems: 'soc@fundguard.com → Legal DL' },
-        { id: 'notify-hr', label: 'Notify HR', icon: 'badge', mode: 'manual', family: 'engagement', autoSeverities: [], systems: 'soc@fundguard.com → HR DL' },
+        // v10: defaults.person = bottom-up (auto the low end, hold the top). defaults.agent = top-anchored
+        // ['high','critical'] auto-stop, present only on content/identity/verdict-out (AGENT_LANE_FAMILIES).
+        { id: 'coach-employee', label: 'Coach employee', icon: 'forum', mode: 'automated', family: 'engagement', defaults: { person: ['low','medium'], agent: [] }, systems: 'soc@fundguard.com (org mailbox) → employee' },
+        { id: 'notify-manager', label: 'Notify manager', icon: 'supervisor_account', mode: 'automated', family: 'engagement', defaults: { person: ['low','medium','high'], agent: [] }, systems: 'soc@fundguard.com → manager' },
+        { id: 'escalate-legal', label: 'Escalate to Legal', icon: 'gavel', mode: 'manual', family: 'engagement', defaults: { person: [], agent: [] }, systems: 'soc@fundguard.com → Legal DL' },
+        { id: 'notify-hr', label: 'Notify HR', icon: 'badge', mode: 'manual', family: 'engagement', defaults: { person: [], agent: [] }, systems: 'soc@fundguard.com → HR DL' },
         // Content (hold / remove / quarantine / revoke)
-        { id: 'hold-content', label: 'Hold / restrict file', icon: 'lock', mode: 'automated', family: 'content', autoSeverities: ['low','medium'], systems: 'Box · Google Drive · SharePoint · OneDrive' },
-        { id: 'remove-content', label: 'Remove message', icon: 'block', mode: 'manual', family: 'content', autoSeverities: [], systems: 'Slack (Grid) · Teams · Email' },
-        { id: 'quarantine-content', label: 'Quarantine email / upload', icon: 'shield', mode: 'automated', family: 'content', autoSeverities: ['low'], systems: 'M365 · Gmail · Browser upload' },
-        { id: 'revoke-share', label: 'Revoke external share', icon: 'link_off', mode: 'manual', family: 'content', autoSeverities: [], systems: 'Google Drive · Box · Slack · Atlassian · Salesforce' },
+        { id: 'hold-content', label: 'Hold / restrict file', icon: 'lock', mode: 'automated', family: 'content', defaults: { person: ['low','medium'], agent: ['high','critical'] }, systems: 'Box · Google Drive · SharePoint · OneDrive' },
+        { id: 'remove-content', label: 'Remove message', icon: 'block', mode: 'manual', family: 'content', defaults: { person: [], agent: ['high','critical'] }, systems: 'Slack (Grid) · Teams · Email' },
+        { id: 'quarantine-content', label: 'Quarantine email / upload', icon: 'shield', mode: 'automated', family: 'content', defaults: { person: ['low'], agent: ['high','critical'] }, systems: 'M365 · Gmail · Browser upload' },
+        { id: 'revoke-share', label: 'Revoke external share', icon: 'link_off', mode: 'manual', family: 'content', defaults: { person: [], agent: ['high','critical'] }, systems: 'Google Drive · Box · Slack · Atlassian · Salesforce' },
         // Identity (step-up / disable — incl. non-human agents)
-        { id: 'stepup-auth', label: 'Step-up authentication', icon: 'verified_user', mode: 'automated', family: 'identity', autoSeverities: ['low','medium'], systems: 'Entra · Okta · Ping' },
-        { id: 'disable-identity', label: 'Disable user / agent session', icon: 'person_off', mode: 'manual', family: 'identity', autoSeverities: [], systems: 'Entra · Okta · Ping (incl. agent identities)' },
-        { id: 'revoke-token', label: 'Revoke token / agent credential', icon: 'key_off', mode: 'manual', family: 'identity', autoSeverities: [], systems: 'Entra Agent ID · Okta Cross-App Access (agent rails)' },
+        { id: 'stepup-auth', label: 'Step-up authentication', icon: 'verified_user', mode: 'automated', family: 'identity', defaults: { person: ['low','medium'], agent: ['high','critical'] }, systems: 'Entra · Okta · Ping' },
+        { id: 'disable-identity', label: 'Disable user / agent session', icon: 'person_off', mode: 'manual', family: 'identity', defaults: { person: [], agent: ['high','critical'] }, systems: 'Entra · Okta · Ping (incl. agent identities)' },
+        { id: 'revoke-token', label: 'Revoke token / agent credential', icon: 'key_off', mode: 'manual', family: 'identity', defaults: { person: [], agent: ['high','critical'] }, systems: 'Entra Agent ID · Okta Cross-App Access (agent rails)' },
         // Verdict-out (judgment served to SIEM / SOAR)
-        { id: 'verdict-siem', label: 'Forward to SIEM', icon: 'sync_alt', mode: 'automated', family: 'verdict-out', autoSeverities: ['low','medium','high'], systems: 'Splunk · Sentinel' },
-        { id: 'verdict-soar', label: 'Trigger SOAR playbook', icon: 'bolt', mode: 'automated', family: 'verdict-out', autoSeverities: ['low','medium','high'], systems: 'Splunk SOAR · Palo Alto XSOAR · Tines → ServiceNow · Jira' }
+        { id: 'verdict-siem', label: 'Forward to SIEM', icon: 'sync_alt', mode: 'automated', family: 'verdict-out', defaults: { person: ['low','medium','high'], agent: ['high','critical'] }, systems: 'Splunk · Sentinel' },
+        { id: 'verdict-soar', label: 'Trigger SOAR playbook', icon: 'bolt', mode: 'automated', family: 'verdict-out', defaults: { person: ['low','medium','high'], agent: ['high','critical'] }, systems: 'Splunk SOAR · Palo Alto XSOAR · Tines → ServiceNow · Jira' }
     ]
 };
 
@@ -6591,6 +6593,19 @@ function axiaDecisionTimeline(c){
     const rec = { event: 'AXIA recommended ' + label, time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' };
     const out = c.outcome ? (' · ' + c.outcome) : '';
     const stage = c.stage || (c.status === 'open' ? 'open' : 'closed');
+    // v10: rogue-agent lane — overrides stage/mode. You don't coach a machine: caught → auto-stop → CISO.
+    if (c.agentRogue) {
+        const gate = c.channel || 'a monitored gate';
+        const stop = (c.remediation && c.remediation.label) || 'revoke token · kill session · quarantine';
+        const ev0 = [
+            { event: 'Caught at ' + gate + ' — resolved to a non-human identity', time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' },
+            { event: 'Auto-stopped — ' + stop, time: 'moments later', source: 'Identity containment', color: 'ops-teal' },
+            { event: 'Reported to CISO office', time: 'moments later', source: 'AXIA', color: 'accent-teal' }
+        ];
+        if (c.status === 'closed') ev0.push({ event: 'Case closed — contained (CISO office)', time: 'done', source: 'AXIA', color: 'status-success' });
+        else ev0.push({ event: 'Case open — pending CISO office acknowledgement', time: 'now', source: 'CISO office', color: 'severity-critical' });
+        return ev0;   // agent lane is self-contained; no person-branch events, no attribs
+    }
     let ev = [];
     if (c.status !== 'closed') {
         if (stage === 'awaiting' || nba.gated) {
@@ -10363,7 +10378,8 @@ function caseNBA(c){
   // case stays Manual unless Critical is explicitly un-held in the Act picker; the gated case still forces Manual.
   var sev = (c && c.severity) || 'high';
   var autoEligible = enabledFam.some(function(a){
-    return (a.mode === 'automated') && Array.isArray(a.autoSeverities) && a.autoSeverities.indexOf(sev) !== -1;
+    var ps = (a.defaults && a.defaults.person) || [];
+    return (a.mode === 'automated') && Array.isArray(ps) && ps.indexOf(sev) !== -1;
   });
   // A case may force Manual regardless of catalog coverage (e.g. the hold-email engage-to-verify case,
   // where the human must approve releasing their own held message).
@@ -10686,18 +10702,55 @@ function syncTimeframeButtons(){
 // Phase3 #4: "Held for your approval" chip. ON (highlighted) = the severity is HELD for a human
 // (i.e. NOT in autoSeverities). Inverted view over the SAME autoSeverities model → caseNBA untouched.
 // Critical is now a real, selectable chip (capability) but stays HELD by default for every action.
-function actSeverityChip(id, sev, label, held){
+function actSeverityChip(id, sev, label, highlighted, actor){
   var tok = { low:'severity-low', medium:'severity-medium', high:'severity-high', critical:'severity-critical' }[sev];
-  var onCls = 'bg-' + tok + '/15 text-' + tok + ' border-' + tok + '/40';
+  var onCls  = 'bg-' + tok + '/15 text-' + tok + ' border-' + tok + '/40';
   var offCls = 'bg-surface-hover text-text-muted border-border-subtle hover:text-text-primary';
-  return '<button onclick="toggleHeldSeverity(\'' + id + '\',\'' + sev + '\')" '
-    + 'class="px-2 py-0.5 rounded-full text-[10px] font-bold border transition-colors ' + (held ? onCls : offCls) + '">' + label + '</button>';
+  return '<button onclick="toggleHeldSeverity(\'' + id + '\',\'' + sev + '\',\'' + actor + '\')" '
+    + 'title="' + (actor === 'agent'
+        ? (highlighted ? 'Auto-stopped & reported to CISO' : 'Queued for SOC review')
+        : (highlighted ? 'Held for your approval' : 'Auto-executed')) + '" '
+    + 'class="px-2 py-0.5 rounded-full text-[10px] font-bold border transition-colors '
+    + (highlighted ? onCls : offCls) + '">' + label + '</button>';
+}
+// v10: one lane (People or Agents). `sel` = per-severity boolean map of that actor's defaults.
+// People: highlighted = HELD (NOT auto). Agents: highlighted = auto-stop (IS in agent defaults). Opposite inversion — intentional.
+function actLane(a, actor, sel){
+  var isAgent = (actor === 'agent');
+  var hl = {
+    low:      isAgent ? !!sel.low      : !sel.low,
+    medium:   isAgent ? !!sel.medium   : !sel.medium,
+    high:     isAgent ? !!sel.high     : !sel.high,
+    critical: isAgent ? !!sel.critical : !sel.critical
+  };
+  var icon      = isAgent ? 'smart_toy' : 'person';
+  var iconColor = isAgent ? 'text-ops-purple' : 'text-text-secondary';
+  var title     = isAgent ? 'Agents (rogue) · Auto-stopped & reported to CISO' : 'People · Held for your approval';
+  var helper    = isAgent ? 'AXIA stops rogue agents at these severities and reports to the CISO office.'
+                          : 'AXIA auto-executes every other severity. These wait for you.';
+  var laneCls   = isAgent ? 'flex flex-col gap-1.5 pt-2 border-t border-border-subtle mt-0.5' : 'flex flex-col gap-1.5';
+  var html = '<div class="' + laneCls + '">'
+    + '<div class="flex items-center gap-1.5">'
+    +   '<span class="material-symbols-outlined text-[14px] ' + iconColor + '">' + icon + '</span>'
+    +   '<span class="text-[11px] font-bold text-text-secondary tracking-wide truncate">' + title + '</span>'
+    + '</div>'
+    + '<span class="text-[10px] text-text-muted leading-snug">' + helper + '</span>';
+  if (isAgent) html += '<span class="text-[10px] text-text-muted/80 leading-snug italic">Rogue / un-integrated agents, caught at the same gates as people.</span>';
+  html += '<div class="flex flex-wrap items-center gap-1.5">'
+    + actSeverityChip(a.id,'low','Low',hl.low,actor)
+    + actSeverityChip(a.id,'medium','Medium',hl.medium,actor)
+    + actSeverityChip(a.id,'high','High',hl.high,actor)
+    + actSeverityChip(a.id,'critical','Critical',hl.critical,actor)
+    + '</div>'
+    + '</div>';
+  return html;
 }
 function actCard(a){
   var meta = NBA_FAMILY[a.family] || { label:a.family, icon:'bolt', text:'text-ops-teal', bg:'bg-ops-teal/15', border:'border-ops-teal/30', channels:'' };
   var mode = (a.mode === 'automated') ? 'auto' : 'manual';
-  var sevSel = { low:false, medium:false, high:false, critical:false };
-  (a.autoSeverities || []).forEach(function(s){ if (sevSel.hasOwnProperty(s)) sevSel[s] = true; });
+  var toSel = function(arr){ var o={low:false,medium:false,high:false,critical:false}; (arr||[]).forEach(function(s){ if(o.hasOwnProperty(s)) o[s]=true; }); return o; };
+  var d = a.defaults || { person: [], agent: [] };
+  var sevSel = { person: toSel(d.person), agent: toSel(d.agent) };
   var html = ''
   + '<div class="relative p-3 sm:p-4 bg-white rounded-lg border border-border-default card-shadow flex flex-col gap-3">'
   // header row
@@ -10719,19 +10772,12 @@ function actCard(a){
   +       '<button onclick="setActionMode(\'' + a.id + '\',\'auto\')" class="text-[10px] font-bold px-2 py-1 rounded ' + (mode==='auto' ? 'bg-ops-teal text-white' : 'text-text-secondary hover:text-text-primary') + '">Auto</button>'
   +     '</div>'
   +   '</div>';
-  // "Held for your approval" picker (only when auto). held = severity NOT in autoSeverities.
+  // v10: dual-lane region (only when auto). People lane always; Agents lane only on content/identity/verdict-out.
   if (mode === 'auto') {
-    html += ''
-    + '<div class="flex flex-col gap-1.5">'
-    +   '<span class="text-[11px] font-bold text-text-secondary tracking-wide">Held for your approval</span>'
-    +   '<span class="text-[10px] text-text-muted leading-snug">AXIA auto-executes every other severity. These wait for you.</span>'
-    +   '<div class="flex flex-wrap items-center gap-1.5">'
-    +     actSeverityChip(a.id,'low','Low',!sevSel.low)
-    +     actSeverityChip(a.id,'medium','Medium',!sevSel.medium)
-    +     actSeverityChip(a.id,'high','High',!sevSel.high)
-    +     actSeverityChip(a.id,'critical','Critical',!sevSel.critical)
-    +   '</div>'
-    + '</div>';
+    html += '<div class="flex flex-col gap-3">'
+      + actLane(a, 'person', sevSel.person)
+      + (AGENT_LANE_FAMILIES.indexOf(a.family) !== -1 ? actLane(a, 'agent', sevSel.agent) : '')
+      + '</div>';
   }
   // systems / sender row — v6 #N6: removed the "Sender"/"Systems" text label; keep the family-coloured icon + the value.
   html += ''
@@ -10781,38 +10827,67 @@ function removeActionOption(id){
 // [low, medium, high, critical] — AXIA may auto the LOWER severities and hold the TOP ones, never the
 // reverse (no "auto high while medium is held"). Normalizing to the highest-auto'd index guarantees it.
 var AXIA_SEV_ORDER = ['low','medium','high','critical'];
+var AGENT_LANE_FAMILIES = ['content','identity','verdict-out'];
+// Person lane: auto is BOTTOM-anchored (contiguous PREFIX of AXIA_SEV_ORDER). Grows UP from low.
 function normalizeAutoContiguous(a){
-  if (!a || !Array.isArray(a.autoSeverities)) { if (a) a.autoSeverities = []; return; }
+  if (!a) return;
+  if (!a.defaults) a.defaults = { person: [], agent: [] };
+  if (!Array.isArray(a.defaults.person)) { a.defaults.person = []; return; }
   var maxIdx = -1;
-  a.autoSeverities.forEach(function(s){ var i = AXIA_SEV_ORDER.indexOf(s); if (i > maxIdx) maxIdx = i; });
-  a.autoSeverities = (maxIdx < 0) ? [] : AXIA_SEV_ORDER.slice(0, maxIdx + 1);
+  a.defaults.person.forEach(function(s){ var i = AXIA_SEV_ORDER.indexOf(s); if (i > maxIdx) maxIdx = i; });
+  a.defaults.person = (maxIdx < 0) ? [] : AXIA_SEV_ORDER.slice(0, maxIdx + 1);
+}
+// Agent lane: auto-stop is TOP-anchored (contiguous SUFFIX). AXIA auto-stops the HIGHER severities and
+// queues the lower ones for SOC — never the reverse. Grows DOWN from critical; person one grows UP from low.
+function normalizeAutoContiguousTop(a){
+  if (!a || !a.defaults || !Array.isArray(a.defaults.agent)) { if (a && a.defaults) a.defaults.agent = []; return; }
+  var minIdx = AXIA_SEV_ORDER.length;
+  a.defaults.agent.forEach(function(s){ var i = AXIA_SEV_ORDER.indexOf(s); if (i >= 0 && i < minIdx) minIdx = i; });
+  a.defaults.agent = (minIdx >= AXIA_SEV_ORDER.length) ? [] : AXIA_SEV_ORDER.slice(minIdx);
 }
 function toggleAutoSeverity(id, sev){
   var a = (caseActionOptions || []).find(function(x){ return x.id === id; });
   if (!a) return;
-  if (!Array.isArray(a.autoSeverities)) a.autoSeverities = [];
-  var j = a.autoSeverities.indexOf(sev);
-  if (j >= 0) a.autoSeverities.splice(j, 1); else a.autoSeverities.push(sev);
+  if (!a.defaults) a.defaults = { person: [], agent: [] };
+  if (!Array.isArray(a.defaults.person)) a.defaults.person = [];
+  var j = a.defaults.person.indexOf(sev);
+  if (j >= 0) a.defaults.person.splice(j, 1); else a.defaults.person.push(sev);
   normalizeAutoContiguous(a);
   renderConnectionsScreen();
 }
 // Phase3 #4 / v6 #N5: held-view inversion + contiguity. A chip ON = HELD = severity NOT in autoSeverities.
 // AUTO a severity → auto everything BELOW it too; HOLD a severity → hold everything ABOVE it too.
 // Pure model over autoSeverities, so caseNBA() (which reads autoSeverities) is untouched.
-function toggleHeldSeverity(id, sev){
+function toggleHeldSeverity(id, sev, actor){
+  actor = (actor === 'agent') ? 'agent' : 'person';
   var a = (caseActionOptions || []).find(function(x){ return x.id === id; });
   if (!a) return;
-  if (!Array.isArray(a.autoSeverities)) a.autoSeverities = [];
+  if (!a.defaults) a.defaults = { person: [], agent: [] };
+  var arr = a.defaults[actor] || (a.defaults[actor] = []);
   var i = AXIA_SEV_ORDER.indexOf(sev);
-  var isAuto = a.autoSeverities.indexOf(sev) !== -1;
-  if (isAuto) {
-    // currently auto → make it (and everything above) HELD: keep only severities strictly below i
-    a.autoSeverities = a.autoSeverities.filter(function(s){ return AXIA_SEV_ORDER.indexOf(s) < i; });
+  var isAuto = arr.indexOf(sev) !== -1;
+
+  if (actor === 'agent') {
+    // top-anchored SUFFIX (grows DOWN). Chip ON = auto-stop.
+    if (isAuto) {
+      // this sev is auto-stop → make it + everything BELOW queued: keep strictly ABOVE i
+      a.defaults.agent = arr.filter(function(s){ return AXIA_SEV_ORDER.indexOf(s) > i; });
+    } else {
+      // this sev is queued → make it + everything ABOVE auto-stop: suffix from i to top
+      a.defaults.agent = AXIA_SEV_ORDER.slice(i);
+    }
+    normalizeAutoContiguousTop(a);
   } else {
-    // currently held → make it (and everything below) AUTO: contiguous prefix up to i
-    a.autoSeverities = AXIA_SEV_ORDER.slice(0, i + 1);
+    // bottom-anchored PREFIX (grows UP). Chip ON = held (existing person logic).
+    if (isAuto) {
+      // auto → make it + everything ABOVE held: keep strictly BELOW i
+      a.defaults.person = arr.filter(function(s){ return AXIA_SEV_ORDER.indexOf(s) < i; });
+    } else {
+      // held → make it + everything BELOW auto: prefix up to i
+      a.defaults.person = AXIA_SEV_ORDER.slice(0, i + 1);
+    }
+    normalizeAutoContiguous(a);
   }
-  normalizeAutoContiguous(a);
   renderConnectionsScreen();
 }
 window.toggleHeldSeverity = toggleHeldSeverity;
@@ -10820,7 +10895,7 @@ function addActionOption(family){
   var label = (typeof prompt === 'function') ? prompt('Name the new ' + family + ' action:', 'New action') : 'New action';
   if (label === null) return; // cancelled
   if (!label) label = 'New action';
-  caseActionOptions.push({ id:'new-'+Date.now(), label:label, icon:'bolt', family:family, mode:'manual', autoSeverities:['low','medium'] });
+  caseActionOptions.push({ id:'new-'+Date.now(), label:label, icon:'bolt', family:family, mode:'manual', defaults:{ person:['low','medium'], agent:[] } });
   renderConnectionsScreen();
 }
 </script>
@@ -10916,6 +10991,7 @@ function addActionOption(family){
   function addCase(o){ if (!casesData.find(function(c){return c.id===o.id;})) casesData.push(o); }
   addCase({
     id:'CASE-FG-018', severity:'critical', status:'open', score:95, time:'12m ago',
+    actor:'agent', agentRogue:true, origin:'internal', integration:'unwired',
     title:'Rogue AI export agent (svc-nav-export) on a stale token pulling NAV datasets to an external endpoint',
     description:'A non-human identity — the svc-nav-export automation agent — began pulling NAV reference datasets on a stale OAuth token and posting them to an unrecognized external endpoint. AXIA made the call and contained the agent identity itself: token revoked and session terminated via Entra.',
     entity:{name:'svc-nav-export (AI agent)', initials:'AI', role:'Automation service identity', department:'Engineering', location:'Non-human identity'},
@@ -10933,22 +11009,23 @@ function addActionOption(family){
     canEnforce:false, judgmentOnlyReason:'No static DLP rule covers a non-human identity acting on a stale token; AXIA contains the agent identity via Entra.', judgmentRouteTo:'Identity'
   });
   addCase({
-    id:'CASE-FG-019', severity:'high', status:'open', score:88, time:'6m ago',
-    title:'Coding agent (Cursor) asked AXIA for a decision over MCP before writing live API keys into a shared repo',
-    description:'A developer’s MCP coding agent called AXIA’s decision service before committing a change that embedded live FundGuard API keys into a shared repository. AXIA returned BLOCK with the reason; the agent obeyed and rewrote the change to reference a managed secret. Prevented — no incident, no case to work.',
-    entity:{name:'Cursor coding agent', initials:'MCP', role:'Developer MCP agent', department:'Engineering', location:'Dev workstation'},
+    id:'CASE-FG-043', severity:'high', status:'open', score:87, time:'8m ago',
+    actor:'agent', agentRogue:true, origin:'saas', integration:'unwired',
+    title:'Rogue SaaS agent (Agentforce) pulling investor records through the Salesforce API to an external endpoint',
+    description:'A third-party SaaS agent — a Salesforce Agentforce autonomous agent connected over an OAuth grant — began pulling investor and CRM records through the Salesforce API gate and staging them to an unrecognized external endpoint outside its granted workflow. AXIA saw the action at the SaaS gate, resolved it to a non-human identity, contained it, and handed it to the CISO office.',
+    entity:{name:'Agentforce agent (svc-crm-sync)', initials:'SA', role:'SaaS automation identity (Salesforce Agentforce)', department:'Client Operations', location:'Non-human identity (SaaS)'},
     actions:[], completedActions:[], dlpAlerted:false,
-    channel:'MCP coding agent (Cursor)', channelIcon:'terminal',
-    remediation:{family:'verdict-out', label:'Decision → BLOCK (prevented)', icon:'verified'},
-    closeLabel:'Prevented', stage:'open',
+    channel:'Salesforce Agentforce (OAuth connector)', channelIcon:'smart_toy',
+    remediation:{family:'identity', label:'Revoke OAuth grant · disable agent connector', icon:'key_off'},
+    closeLabel:'Contained · reported to CISO', stage:'open',
     analysis:{
-      what:'The Cursor MCP agent queried AXIA’s decision service before committing code that would have written live API keys into a shared repo. AXIA returned a BLOCK decision with the reason; the agent rewrote the commit to reference a managed secret instead.',
-      whyMatters:'Decision-as-a-service means AXIA’s call can be consumed at the point of action by other systems and agents — stopping the risky action before it happens, so there is no incident to investigate and no case to close.',
-      whyUnusual:'Live secrets in a shared repo is a known high-risk pattern; the agent self-corrected on AXIA’s decision.',
-      riskScore:{total:88, factors:{content:90, behavior:80, context:88}}, dataSources:['GitHub Enterprise'], contextSources:['MCP decision API'], timeline:[]
+      what:'The Agentforce SaaS agent used its OAuth grant to pull investor and CRM records through the Salesforce API and stage them to an external endpoint outside any known workflow. AXIA treated the SaaS agent identity as a first-class actor and contained it.',
+      whyMatters:'SaaS agents act into the company’s systems through connectors at machine speed and are routinely over-scoped; a rogue or compromised SaaS agent can move data faster than any human reviewer. AXIA catches it at the same gate as a person, resolves it to a non-human identity, auto-stops it, and reports it to the CISO office.',
+      whyUnusual:'New external endpoint, records pulled outside the agent’s granted workflow, volume and timing inconsistent with its connector baseline.',
+      riskScore:{total:87, factors:{content:88, behavior:90, context:83}}, dataSources:['Salesforce'], contextSources:['Salesforce','NHI inventory'], timeline:[]
     },
-    evidence:{channel:'email', email:{from:'cursor-agent@fundguard.dev', to:['axia-decision@mcp'], cc:[], subject:'decision request: commit with embedded credentials', sentAt:'2026-04-14T05:06:00Z', bodyMarkdown:'MCP decision request from the Cursor coding agent before committing live API keys. AXIA returned BLOCK; the agent rewrote the change to reference a managed secret. Prevented — no incident.', attachments:[]}},
-    canEnforce:false, judgmentOnlyReason:'AXIA’s decision is served to the agent over MCP at the point of action; the risky commit was prevented before it happened.', judgmentRouteTo:'Engineering'
+    evidence:{channel:'email', email:{from:'agentforce-svc@fundguard.my.salesforce.com', to:['ingest@unknown-endpoint.io'], cc:[], subject:'automated CRM export batch', sentAt:'2026-04-14T05:04:00Z', bodyMarkdown:'Automated CRM/investor record export initiated by the Agentforce SaaS agent through the Salesforce API. AXIA contained the agent identity (OAuth grant revoked, connector disabled) and reported it to the CISO office.', attachments:[]}},
+    canEnforce:false, judgmentOnlyReason:'No static DLP rule covers a third-party SaaS agent acting through an OAuth connector; AXIA contains the agent identity and reports to the CISO office.', judgmentRouteTo:'Identity'
   });
 
   // ---------- 2b. Phase 3: easy-to-automate Medium/Low cases + the hold-email "engage-to-verify" use case ----------
@@ -11034,17 +11111,40 @@ function addActionOption(family){
   // These give (a) the Act families live Identity/Verdict-out breadth across Okta/Ping/Splunk-SOAR, and
   // (b) the strict nested timeframe supersets (1d ⊂ 7d ⊂ 30d ⊂ 90d). They are `closed` history, so the
   // 1d live-drain set stays exactly C5/H5/M2/L2 = 14 and the Command operational board is unaffected.
+  // v10 D1: actor-aware ownership. agent/system → CISO office; person low/med → the user (the subject);
+  // person high/crit → business function (role-label, never an invented named person).
+  var FUNCTION_OWNER = {
+    'CASE-FG-001':'Legal','CASE-FG-002':'Legal','CASE-FG-004':'Reporting Manager','CASE-FG-017':'Compliance',
+    'CASE-FG-027':'Legal','CASE-FG-034':'Legal','CASE-FG-035':'Reporting Manager','CASE-FG-003':'Reporting Manager',
+    'CASE-FG-005':'Compliance','CASE-FG-011':'Reporting Manager','CASE-FG-014':'HR','CASE-FG-024':'Reporting Manager',
+    'CASE-FG-030':'Reporting Manager','CASE-FG-025':'Reporting Manager','CASE-FG-029':'Compliance','CASE-FG-036':'Legal',
+    'CASE-FG-038':'HR'
+  };
+  // ownerLabel(c) accepts either a full case object (c.severity, c.entity) or a raw HIST record (c.sev, c.name, c.role).
+  function ownerLabel(c){
+    c = c || {};
+    var actor = c.actor || 'person';
+    if (actor === 'agent')  return 'Owner: CISO office · contained';
+    if (actor === 'system') return 'Owner: CISO office · forwarded to SOC';
+    var sev = c.severity || c.sev;
+    var e = c.entity || {};
+    var nm = e.name || c.name || 'the user';
+    var rl = e.role || c.role || 'user';
+    if (sev === 'low' || sev === 'medium') return 'Owner: ' + nm + ' (' + rl + ')';
+    return 'Owner: ' + (FUNCTION_OWNER[c.id] || 'Reporting Manager');
+  }
   var HIST_OWNERS = ['Alex Rivera (SOC)','Priya Nair (SOC)','Marcus Webb (SOC)','Dana Cohen (Security Ops)','Sam Okafor (SOC)'];
   function histCase(o){
     var idx = 0; for (var i=0;i<o.id.length;i++){ idx = (idx + o.id.charCodeAt(i)) % HIST_OWNERS.length; }
     return {
       id:o.id, severity:o.sev, status:'closed', stage:'closed', score:o.score, time:o.time||'history',
+      actor:o.actor||'person', agentRogue:!!o.agentRogue, origin:o.origin||null, integration:o.integration||null,
       title:o.title, description:o.desc,
       entity:{name:o.name, initials:o.initials, role:o.role, department:o.dept, location:o.loc},
       actions:[], completedActions:[], dlpAlerted:!!o.dlp,
       channel:o.channel, channelIcon:o.channelIcon,
       remediation:{family:o.family, label:o.label, icon:o.icon},
-      closeLabel:o.closeLabel||'Resolved', outcome:'Owner: ' + HIST_OWNERS[idx] + (o.cc ? ' · ' + o.cc + ' notified' : ''),
+      closeLabel:o.closeLabel||'Resolved', outcome:ownerLabel({id:o.id, actor:o.actor, sev:o.sev, name:o.name, role:o.role}),
       analysis:{ what:o.what, whyMatters:o.why, whyUnusual:o.unusual||'Outside the entity’s established baseline.',
         riskScore:{total:o.score, factors:{content:o.score, behavior:o.score, context:o.score}},
         dataSources:[o.channel], contextSources:['HR directory'], timeline:[] },
@@ -11056,20 +11156,20 @@ function addActionOption(family){
     // ---- 7d Act-breadth: Identity (Okta, Ping) + Verdict-out (Splunk SOAR) ----
     { id:'CASE-FG-024', sev:'high', family:'identity', label:'Step-up authentication (Okta)', icon:'verified_user', channel:'Okta', channelIcon:'verified_user', score:78, name:'Noa Bar-Lev', initials:'NB', role:'Treasury Analyst', dept:'Finance', loc:'Tel Aviv', title:'Anomalous sign-in to the treasury console triggered an Okta step-up challenge', desc:'AXIA judged a high-risk sign-in pattern on the treasury console and required an Okta step-up challenge before access continued.', what:'A treasury-console sign-in showed impossible-travel and device-posture anomalies.', why:'Step-up authentication contains account-takeover risk without locking out a legitimate user.', cc:'manager', from:'noa.barlev@fundguard.com', to:'okta', subj:'step-up challenge issued' },
     { id:'CASE-FG-025', sev:'high', family:'identity', label:'Disable session (Ping)', icon:'person_off', channel:'Ping', channelIcon:'person_off', score:84, name:'Eitan Gross', initials:'EG', role:'Platform Engineer', dept:'Engineering', loc:'Tel Aviv', title:'Compromised session terminated via Ping after credential-stuffing indicators', desc:'AXIA disabled an active session through Ping after detecting credential-stuffing indicators against an engineering account.', what:'Credential-stuffing indicators against an engineering identity with an active privileged session.', why:'Disabling the session through Ping stops misuse immediately while the account is reset.', from:'eitan.gross@fundguard.com', to:'ping', subj:'session disabled' },
-    { id:'CASE-FG-026', sev:'medium', family:'verdict-out', label:'Forwarded to SOC', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:58, name:'Automated detection', initials:'SO', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Forwarded to the SOC, triggering a containment playbook for a bulk-download pattern', desc:'AXIA forwarded its decision to the SOC, which triggered a containment playbook (isolate + ticket) for a bulk-download pattern.', what:'A bulk-download pattern matched a containment playbook.', why:'Forwarding to the SOC lets the SOC’s existing automation execute containment at machine speed.', from:'detections@fundguard.com', to:'soc', subj:'containment playbook fired' },
+    { id:'CASE-FG-026', sev:'medium', actor:'system', family:'verdict-out', label:'Forwarded to SOC', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:58, name:'Automated detection', initials:'SO', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Forwarded to the SOC, triggering a containment playbook for a bulk-download pattern', desc:'AXIA forwarded its decision to the SOC, which triggered a containment playbook (isolate + ticket) for a bulk-download pattern.', what:'A bulk-download pattern matched a containment playbook.', why:'Forwarding to the SOC lets the SOC’s existing automation execute containment at machine speed.', from:'detections@fundguard.com', to:'soc', subj:'containment playbook fired' },
     // ---- 30d history (+7): C2 H2 M2 L1 ----
     { id:'CASE-FG-027', sev:'critical', family:'content', label:'Hold file · revoke share', icon:'lock', channel:'SharePoint', channelIcon:'folder_shared', score:93, name:'Liora Katz', initials:'LK', role:'Fund Controller', dept:'Finance', loc:'London', title:'Restricted NAV reconciliation workbook shared externally before quarter close', desc:'AXIA held the workbook and revoked the external share after a restricted NAV reconciliation file was shared outside the org.', what:'A restricted NAV reconciliation workbook was shared to an external address near quarter close.', why:'Quarter-close financial artifacts are highly sensitive; holding + revoking stops external exposure.', cc:'Legal', dlp:true },
-    { id:'CASE-FG-028', sev:'critical', family:'identity', label:'Revoke agent token', icon:'key_off', channel:'Entra Agent ID', channelIcon:'smart_toy', score:91, name:'svc-report-sync', initials:'AI', role:'Automation service identity', dept:'Engineering', loc:'Non-human identity', title:'Service agent on an over-broad scope pulling investor reports off-baseline', desc:'AXIA revoked the agent credential after a reporting service identity began pulling investor reports far outside its baseline.', what:'A reporting service identity used an over-broad scope to pull investor reports off-baseline.', why:'Over-permissioned agents move data at machine speed; revoking the token contains it.' },
+    { id:'CASE-FG-028', sev:'critical', actor:'agent', agentRogue:true, origin:'internal', integration:'unwired', family:'identity', label:'Revoke agent token', icon:'key_off', channel:'Entra Agent ID', channelIcon:'smart_toy', score:91, name:'svc-report-sync', initials:'AI', role:'Automation service identity', dept:'Engineering', loc:'Non-human identity', title:'Service agent on an over-broad scope pulling investor reports off-baseline', desc:'AXIA revoked the agent credential after a reporting service identity began pulling investor reports far outside its baseline.', what:'A reporting service identity used an over-broad scope to pull investor reports off-baseline.', why:'Over-permissioned agents move data at machine speed; revoking the token contains it.' },
     { id:'CASE-FG-029', sev:'high', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:75, name:'Ron Shaked', initials:'RS', role:'Investor Relations', dept:'IR', loc:'London', title:'Investor allocation extract emailed to an unapproved external consultant', desc:'AXIA quarantined an outbound email carrying an investor allocation extract to an unapproved external consultant.', what:'An investor allocation extract was emailed to an unapproved external consultant.', why:'Investor allocation data leaving to an unvetted party is a reportable exposure.' },
     { id:'CASE-FG-030', sev:'high', family:'engagement', label:'Coach + brief manager', icon:'forum', channel:'Google email (Gmail)', channelIcon:'mail', score:72, name:'Tal Mizrahi', initials:'TM', role:'Quant Researcher', dept:'Research', loc:'Tel Aviv', title:'Model notebook forwarded to personal Gmail before a conference', desc:'AXIA coached the researcher and briefed the manager after a model notebook was forwarded to a personal address.', what:'A model notebook was forwarded to a personal Gmail before a conference.', why:'Model IP off the managed environment needs a coaching touch plus manager awareness.', cc:'manager' },
     { id:'CASE-FG-031', sev:'medium', family:'content', label:'Hold / restrict file', icon:'lock', channel:'Box', channelIcon:'folder', score:55, name:'Yael Adler', initials:'YA', role:'Operations Analyst', dept:'Operations', loc:'London', title:'Internal runbook with embedded credentials placed on hold in Box', desc:'AXIA placed an internal runbook on hold after detecting embedded credentials in a Box upload.', what:'An internal runbook containing embedded credentials was uploaded to Box.', why:'Credentials in shared docs are a lateral-movement risk; holding the file prevents spread.' },
-    { id:'CASE-FG-032', sev:'medium', family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt', channel:'Security Ops', channelIcon:'sync_alt', score:52, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Repeated after-hours access forwarded to the SOC for correlation', desc:'AXIA forwarded a repeated after-hours access pattern to the SOC for correlation.', what:'A repeated after-hours access pattern met the threshold for correlation.', why:'Forwarding to the SOC lets it correlate the pattern with other signals.' },
+    { id:'CASE-FG-032', sev:'medium', actor:'system', family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt', channel:'Security Ops', channelIcon:'sync_alt', score:52, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Repeated after-hours access forwarded to the SOC for correlation', desc:'AXIA forwarded a repeated after-hours access pattern to the SOC for correlation.', what:'A repeated after-hours access pattern met the threshold for correlation.', why:'Forwarding to the SOC lets it correlate the pattern with other signals.' },
     { id:'CASE-FG-033', sev:'low', family:'engagement', label:'Coach employee', icon:'forum', channel:'Microsoft 365 email', channelIcon:'mail', score:22, name:'Gil Peretz', initials:'GP', role:'Sales Associate', dept:'Sales', loc:'London', title:'Internal pricing sheet emailed to a personal address for a commute read', desc:'AXIA auto-coached the associate after an internal pricing sheet was sent to a personal address.', what:'An internal pricing sheet was emailed to a personal address.', why:'Low-harm habit worth a light automatic nudge.' },
     // ---- 90d history (+9): C2 H3 M2 L2 ----
     { id:'CASE-FG-034', sev:'critical', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:95, name:'Dana Friedman', initials:'DF', role:'Senior Fund Accountant', dept:'Finance', loc:'New York', title:'Full investor KYC pack emailed externally days before resignation', desc:'AXIA quarantined an outbound email containing a full investor KYC pack sent externally shortly before the sender resigned.', what:'A full investor KYC pack was emailed externally just before a resignation.', why:'Departure-adjacent bulk PII exfiltration is the highest-harm pattern.', cc:'Legal', dlp:true },
     { id:'CASE-FG-035', sev:'critical', family:'identity', label:'Disable user session', icon:'person_off', channel:'Entra', channelIcon:'key_off', score:90, name:'Omer Levi', initials:'OL', role:'Database Administrator', dept:'Engineering', loc:'Tel Aviv', title:'DBA session disabled after mass export from the investor database', desc:'AXIA disabled an administrator session via Entra after a mass export from the investor database off-baseline.', what:'A DBA session performed a mass export from the investor database far off-baseline.', why:'Privileged mass export needs immediate session containment.' },
     { id:'CASE-FG-036', sev:'high', family:'content', label:'Revoke external share', icon:'link_off', channel:'Google Drive', channelIcon:'add_to_drive', score:74, name:'Maya Stern', initials:'MS', role:'Client Solutions', dept:'Client Operations', loc:'London', title:'Client onboarding folder shared to a personal Google account', desc:'AXIA revoked an external share after a client onboarding folder was shared to a personal Google account.', what:'A client onboarding folder was shared to a personal Google account.', why:'Client data on personal storage is an exposure that revocation closes.' },
-    { id:'CASE-FG-037', sev:'high', family:'verdict-out', label:'Forwarded to SOC', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:80, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Forwarded to the SOC, triggering a containment playbook for repeated DLP-evasion attempts', desc:'AXIA forwarded its decision to the SOC, which triggered a containment playbook for repeated DLP-evasion attempts.', what:'Repeated DLP-evasion attempts matched a containment playbook.', why:'Forwarding to the SOC contains evasion attempts at machine speed.' },
+    { id:'CASE-FG-037', sev:'high', actor:'system', family:'verdict-out', label:'Forwarded to SOC', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:80, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Forwarded to the SOC, triggering a containment playbook for repeated DLP-evasion attempts', desc:'AXIA forwarded its decision to the SOC, which triggered a containment playbook for repeated DLP-evasion attempts.', what:'Repeated DLP-evasion attempts matched a containment playbook.', why:'Forwarding to the SOC contains evasion attempts at machine speed.' },
     { id:'CASE-FG-038', sev:'high', family:'engagement', label:'Notify HR', icon:'badge', channel:'Microsoft Teams', channelIcon:'groups', score:70, name:'Avi Cohen', initials:'AC', role:'Portfolio Manager', dept:'Investments', loc:'New York', title:'Sensitive performance figures posted in a broad Teams channel', desc:'AXIA engaged the employee and notified HR after sensitive performance figures were posted in an over-broad Teams channel.', what:'Sensitive performance figures were posted in a broad internal Teams channel.', why:'Over-sharing sensitive figures internally warrants HR awareness.', cc:'HR' },
     { id:'CASE-FG-039', sev:'medium', family:'content', label:'Remove message', icon:'block', channel:'Slack', channelIcon:'forum', score:53, name:'Lior Azoulay', initials:'LA', role:'Support Engineer', dept:'Support', loc:'London', title:'Customer record pasted into a public Slack channel removed', desc:'AXIA removed a Slack message after a customer record was pasted into a public channel.', what:'A customer record was pasted into a public Slack channel.', why:'Removing the message limits exposure of customer data.' },
     { id:'CASE-FG-040', sev:'medium', family:'identity', label:'Step-up authentication', icon:'verified_user', channel:'Entra', channelIcon:'verified_user', score:50, name:'Shira Ben-David', initials:'SB', role:'HR Business Partner', dept:'HR', loc:'Tel Aviv', title:'Unrecognized device prompted a step-up challenge on the HR system', desc:'AXIA required an Entra step-up challenge after an unrecognized device attempted access to the HR system.', what:'An unrecognized device attempted access to the HR system.', why:'Step-up verification confirms the user without blocking legitimate work.' },
@@ -11081,7 +11181,7 @@ function addActionOption(family){
   // keep Command (timeframe-scoped) coherent: surface the new agentic + easy-automation cases there too
   // (the live 1d set). The new CLOSED history ids are placed per-timeframe in DEMO_DATA.casesByTimeframe directly.
   try {
-    var NEW_IDS = ['CASE-FG-017','CASE-FG-018','CASE-FG-019','CASE-FG-020','CASE-FG-021','CASE-FG-022','CASE-FG-023'];
+    var NEW_IDS = ['CASE-FG-017','CASE-FG-018','CASE-FG-043','CASE-FG-020','CASE-FG-021','CASE-FG-022','CASE-FG-023'];
     ['1d','7d','30d','90d'].forEach(function(tf){
       var arr = DEMO_DATA.casesByTimeframe[tf]; if (!arr) return;
       NEW_IDS.forEach(function(nid){ if (arr.indexOf(nid) === -1) arr.push(nid); });
@@ -11102,7 +11202,7 @@ function addActionOption(family){
     'CASE-FG-005': {owner:'Alex Rivera (SOC)',       cc:null},
     'CASE-FG-014': {owner:'Priya Nair (SOC)',        cc:null},
     'CASE-FG-011': {owner:'Marcus Webb (SOC)',       cc:null},
-    'CASE-FG-019': {owner:'Dana Cohen (Security Ops)', cc:null},
+    'CASE-FG-043': {owner:'CISO office', cc:null},
     'CASE-FG-002': {owner:'Sam Okafor (SOC)',        cc:'manager'},
     'CASE-FG-004': {owner:'Alex Rivera (SOC)',       cc:null},
     'CASE-FG-017': {owner:'Priya Nair (SOC)',        cc:null},
@@ -11112,10 +11212,9 @@ function addActionOption(family){
     'CASE-FG-033': {owner:'Dana Cohen (Security Ops)', cc:null}  // v9 A2: newly-opened, may be user-closed
   };
   function outcomeFor(c){
-    // Default owner is a SOC analyst (derived from case id hash), never the subject employee.
-    var idx = 0; var id = (c && c.id) || ''; for (var i=0;i<id.length;i++){ idx = (idx + id.charCodeAt(i)) % SOC_ANALYSTS.length; }
-    var o = OUTCOME[(c||{}).id] || {owner:SOC_ANALYSTS[idx], cc:null};
-    return o.cc ? ('Owner: ' + o.owner + ' · ' + o.cc + ' notified') : ('Owner: ' + o.owner);
+    // v10 D1: actor-aware ownership via ownerLabel — agent/system → CISO office; person low/med → the user
+    // (the subject); person high/crit → business function. SOC_ANALYSTS/OUTCOME retained as inert fallback only.
+    return ownerLabel(c || {});
   }
   window.axiaOutcomeFor = outcomeFor; // used by executeNBA (manual approve) outside this scope
   // (actionVerbFor removed — no acting narration in static mode)
@@ -11163,7 +11262,7 @@ function addActionOption(family){
     'CASE-FG-017':'closed', 'CASE-FG-028':'closed',
     // High (7): open 4 (2 open + 2 engaged-pending) / closed 3
     'CASE-FG-014':'open', 'CASE-FG-005':'open', 'CASE-FG-011':'pending', 'CASE-FG-003':'pending',
-    'CASE-FG-019':'closed', 'CASE-FG-024':'closed', 'CASE-FG-030':'closed',
+    'CASE-FG-043':'closed', 'CASE-FG-024':'closed', 'CASE-FG-030':'closed',
     // Medium (5): open 3 (2 engaged-awaiting-reply + 1 open) / closed 2
     'CASE-FG-020':'pending', 'CASE-FG-021':'pending', 'CASE-FG-026':'open',
     'CASE-FG-006':'closed', 'CASE-FG-031':'closed',
@@ -11189,7 +11288,7 @@ function addActionOption(family){
   // i forwarded to SOC (SIEM/SOAR) · j human-confirmed containment (gate).
   var CLOSEPATH = {
     'CASE-FG-006':'e','CASE-FG-007':'i','CASE-FG-009':'e','CASE-FG-012':'a','CASE-FG-013':'a',
-    'CASE-FG-015':'e','CASE-FG-016':'e','CASE-FG-017':'i','CASE-FG-019':'i','CASE-FG-024':'g',
+    'CASE-FG-015':'e','CASE-FG-016':'e','CASE-FG-017':'i','CASE-FG-043':'k','CASE-FG-024':'g',
     'CASE-FG-025':'g','CASE-FG-027':'b','CASE-FG-028':'h','CASE-FG-029':'e','CASE-FG-030':'c',
     'CASE-FG-031':'d','CASE-FG-032':'i','CASE-FG-034':'j','CASE-FG-035':'g','CASE-FG-036':'f',
     'CASE-FG-037':'i','CASE-FG-038':'b','CASE-FG-039':'e','CASE-FG-040':'g','CASE-FG-041':'a',
@@ -11212,6 +11311,9 @@ function addActionOption(family){
     'CASE-FG-027': [{type:'Approved-by',  person:'Marcus Webb (SOC)', source:'manual', evidence:'analyst approved hold + external-share revoke; Legal notified'}]
   };
   casesData.forEach(function(c){
+    // v10: default every un-tagged case to the person actor (agents/system are set explicitly at their source).
+    if (!c.actor) c.actor = 'person';
+    if (typeof c.agentRogue === 'undefined') c.agentRogue = false;
     if (CLOSEPATH[c.id]) c.closePath = CLOSEPATH[c.id];
     if (CLOSELABEL[c.id]) c.closeLabel = CLOSELABEL[c.id];
     if (ATTRIBS[c.id]) c.attribs = ATTRIBS[c.id];

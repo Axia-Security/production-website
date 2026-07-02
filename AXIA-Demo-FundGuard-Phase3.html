@@ -5971,7 +5971,7 @@ function renderCaseCard(c, compact = false) {
     let recommendedControl;
     if (stage === 'judging') recommendedControl = chip('bg-primary/10 text-primary border border-primary/30', dot('primary'), 'AXIA judging…');
     else if (stage === 'acting') recommendedControl = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px] axia-acting"><span class="material-symbols-outlined text-[14px] axia-spin">progress_activity</span>${c.actionVerb || 'AXIA acting…'}</span>`;
-    else if (stage === 'pending') recommendedControl = chip('bg-severity-medium/10 text-severity-medium border border-severity-medium/30', mIcon('hourglass_top'), 'Awaiting employee reply');
+    else if (stage === 'pending') recommendedControl = chip('bg-severity-medium/10 text-severity-medium border border-severity-medium/30', mIcon('hourglass_top'), 'Engaged · awaiting reply from ' + (((c.entity && c.entity.name) || 'assignee').split(' ')[0]));
     else if (stage === 'drafted') recommendedControl = recBtn('Send ' + verb, 'outgoing_mail');
     else if (stage === 'awaiting') recommendedControl = recBtn(verb, 'verified_user');
     else if (stage === 'closed') recommendedControl = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]">${mIcon('check_circle')}${c.closeLabel || 'Resolved'}</span>` + (c.outcome ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-status-success/10 text-status-success border border-status-success/20 min-h-[28px]">${mIcon('person')}${c.outcome}</span>` : '');
@@ -10294,7 +10294,8 @@ function engagementEmailFor(c){
       'Thanks for helping keep client data safe.\n\n' +
       '— FundGuard Security (AXIA)';
   }
-  var draft = { from: from, to: sender, role: (c.entity && c.entity.role) || 'employee', subject: subj, body: body };
+  var CC_MAP = { 'CASE-FG-003': ['michael.brenner@fundguard.com'], 'CASE-FG-011': ['deal.desk@fundguard.com','sarah.klein@fundguard.com'], 'CASE-FG-020': ['rachel.stein@fundguard.com'] };
+  var draft = { from: from, to: sender, cc: (CC_MAP[c.id] || []), role: (c.entity && c.entity.role) || 'employee', subject: subj, body: body };
   window.__axiaEmail[c.id] = draft;
   return draft;
 }
@@ -10312,7 +10313,7 @@ function axiaCopyNBA(id){
 function axiaCopyEngageEmail(id){
   var d = window.__axiaEmail[id]; if(!d){ var c=(typeof casesData!=='undefined')?casesData.find(function(x){return x.id===id;}):null; if(c) d=engagementEmailFor(c); }
   if(!d) return;
-  axiaClipboard('From: ' + d.from + '\nTo: ' + d.to + '\nSubject: ' + d.subject + '\n\n' + d.body);
+  axiaClipboard('From: ' + d.from + '\nTo: ' + d.to + (d.cc && d.cc.length ? '\nCc: ' + d.cc.join(', ') : '') + '\nSubject: ' + d.subject + '\n\n' + d.body);
   if (typeof showToast === 'function') showToast('Engagement email copied', 'success');
 }
 function axiaSendEngagement(id){
@@ -10348,6 +10349,7 @@ function axiaViewEmail(id){
     + '<div class="grid grid-cols-[52px_1fr] gap-y-1 text-[12px] mb-2">'
     +   '<span class="text-text-muted">From</span><span class="text-text-primary font-medium">' + esc(d.from) + '</span>'
     +   '<span class="text-text-muted">To</span><span class="text-text-primary font-medium">' + esc(d.to) + ' <span class="text-text-muted">(' + esc(d.role) + ')</span></span>'
+    +   ((d.cc && d.cc.length) ? '<span class="text-text-muted">Cc</span><span class="text-text-primary font-medium">' + esc(d.cc.join(', ')) + '</span>' : '')
     +   '<span class="text-text-muted">Subject</span><span class="text-text-primary font-bold">' + esc(d.subject) + '</span>'
     + '</div>'
     + '<pre class="text-[12px] text-text-secondary whitespace-pre-wrap font-sans leading-relaxed bg-surface-elevated rounded p-3 border border-border-subtle">' + esc(d.body) + '</pre>'
@@ -10419,6 +10421,7 @@ function renderNBAPanel(c){
         +     '<div class="grid grid-cols-[52px_1fr] gap-y-1 text-[11px]">'
         +       '<span class="text-text-muted">From</span><span class="text-text-primary font-medium">' + d.from + '</span>'
         +       '<span class="text-text-muted">To</span><span class="text-text-primary font-medium">' + esc(d.to) + ' <span class="text-text-muted">(' + esc(d.role) + ')</span></span>'
+        +       ((d.cc && d.cc.length) ? '<span class="text-text-muted">Cc</span><span class="text-text-primary font-medium">' + esc(d.cc.join(', ')) + '</span>' : '')
         +       '<span class="text-text-muted">Subject</span><span class="text-text-primary font-bold">' + esc(d.subject) + '</span>'
         +     '</div>'
         +     '<pre class="text-[11px] text-text-secondary whitespace-pre-wrap font-sans leading-relaxed bg-surface-elevated rounded p-2 border border-border-subtle">' + esc(d.body) + '</pre>'
@@ -10771,13 +10774,6 @@ function addActionOption(family){
   // surface a diagnostic) rather than appearing as "dead arrows + empty board".
   if (typeof casesData === 'undefined' || !Array.isArray(casesData)) {
     console.error('[axia-driver] casesData not found or not an array — the case engine cannot run. Presenter keys are bound but inert; check that the DEMO_DATA.cases block evaluated.');
-    try {
-      document.addEventListener('keydown', function(e){
-        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === ' ') {
-          console.error('[axia-driver] key "' + e.key + '" pressed but casesData is missing; nothing to advance.');
-        }
-      });
-    } catch(_e){}
     return;
   }
 
@@ -10978,36 +10974,7 @@ function addActionOption(family){
     });
   } catch(e) {}
 
-  // ---------- 3. The hidden-press progression engine (Phase 3: no "judging" pre-state; act-within-a-single-press) ----------
-  // Cases are already-judged/open when they appear. Each press reveals the next case → it ACTS (live
-  // animation) → auto-completes a few seconds later within the SAME press. The one Critical case waits
-  // for the explicit "Approve containment" confirm before it acts.
-  // Order: easy auto-resolves first (Medium/Low coaching + hold-email), then High, then Critical, gate last.
-  var DEMO_IDS = ['CASE-FG-020','CASE-FG-022','CASE-FG-021','CASE-FG-023','CASE-FG-003','CASE-FG-005','CASE-FG-014','CASE-FG-011','CASE-FG-019','CASE-FG-002','CASE-FG-004','CASE-FG-017','CASE-FG-018','CASE-FG-001'];
-  var GATE_ID  = 'CASE-FG-001'; // the critical case = the one human-confirm gate
-  var gateIndex = DEMO_IDS.indexOf(GATE_ID);
-  window.AXIA_GATE_ID = GATE_ID;
-  window.AXIA_DEMO_IDS = DEMO_IDS; // so renderDashboardCases can keep just-resolved cases visible (outcome)
-
-  // v7 V9: engagement lifecycle — sent ≠ resolved.
-  //  • DRAFT_IDS start 'drafted' (email written, awaiting the presenter's send-confirmation); excluded from
-  //    the auto-drive — the presenter sends them via the card's "Recommended action: Send …" control.
-  //  • Any engagement send goes to 'pending' (awaiting employee reply), NOT closed.
-  //  • REPLY_ID is the one pending case a later → resolves ("employee replied" → closed) to show the loop close.
-  //  • drafted + pending keep status:'open' so deriveTallies/closedCount never silently drop them.
-  var DRAFT_IDS = ['CASE-FG-022','CASE-FG-023'];
-  var REPLY_ID  = 'CASE-FG-020';
-  var sentDrafts = {}; // drafted cases the presenter has sent this run; cleared on reset()
-  window.AXIA_DRAFT_IDS = DRAFT_IDS;
-  function isEngagement(c){
-    if (!c) return false;
-    if (c.holdEmail) return true;
-    var fam = (c.remediation && c.remediation.family);
-    if (fam) return fam === 'engagement';
-    try { return caseNBA(c).family === 'engagement'; } catch(e){ return false; }
-  }
-
-  function find(id){ return casesData.find(function(c){return c.id===id;}); }
+  // ---------- v8 STATIC: progression engine removed. Cases carry fixed seeded states (see boot). ----------
 
   // Owner = a SOC / Security-Ops analyst who owns the case (NEVER the subject/departing employee).
   // At-most-one CC (Phase 3 owner/CC discipline). Analyst names rotate across cases.
@@ -11035,17 +11002,7 @@ function addActionOption(family){
     return o.cc ? ('Owner: ' + o.owner + ' · ' + o.cc + ' notified') : ('Owner: ' + o.owner);
   }
   window.axiaOutcomeFor = outcomeFor; // used by executeNBA (manual approve) outside this scope
-  function actionVerbFor(c){
-    if (c.holdEmail) return 'AXIA is holding the email and asking the sender to verify it';
-    var fam = (c.remediation && c.remediation.family) || 'engagement';
-    // v6 #N3: no SIEM/SOAR system names in per-case narration — system-agnostic verb.
-    return ({
-      'engagement':  'AXIA is engaging the employee',
-      'content':     'AXIA is holding the content',
-      'identity':    'AXIA is revoking the credential',
-      'verdict-out': 'AXIA is forwarding to the SOC'
-    })[fam] || 'AXIA is acting';
-  }
+  // (actionVerbFor removed — no acting narration in static mode)
 
   // ---- Single source of truth: ALL severity tallies derive from live case state, every render ----
   function deriveTallies(){
@@ -11075,192 +11032,45 @@ function addActionOption(family){
     try { if (typeof syncTimeframeButtons === 'function') syncTimeframeButtons(); } catch(e){}
     // keep an open case-details view live as its case changes stage
     try { if (typeof currentScreen !== 'undefined' && currentScreen === 'case-details' && typeof currentCaseId !== 'undefined' && currentCaseId) renderCaseDetails(currentCaseId); } catch(e){}
-    updateProgress();
   }
   window.axiaSyncRender = render; // used by executeNBA (manual approve) to keep tallies in sync
 
-  var gateConfirmed = false; // has the human confirmed the Critical case?
-  var drivenCount = 0;       // how many AUTO cases AXIA has driven to closure (0..autoCount)
-  var timers = [];
-  function clearTimers(){ timers.forEach(function(t){ clearTimeout(t); }); timers = []; }
-
-  // Is this case a MANUAL non-gated NBA? (Manual = a human must approve before AXIA acts.)
-  function isManualRest(c){
-    if (!c || c.id === GATE_ID) return false;
-    try { return caseNBA(c).mode === 'manual'; } catch(e){ return false; }
-  }
-  // Ordered list of AUTO (non-gated, non-manual, non-draft) cases AXIA drives to closure, one per →.
-  function autoIds(){
-    return DEMO_IDS.filter(function(id){ if (id === GATE_ID) return false; if (DRAFT_IDS.indexOf(id) !== -1) return false; var c = find(id); return c && !isManualRest(c); });
-  }
-
-  // Single chokepoint for "AXIA acts on a case." ENGAGEMENT cases (coaching / hold-email) land in
-  // 'pending' (sent → awaiting employee reply), NOT closed. Everything else closes with the outcome flash.
-  function startActing(c){
-    c.stage = 'acting'; c.status = 'open'; c.actionVerb = actionVerbFor(c); c._justClosed = 0;
-    render();
-    var eng = isEngagement(c);
-    var t = setTimeout(function(){
-      if (eng) {
-        // v7 V9: sent ≠ resolved — the engagement email is out; the case waits for the employee's reply.
-        c.stage = 'pending'; c.status = 'open'; c.outcome = null; c._justClosed = 0;
-        render();
-      } else {
-        // v6 #3: close → outcome flash (owner/CC) for ~1.2s, then the card slides OUT of the open severity
-        // section so the queue visibly drains. The _justClosed stamp survives render()'s innerHTML rebuild.
-        c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); c._justClosed = Date.now();
-        render();
-        var t2 = setTimeout(function(){ render(); }, 1300); // drop it from the open section after the flash
-        timers.push(t2);
-      }
-    }, 2600);
-    timers.push(t);
-  }
-  window.axiaApprove = function(id){ var c = find(id); if (c) startActing(c); }; // manual approve → act → resolve
-
-  // v7 V9: the scripted "employee replied" step — a pending engagement case closes the loop.
-  function replyResolve(c){
-    if (!c) return;
-    c.stage = 'acting'; c.status = 'open'; c.actionVerb = 'Employee replied — AXIA closing the loop'; c._justClosed = 0;
-    render();
-    var t = setTimeout(function(){
-      c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); c._justClosed = Date.now();
-      render();
-      var t2 = setTimeout(function(){ render(); }, 1300);
-      timers.push(t2);
-    }, 1800);
-    timers.push(t);
-  }
-  // v7 V9: presenter confirms sending a DRAFTED engagement email → it goes to 'pending'.
-  window.axiaSend = function(id){ var c = find(id); if (!c || DRAFT_IDS.indexOf(id) === -1) return; if (c.stage !== 'drafted') return; sentDrafts[id] = true; startActing(c); };
-
-  // The board OPENS populated (all cases open). Each → drives AXIA to act on the next still-open AUTO
-  // case (acting animation → auto-closes), so the queue visibly DRAINS. Manual cases rest open awaiting
-  // approval; the Critical gate waits for "Approve containment". (Others open cases. AXIA drives closing them.)
-  function advance(){
-    var autos = autoIds();
-    var maxSteps = autos.length + 1; // v7 V9: +1 = the scripted "employee replied" step
-    if (drivenCount >= maxSteps) { flashHotspot(); return; } // everything driven; drafts/manuals/gate await you
-    if (drivenCount < autos.length) {
-      var c = find(autos[drivenCount]);
-      drivenCount++;
-      if (c) startActing(c); else render();
-    } else {
-      // reply step: resolve the designated pending engagement case
-      drivenCount++;
-      var rc = find(REPLY_ID);
-      if (rc && rc.stage === 'pending') replyResolve(rc); else render();
-    }
-  }
-
-  // Deterministic rebuild — used for the populated baseline, ← back, and R reset.
-  // Baseline = every progression case OPEN (manuals open awaiting approval, gate awaiting); the first
-  // `drivenCount` AUTO cases are CLOSED. Closed history cases (not in DEMO_IDS) are left as-is.
-  // v7 V9: this is the single PURE deterministic state function — back() and reset() both call it, and the
-  // forward animation paths (startActing/replyResolve) leave the board in exactly the state this would
-  // rebuild for the same drivenCount, so forward/back/reset stay symmetric. Engagement autos rebuild to
-  // 'pending' (sent, awaiting reply); the REPLY case rebuilds to 'closed' once the reply step has passed.
-  function rebuildState(){
-    clearTimers();
-    var autos = autoIds();
-    DEMO_IDS.forEach(function(id){
-      var c = find(id); if (!c) return;
-      c._justClosed = 0; // deterministic rebuild (back/reset) → no exit-flash animation
-      if (id === GATE_ID) {
-        if (gateConfirmed) { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
-        else { c.stage = 'awaiting'; c.status = 'open'; c.outcome = null; }
-        return;
-      }
-      if (DRAFT_IDS.indexOf(id) !== -1) { // drafted (awaiting send) → pending once the presenter has sent it
-        if (sentDrafts[id]) { c.stage = 'pending'; c.status = 'open'; c.outcome = null; }
-        else { c.stage = 'drafted'; c.status = 'open'; c.outcome = null; }
-        return;
-      }
-      if (isManualRest(c)) { c.stage = 'open'; c.status = 'open'; c.outcome = null; return; } // manual rests awaiting approval
-      var ai = autos.indexOf(id); // AUTO case
-      if (ai > -1 && ai < drivenCount) {
-        if (isEngagement(c)) {
-          // engagement auto driven → pending, unless it is the REPLY case and the reply step has passed
-          if (id === REPLY_ID && drivenCount > autos.length) { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
-          else { c.stage = 'pending'; c.status = 'open'; c.outcome = null; }
-        } else { c.stage = 'closed'; c.status = 'closed'; c.outcome = outcomeFor(c); }
-      } else { c.stage = 'open'; c.status = 'open'; c.outcome = null; }
-    });
-    render();
-  }
-
-  function back(){ if (drivenCount > 0) { drivenCount--; rebuildState(); } }
-  function reset(){ drivenCount = 0; gateConfirmed = false; sentDrafts = {}; rebuildState(); } // R → return to the populated load state
-
-  window.axiaConfirm = function(id){
-    var c = find(id);
-    if (!c || id !== GATE_ID) return;
-    if (c.stage !== 'awaiting') return;
-    gateConfirmed = true;
-    startActing(c); // human approved → AXIA acts (animation) → auto-completes
+  // ---------- v8 STATIC SEED (replaces the old reset()/rebuildState progression) ----------
+  // Fixed, believable "live snapshot": a realistic mix of open / engaged-awaiting-reply (pending) /
+  // closed across the 14 live (1d) cases. No timers, no keys, no focus code -- nothing moves on load.
+  var SEED = {
+    // Critical (5): open 2 (incl. the awaiting gate) / closed 3
+    'CASE-FG-001':'awaiting', 'CASE-FG-004':'open',
+    'CASE-FG-002':'closed', 'CASE-FG-017':'closed', 'CASE-FG-018':'closed',
+    // High (5): open 3 (1 open + 2 engaged-pending) / closed 2
+    'CASE-FG-014':'open', 'CASE-FG-011':'pending', 'CASE-FG-003':'pending',
+    'CASE-FG-005':'closed', 'CASE-FG-019':'closed',
+    // Medium (2): open 2 (both engaged-awaiting-reply) / closed 0
+    'CASE-FG-020':'pending', 'CASE-FG-021':'pending',
+    // Low (2): open 0 / closed 2
+    'CASE-FG-022':'closed', 'CASE-FG-023':'closed'
   };
+  Object.keys(SEED).forEach(function(id){
+    var c = casesData.find(function(x){ return x.id === id; });
+    if (!c) return;
+    c.stage = SEED[id];
+    c._justClosed = 0;
+    if (c.stage === 'closed') { c.status = 'closed'; c.outcome = outcomeFor(c); }
+    else { c.status = 'open'; c.outcome = null; } // open / awaiting / pending all keep status:'open'
+  });
+  // closed history 024-042 already ship status:'closed',stage:'closed' -- left untouched.
 
-  function closedCount(){ return DEMO_IDS.filter(function(id){ var c=find(id); return c && c.status==='closed'; }).length; }
-  function updateProgress(){
-    var pill = document.getElementById('axia-progress'); if(!pill) return;
-    pill.classList.add('show');
-    var done = closedCount(), total = DEMO_IDS.length;
-    var openN = DEMO_IDS.filter(function(id){ var c=find(id); return c && (c.stage === 'open' || c.stage === 'awaiting' || c.stage === 'acting' || c.stage === 'pending' || c.stage === 'drafted'); }).length;
-    var label;
-    if (openN === 0) label = 'AXIA drove all ' + total + ' cases to closure. Read · Act · Close.';
-    else label = 'AXIA driving the queue to closure — ' + done + ' closed · ' + openN + ' open';
-    pill.innerHTML = '<span class="dot"></span>' + label;
-  }
+  // v8 static shims: the manual Recommended-action control and the case-details NBA panel used to route
+  // into the (now-removed) progression driver. Route them straight to executeNBA, which closes that one
+  // case immediately and re-renders tallies via window.axiaSyncRender. (No axiaApprove defined, so
+  // executeNBA uses its driver-absent fallback, exactly as the confirm dialog expects.)
+  window.axiaConfirm = function(id){ if (typeof executeNBA === 'function') executeNBA(id); };
+  window.axiaSend    = function(id){ if (typeof executeNBA === 'function') executeNBA(id); };
 
-  function flashHotspot(){ var h=document.getElementById('axia-hotspot'); if(!h) return; h.style.background='rgba(231,76,60,0.55)'; setTimeout(function(){ h.style.background=''; }, 350); }
-
-  // ---------- 4. Presenter affordances + input ----------
-  // v6 #1: NO visible chrome (no Prev/Next control, no progress pill, no corner hotspot) — the demo
-  // "looks live" and is driven purely by the invisible arrow keys. Keep only the hidden `?` help overlay.
-  function buildAffordances(){
-    if (document.getElementById('axia-help')) return;
-    var help = document.createElement('div'); help.id='axia-help';
-    help.innerHTML = '<b>Presenter keys</b><br>→ / Space — advance<br>← — step back<br>R — reset / replay<br>? — this help<br><i>Critical case waits for your “Approve containment”.</i>';
-    document.body.appendChild(help);
-  }
-
-  // v7 V4: make <body> focusable up front so a single real click anywhere in the page transfers keyboard
-  // focus into the document (the one gesture programmatic focus() cannot fake). re-assert focus on load /
-  // visibility / every pointerdown.
-  try { document.body.setAttribute('tabindex','-1'); } catch(e){}
-  function grabFocus(){ try { window.focus(); document.body.setAttribute('tabindex','-1'); document.body.focus({preventScroll:true}); } catch(e){} }
-
-  function isTyping(e){ var t=e.target; if(!t) return false; var tn=(t.tagName||'').toUpperCase(); return tn==='INPUT'||tn==='TEXTAREA'||t.isContentEditable; }
-  // v6 #2: bind to BOTH window and document. A per-event __axiaHandled flag guarantees a single real
-  // keystroke advances exactly once even though it reaches both listeners (window catches it even when
-  // no in-page element is focused; document catches the normal bubbling path).
-  function onKey(e){
-    if (e.__axiaHandled) return; e.__axiaHandled = true;
-    if (isTyping(e)) return;
-    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Spacebar'){ e.preventDefault(); advance(false); }
-    else if (e.key === 'ArrowLeft'){ e.preventDefault(); back(); }
-    else if (e.key === 'r' || e.key === 'R'){ reset(); }
-    else if (e.key === '?'){ var h=document.getElementById('axia-help'); if(h) h.classList.toggle('show'); }
-  }
-  window.addEventListener('keydown', onKey, true);   // capture on window — fires even with nothing focused in-page
-  document.addEventListener('keydown', onKey, true); // belt-and-suspenders; dedup via e.__axiaHandled
-
-  function boot(){
-    buildAffordances();
-    reset(); // populated baseline (open queue) + render
-    grabFocus();
-  }
+  // Single render at load; deriveTallies() (inside render) recomputes severity tallies from the seeded
+  // states so the 14/24/31/40 magnitudes and open/closed splits stay self-consistent.
+  function boot(){ deriveTallies(); render(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
-  // v7 V4 (founder-locked: NO added UI). re-grab focus on visibility + EVERY pointerdown (capture phase,
-  // not {once}, and NOT preventDefault — a click on a card still opens it; a click on neutral chrome just
-  // grabs focus). The presenter clicks the window once (natural) and then → drives the deck.
-  // HONEST CAVEAT (browser security, unavoidable without UI): if the page is loaded by typing the URL in
-  // the address bar and the presenter presses → WITHOUT clicking first, the omnibox eats that first key —
-  // window.focus()/body.focus() cannot steal focus out of the address bar. One click (or Tab) fixes it.
-  // This is why only a HUMAN can sign this off; CDP/puppeteer always hand the page focus and false-pass.
-  window.addEventListener('load', grabFocus);
-  document.addEventListener('visibilitychange', function(){ if (!document.hidden) grabFocus(); });
-  window.addEventListener('pointerdown', grabFocus, true);
 })();
 </script>
 </body>

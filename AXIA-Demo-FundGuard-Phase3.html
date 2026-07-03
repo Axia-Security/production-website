@@ -6298,6 +6298,33 @@ function renderCaseList() {
     document.getElementById('stats-showing').textContent = filtered.length;
 }
 
+// ==================== v11: case-detail timeline token treatment (dark) ====================
+// Keys are the FROZEN data `color` values. hex chosen for >=3:1 on card #1e293b.
+// icon = Material Symbols name; node = dot shape (filled = act/decision, ringed = evidence).
+const TL_TOKEN = {
+    'primary':           { hex: '#2DD4BF', node: 'filled', icon: 'gavel',         role: 'AXIA judgment' },
+    'ops-teal':          { hex: '#0D9488', node: 'filled', icon: 'lock',          role: 'Containment / identity' },
+    'accent-teal':       { hex: '#22D3EE', node: 'filled', icon: 'shield',        role: 'Reported to CISO' },
+    'severity-critical': { hex: '#E74C3C', node: 'filled', icon: 'priority_high', role: 'Open / awaiting confirmation' },
+    'severity-medium':   { hex: '#3498DB', node: 'filled', icon: 'schedule',      role: 'Awaiting reply / approval' },
+    'status-success':    { hex: '#22C55E', node: 'filled', icon: 'check',         role: 'Closed / released' },
+    '_evidence':         { hex: '#94A3B8', node: 'ringed', icon: '',              role: 'Detection evidence' }
+};
+function tlToken(ev){
+    const c = ev.color;
+    if (!c || c === 'text-secondary' || c === 'text-muted') return TL_TOKEN['_evidence'];
+    return TL_TOKEN[c] || TL_TOKEN['_evidence'];
+}
+// Move all 'on record' attribs to sit immediately BEFORE the terminal decision event, so after
+// reverse they land just UNDER the terminal state (anchored to lifecycle), not above it.
+function anchorAttribs(dec){
+    const attribs = dec.filter(e => e.time === 'on record');
+    if (!attribs.length) return dec;
+    const rest = dec.filter(e => e.time !== 'on record');
+    const insertAt = Math.max(rest.length - 1, 0);
+    return [ ...rest.slice(0, insertAt), ...attribs, ...rest.slice(insertAt) ];
+}
+
 function renderCaseDetails(caseId) {
     const c = casesData.find(c => c.id === caseId);
     if (!c) return;
@@ -6558,17 +6585,41 @@ function renderCaseDetails(caseId) {
                 <span class="material-symbols-outlined text-text-secondary transition-transform duration-300 group-open:rotate-180">expand_more</span>
             </summary>
             <div class="border-t border-border-default p-4">
-                <div class="relative pl-4">
-                    <div class="absolute left-[7px] top-1 bottom-1 w-px bg-border-default"></div>
-                    ${(() => { const _base = (c.analysis && c.analysis.timeline) || c.timeline || []; const _tl = [..._base, ...((typeof axiaDecisionTimeline === 'function') ? axiaDecisionTimeline(c) : [])]; return _tl.map((t, i) => `
-                        <div class="relative flex gap-3 ${i < _tl.length - 1 ? 'pb-4' : ''}">
-                            <div class="absolute -left-[1px] mt-1 h-4 w-4 rounded-full border-2 border-surface-dark bg-${t.color || 'text-secondary'} z-10"></div>
-                            <div class="pl-4">
-                                <p class="text-sm font-medium text-text-primary">${t.event}</p>
-                                <p class="text-xs text-text-muted">${t.time} · ${t.source || (t.type || '')}</p>
-                            </div>
-                        </div>
-                    `).join(''); })()}
+                <div class="relative pl-1" style="min-height:72px">
+                    <div class="absolute left-[8px] top-2 bottom-2 w-[2px] rounded bg-[#475569]"></div>
+                    ${(() => {
+                        const _base = ((c.analysis && c.analysis.timeline) || c.timeline || []).map(e => ({ ...e, _group:'evidence' }));
+                        const _dec  = anchorAttribs(((typeof axiaDecisionTimeline === 'function') ? axiaDecisionTimeline(c) : []).map(e => ({ ...e, _group:'decision' })));
+                        const _asc  = [ ..._base, ..._dec ];
+                        const _tl   = _asc.slice().reverse();                 // M4 single reverse -> newest on top
+                        const twoClusters = _base.length > 0 && _dec.length > 0;
+                        let lastGroup = null;
+                        return _tl.map((t, i) => {
+                            const tk    = tlToken(t);
+                            const isDec = t._group === 'decision';
+                            const showHeader = twoClusters && t._group !== lastGroup;
+                            lastGroup = t._group;
+                            const header = showHeader ? `
+                                <div class="relative pl-6 pt-1 pb-1.5">
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-text-muted">${isDec ? 'AXIA · JUDGE · ACT · CLOSE' : 'DETECTION EVIDENCE'}</span>
+                                </div>` : '';
+                            const node = tk.node === 'filled'
+                                ? `<span class="absolute left-[1px] mt-1.5 h-4 w-4 rounded-full border-2 z-10" style="background:${tk.hex};border-color:#1e293b"></span>`
+                                : `<span class="absolute left-[2px] mt-1.5 h-3.5 w-3.5 rounded-full border-2 z-10" style="background:#1e293b;border-color:${tk.hex}"></span>`;
+                            const icon = (isDec && tk.icon)
+                                ? `<span class="material-symbols-outlined text-[14px] leading-none shrink-0" style="color:${tk.hex}">${tk.icon}</span>` : '';
+                            const meta = isDec ? (t.source || '') : `${t.time} · ${t.source || t.type || ''}`;
+                            const last = i === _tl.length - 1;
+                            return `${header}
+                                <div class="relative flex ${last ? '' : 'pb-5'}">
+                                    ${node}
+                                    <div class="pl-6 min-w-0">
+                                        <p class="text-sm font-semibold text-text-primary break-words flex items-start gap-1.5">${icon}<span>${t.event}</span></p>
+                                        <p class="text-[11px] uppercase tracking-wide text-text-secondary mt-0.5 break-words">${meta}</p>
+                                    </div>
+                                </div>`;
+                        }).join('');
+                    })()}
                 </div>
             </div>
         </details>

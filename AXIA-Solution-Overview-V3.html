@@ -229,6 +229,17 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 .slide{padding-bottom:96px}
 /* R5: kill the (c)/(r)/(tm) auto-ligature (Manrope renders "(c)" as ©) — HTML + SVG text */
 *,text,tspan{font-variant-ligatures:none;-webkit-font-feature-settings:"liga" 0,"clig" 0,"dlig" 0,"hlig" 0;font-feature-settings:"liga" 0,"clig" 0,"dlig" 0,"hlig" 0}
+
+/* ===== SLIDE E - ecosystem roster (typographic chips, spec section 10.3) ===== */
+.eco-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,4.5vw,72px);margin-top:38px;align-items:start}
+.eco-head{font-family:var(--font-mono);font-size:13.5px;font-weight:600;letter-spacing:2.4px;color:var(--cyan)}
+.eco-desc{font-size:14.5px;color:var(--slate);margin-top:9px;line-height:1.5}
+.slide.light .eco-desc{color:#9CB8B3}
+.eco-chips{display:flex;flex-wrap:wrap;gap:11px;margin-top:20px;max-width:520px}
+.eco-chip{font-family:var(--font-mono);font-size:13px;font-weight:500;line-height:1;padding:9px 14px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);color:#C7EFE9;background:rgba(255,255,255,.035);white-space:nowrap}
+.eco-foot{margin-top:40px;font-family:var(--font-mono);font-size:13.5px;color:rgba(199,239,233,.55);letter-spacing:.3px}
+@media (max-width:860px){.eco-grid{grid-template-columns:1fr}.eco-chips{max-width:none}}
 </style>
 </head>
 <body>
@@ -828,18 +839,61 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
   <div class="foot"><span>axiasecurity.io</span><span class="sep"></span><span>read</span><span class="sep"></span><span>act</span><span class="sep"></span><span>close</span></div>
 </section>
 
-<!-- ============ 18 · AGENTIC INSIDER RISK + JUDGMENT-AS-A-SERVICE ============ -->
+<!-- ============ 18 · TWO WAYS IN. ONE DESTINATION: GOVERNED (SLIDE B PRIME) ============ -->
 <section class="slide dark">
   <div class="wrap">
-    <div class="eyebrow" style="color:var(--cyan)">AI agents · same gate, new subject</div>
-    <h2 class="title">When an AI agent acts for the company,<br>AXIA judges it — and agents can ask first.</h2>
-    <div class="grid g2" style="margin-top:8px">
-      <div class="card" style="background:rgba(255,255,255,.06)"><div class="num" style="color:#22D3EE">CAUGHT AT THE GATE</div><h3 style="color:#fff">Agentic insider risk</h3><p style="color:#C7EFE9">AXIA judges AI agents acting for the company as an insider-risk subject under the same gate as people — and contains them via identity (step-up / disable on agent identities).</p></div>
-      <div class="card" style="background:rgba(34,211,238,.10);border-color:rgba(34,211,238,.4)"><div class="num" style="color:#22D3EE">CONSUMED AT THE SOURCE</div><h3 style="color:#fff">Judgment-as-a-service</h3><p style="color:#C7EFE9">Agents call AXIA's verdict directly via API / CLI / SDK before they act — an agent asks "is this an insider-risk event?" and obeys the explainable verdict.</p></div>
-    </div>
-    <p class="kicker" style="border-color:var(--cyan)">One verdict engine, two ways in: <em class="hl">an agent gets judged at the gate, or it consumes the judgment at the source.</em> Identity is the containment rail for a misbehaving human or AI-agent subject the moment the verdict warrants it.</p>
+    <div class="eyebrow" style="color:var(--cyan)">AI agents · judgment-as-a-service</div>
+    <h2 class="title" style="max-width:26ch">Two ways in. One destination: governed.</h2>
+    <p class="lead" style="max-width:940px;color:#BFEFE8">Agents consume AXIA&#8217;s judgment before they act, via API or MCP. Agents that don&#8217;t are caught at the same gates as people.</p>
+    <div class="figure" style="margin-top:16px"><svg viewBox="0 0 1180 396" role="img" aria-label="Two lanes: a wired-in agent is judged before acting; a rogue agent is stopped at the gate, then joins the wired-in fleet."><defs><marker id="arG" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#34D399"/></marker><marker id="arR2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#FB7185"/></marker><marker id="arC" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 Z" fill="#22D3EE"/></marker></defs><rect x="14" y="36" width="1050" height="122" rx="18" fill="rgba(16,185,129,.08)" stroke="rgba(52,211,153,.28)"/><rect x="14" y="250" width="1050" height="122" rx="18" fill="rgba(231,76,60,.08)" stroke="rgba(251,113,133,.26)"/><text x="34" y="24" font-family="JetBrains Mono" font-size="15" font-weight="600" letter-spacing="2.5" fill="#34D399">WIRED IN: ASKS BEFORE ACTING</text><text x="34" y="238" font-family="JetBrains Mono" font-size="15" font-weight="600" letter-spacing="2.5" fill="#FB7185">ROGUE / UN-WIRED: CAUGHT AT THE GATE</text><rect x="34" y="62" width="300" height="72" rx="14" fill="rgba(255,255,255,.08)" stroke="rgba(127,243,230,.5)" stroke-width="1.4"/><text x="184" y="105" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16.5" fill="#EAFBF8">Calls AXIA via API / MCP</text><path d="M338 98 H362" stroke="#34D399" stroke-width="2.5" marker-end="url(#arG)"/><rect x="368" y="62" width="300" height="72" rx="14" fill="rgba(255,255,255,.08)" stroke="rgba(127,243,230,.5)" stroke-width="1.4"/><text x="518" y="94" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16" fill="#EAFBF8">Risky move prevented.</text><text x="518" y="116" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16" fill="#EAFBF8">Data never moves</text><path d="M672 98 H696" stroke="#34D399" stroke-width="2.5" marker-end="url(#arG)"/><rect x="702" y="62" width="300" height="72" rx="14" fill="rgba(255,255,255,.08)" stroke="rgba(127,243,230,.5)" stroke-width="1.4"/><text x="852" y="94" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16" fill="#EAFBF8">Governance case opens</text><text x="852" y="116" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16" fill="#EAFBF8">with the agent&#8217;s owner</text><rect x="34" y="276" width="300" height="72" rx="14" fill="rgba(255,255,255,.08)" stroke="rgba(127,243,230,.5)" stroke-width="1.4"/><text x="184" y="319" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16.5" fill="#EAFBF8">Hits the same gates as people</text><path d="M338 312 H362" stroke="#FB7185" stroke-width="2.5" marker-end="url(#arR2)"/><rect x="368" y="276" width="300" height="72" rx="14" fill="rgba(255,255,255,.08)" stroke="rgba(127,243,230,.5)" stroke-width="1.4"/><text x="518" y="308" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16" fill="#EAFBF8">Auto-stopped.</text><text x="518" y="330" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16" fill="#EAFBF8">Identity contained</text><path d="M672 312 H696" stroke="#FB7185" stroke-width="2.5" marker-end="url(#arR2)"/><rect x="702" y="276" width="300" height="72" rx="14" fill="rgba(255,255,255,.08)" stroke="rgba(127,243,230,.5)" stroke-width="1.4"/><text x="852" y="308" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16" fill="#EAFBF8">Owner directed</text><text x="852" y="330" text-anchor="middle" font-family="Manrope" font-weight="600" font-size="16" fill="#EAFBF8">to wire it in</text><circle cx="1108" cy="98" r="26" fill="rgba(16,185,129,.18)" stroke="#34D399" stroke-width="2.5"/><path d="M1096 98 l8 9 l17 -19" stroke="#34D399" stroke-width="3.5" fill="none"/><polygon points="1090,302 1102,290 1119,290 1131,302 1131,319 1119,331 1102,331 1090,319" fill="rgba(231,76,60,.16)" stroke="#FB7185" stroke-width="2.5"/><path d="M1101 310.5 H1120" stroke="#FB7185" stroke-width="4" stroke-linecap="round"/><path d="M1110 284 C 1158 226, 1158 168, 1112 130" fill="none" stroke="#22D3EE" stroke-width="3" marker-end="url(#arC)"/><text x="1042" y="206" text-anchor="end" font-family="Manrope" font-style="italic" font-weight="600" font-size="16.5" fill="#7FF3E6">the fleet converges on judged-before-acting</text><g stroke="#7FF3E6" stroke-width="1.7" fill="none" opacity=".55"><g><rect x="549" y="225" width="22" height="15" rx="3"/><path d="M549 226 l11 8 l11 -8"/></g><path d="M590 223 h20 a4 4 0 0 1 4 4 v8 a4 4 0 0 1 -4 4 h-12 l-6 5 v-5 h-2 a4 4 0 0 1 -4 -4 v-8 a4 4 0 0 1 4 -4 z"/><path d="M632 224 h8 l4 4 h12 a3 3 0 0 1 3 3 v8 a3 3 0 0 1 -3 3 h-24 a3 3 0 0 1 -3 -3 v-12 a3 3 0 0 1 3 -3 z"/><path d="M682 225 l-7 7 l7 7 M690 225 l7 7 l-7 7" stroke-linecap="round" stroke-linejoin="round"/><g><rect x="718" y="222" width="8" height="8" rx="2"/><rect x="730" y="222" width="8" height="8" rx="2"/><rect x="718" y="234" width="8" height="8" rx="2"/><rect x="730" y="234" width="8" height="8" rx="2"/></g></g></svg></div>
+    <p class="pull" style="margin-top:12px;font-size:clamp(19px,2.2vw,27px);color:#EAFBF8">AXIA doesn&#8217;t just stop rogue agents. <em class="hl">It helps you govern the entire agent fleet.</em></p>
   </div>
-  <div class="foot"><span>axiasecurity.io</span><span class="sep"></span><span>agentic insider risk + judgment-as-a-service</span></div>
+  <div class="foot"><span>axiasecurity.io</span><span class="sep"></span><span>agentic insider risk</span></div>
+</section>
+
+<!-- ============ 18b · THE AGENT ECOSYSTEM ROSTER (SLIDE E) ============ -->
+<section class="slide light">
+  <div class="wrap">
+    <div class="eyebrow">The agent ecosystem</div>
+    <h2 class="title" style="max-width:22ch">Wherever your agents come from, they meet the same gates.</h2>
+    <p class="lead" style="max-width:940px">Built in-house or bought as a product: every agent acts through the same channels, and AXIA judges every one of them.</p>
+    <div class="eco-grid">
+      <div class="eco-col">
+        <div class="eco-head">BUILT AND RUN IN-HOUSE</div>
+        <div class="eco-desc">Run in your own cloud and identities</div>
+        <div class="eco-chips">
+          <span class="eco-chip">Copilot Studio</span>
+          <span class="eco-chip">Azure AI Foundry</span>
+          <span class="eco-chip">Bedrock AgentCore</span>
+          <span class="eco-chip">Vertex AI</span>
+          <span class="eco-chip">LangGraph</span>
+          <span class="eco-chip">CrewAI</span>
+          <span class="eco-chip">Cursor</span>
+          <span class="eco-chip">Claude Code</span>
+          <span class="eco-chip">GitHub Copilot</span>
+          <span class="eco-chip">UiPath</span>
+          <span class="eco-chip">n8n</span>
+        </div>
+      </div>
+      <div class="eco-col">
+        <div class="eco-head">BOUGHT AS A PRODUCT</div>
+        <div class="eco-desc">A third-party product&#8217;s agent acting into your systems</div>
+        <div class="eco-chips">
+          <span class="eco-chip">Agentforce</span>
+          <span class="eco-chip">Now Assist</span>
+          <span class="eco-chip">M365 Copilot</span>
+          <span class="eco-chip">Glean</span>
+          <span class="eco-chip">Copilot autonomous PRs</span>
+          <span class="eco-chip">Atlassian Rovo</span>
+          <span class="eco-chip">Sierra</span>
+          <span class="eco-chip">Intercom Fin</span>
+          <span class="eco-chip">Harvey</span>
+        </div>
+      </div>
+    </div>
+    <p class="eco-foot">And the next one you deploy: same gates, day one.</p>
+  </div>
+  <div class="foot"><span>axiasecurity.io</span><span class="sep"></span><span>agentic insider risk</span></div>
 </section>
 
 <!-- ============ 19 · DEEPER JUDGMENT ============ -->
@@ -919,7 +973,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <script>
 (function(){
   var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-  var titles = ["Solution Overview","The Wedge","The Structural Gap","Architecture · Five Stages","Stage 1 · Ingest","Stage 2 · Gatekeeper","Stage 3 · The Judge","Two-Tier Engine · Endpoint Modes","Stage 4 · Action Families","Channel Action Model","Stage 5 · Auto-Close Loop","Read-Source Stack · Priors","Deployment Models","Data Stays In Your Perimeter","API-First Topology","Security Posture","Read · Act · Close","Agentic + Judgment-as-a-Service","Deeper Judgment","Proof","See It On Your Data"];
+  var titles = ["Solution Overview","The Wedge","The Structural Gap","Architecture · Five Stages","Stage 1 · Ingest","Stage 2 · Gatekeeper","Stage 3 · The Judge","Two-Tier Engine · Endpoint Modes","Stage 4 · Action Families","Channel Action Model","Stage 5 · Auto-Close Loop","Read-Source Stack · Priors","Deployment Models","Data Stays In Your Perimeter","API-First Topology","Security Posture","Read · Act · Close","AI Agents · Two Ways In · Governed","The Agent Ecosystem","Deeper Judgment","Proof","See It On Your Data"];
   var i = 0;
   var tot = slides.length;
   document.getElementById('tot').textContent = tot;

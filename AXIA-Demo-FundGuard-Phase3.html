@@ -2091,8 +2091,8 @@ const DEMO_DATA = {
     // V5.9: 3-month story - metrics showing declining risk as AXIA learns
     metricsByTimeframe: {
         "1d": {
-            open: 3,
-            closed: 5,
+            open: 4,
+            closed: 1,
             axiaEngagements: 8,
             engagementsByType: { employee: 4, manager: 3, legal: 0, evidence: 2 },
             policyUpdates: 1,
@@ -2104,8 +2104,8 @@ const DEMO_DATA = {
             meanTimeToResolution: { avg: 4.8, critical: 3.2, high: 5.2 }
         },
         "7d": {
-            open: 8,
-            closed: 22,
+            open: 10,
+            closed: 8,
             axiaEngagements: 45,
             engagementsByType: { employee: 22, manager: 16, legal: 4, evidence: 10 },
             policyUpdates: 3,
@@ -2116,8 +2116,8 @@ const DEMO_DATA = {
             meanTimeToResolution: { avg: 2.4, critical: 1.8, high: 2.8 }
         },
         "30d": {
-            open: 18,
-            closed: 87,
+            open: 10,
+            closed: 40,
             axiaEngagements: 198,
             engagementsByType: { employee: 94, manager: 68, legal: 18, evidence: 42 },
             policyUpdates: 9,
@@ -2128,8 +2128,8 @@ const DEMO_DATA = {
             meanTimeToResolution: { avg: 1.4, critical: 1.0, high: 1.6 }
         },
         "90d": {
-            open: 42,
-            closed: 298,
+            open: 10,
+            closed: 175,
             axiaEngagements: 623,
             engagementsByType: { employee: 298, manager: 212, legal: 56, evidence: 128 },
             policyUpdates: 28,
@@ -2175,33 +2175,38 @@ const DEMO_DATA = {
     // V6.12: ALIGNED to match metricsByTimeframe totals (open+closed)
     // 1d=8, 7d=30, 30d=105, 90d=340 - showing AXIA improvement story
     severityByTimeframe: {
+        // v12 (founder re-baseline): AUTHORED single source of truth. Totals 5/18/50/185.
+        // 1d and 7d are exemplar timeframes: counts == seeded rows exactly (deriveTallies now runs as a
+        // consistency CHECK on 1d/7d, logging any mismatch — it no longer overwrites these stats).
+        // 30d/90d headline stats are authored; the lists carry seeded exemplars and the per-severity
+        // "View all" affordance carries the "there's more".
         "1d": {
-            // V6.12: 8 total cases (aligned with metricsByTimeframe: open=3, closed=5)
-            critical: { open: 1, dlpAlerted: 0, total: 2 },
-            high: { open: 1, dlpAlerted: 1, total: 3 },
-            medium: { open: 1, dlpAlerted: 0, total: 2 },
+            // 5 cases: open 4 (C1 gate · H2 · M1 governance) + closed 1 (L auto-coached)
+            critical: { open: 1, dlpAlerted: 1, total: 1 },
+            high: { open: 2, dlpAlerted: 1, total: 2 },
+            medium: { open: 1, dlpAlerted: 1, total: 1 },
             low: { open: 0, dlpAlerted: 0, total: 1 }
         },
         "7d": {
-            // V6.12: 30 total cases (aligned with metricsByTimeframe: open=8, closed=22)
-            critical: { open: 2, dlpAlerted: 3, total: 8 },
-            high: { open: 3, dlpAlerted: 3, total: 9 },
-            medium: { open: 2, dlpAlerted: 1, total: 8 },
-            low: { open: 1, dlpAlerted: 0, total: 5 }
+            // 18 cases: open 10 (C3/H4/M2/L1) + closed 8 — matches the seeded 7d list exactly
+            critical: { open: 3, dlpAlerted: 4, total: 5 },
+            high: { open: 4, dlpAlerted: 4, total: 6 },
+            medium: { open: 2, dlpAlerted: 3, total: 5 },
+            low: { open: 1, dlpAlerted: 1, total: 2 }
         },
         "30d": {
-            // V6.12: 105 total cases (aligned with metricsByTimeframe: open=18, closed=87)
-            critical: { open: 4, dlpAlerted: 8, total: 22 },
-            high: { open: 5, dlpAlerted: 10, total: 28 },
-            medium: { open: 6, dlpAlerted: 6, total: 33 },
-            low: { open: 3, dlpAlerted: 2, total: 22 }
+            // 50 cases authored (open 10 + closed 40); list carries the seeded exemplars
+            critical: { open: 3, dlpAlerted: 10, total: 10 },
+            high: { open: 4, dlpAlerted: 12, total: 15 },
+            medium: { open: 2, dlpAlerted: 10, total: 15 },
+            low: { open: 1, dlpAlerted: 6, total: 10 }
         },
         "90d": {
-            // V6.12: 340 total cases (aligned with metricsByTimeframe: open=42, closed=298)
-            critical: { open: 7, dlpAlerted: 22, total: 60 },
-            high: { open: 10, dlpAlerted: 32, total: 85 },
-            medium: { open: 16, dlpAlerted: 18, total: 127 },
-            low: { open: 9, dlpAlerted: 6, total: 68 }
+            // 185 cases authored (open 10 + closed 175); list carries the seeded exemplars
+            critical: { open: 3, dlpAlerted: 24, total: 30 },
+            high: { open: 4, dlpAlerted: 48, total: 55 },
+            medium: { open: 2, dlpAlerted: 50, total: 60 },
+            low: { open: 1, dlpAlerted: 30, total: 40 }
         }
     },
 
@@ -2211,19 +2216,16 @@ const DEMO_DATA = {
     // 7d: Week view includes recent + resolved cases
     // 30d/90d: Full history
     casesByTimeframe: {
-        // Phase3 #6: STRICT NESTED SUPERSETS 1d ⊂ 7d ⊂ 30d ⊂ 90d so each timeframe shows a distinct,
-        // increasing case volume. 1d = the 14 live-drain cases (C5/H5/M2/L2). 7d/30d/90d add CLOSED
-        // history cases (defined in the progression driver, NOT in DEMO_IDS) → 14 → 24 → 31 → 40.
-        // v9 A2: 1d = 22 (open 14 = 4C/4H/3M/3L + closed 8). Nested magnitudes 22 -> 30 -> 35 -> 40.
-        // 1d open: C=001(gate),002,004,018 · H=003,005,011,014 · M=020,021,026 · L=022,023,033
-        // 1d closed(8): C=017(i),028(k) · H=043(k),024(g),030(c) · M=006(e),031(d) · L=041(a)
-        "1d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-043","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041"],
-        // 7d (30) = 1d + 8 closed history (007,009,012,013,025,027,029,032)
-        "7d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-043","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032"],
-        // 30d (35) = 7d + 5 closed history (015,016,034,036,037)
-        "30d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-043","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-036","CASE-FG-037"],
-        // 90d (40) = 30d + 5 closed history (035,038,039,040,042) = all 40
-        "90d": ["CASE-FG-001","CASE-FG-002","CASE-FG-003","CASE-FG-004","CASE-FG-005","CASE-FG-006","CASE-FG-011","CASE-FG-014","CASE-FG-017","CASE-FG-018","CASE-FG-043","CASE-FG-020","CASE-FG-021","CASE-FG-022","CASE-FG-023","CASE-FG-024","CASE-FG-026","CASE-FG-028","CASE-FG-030","CASE-FG-031","CASE-FG-033","CASE-FG-041","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-025","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-036","CASE-FG-037","CASE-FG-035","CASE-FG-038","CASE-FG-039","CASE-FG-040","CASE-FG-042"]
+        // v12 (founder re-baseline): STRICT NESTED SUPERSETS 1d ⊂ 7d ⊂ 30d ⊂ 90d.
+        // 1d = 5 rows == headline 5 (001 gate awaiting · 003 pending · 005 open · 044 governance open · 041 closed auto-coached).
+        // 7d = 18 rows == headline 18 (open 10 = C:001,002,018 H:003,005,011,014 M:021,044 L:022 · closed 8 incl.
+        //      all 3 rogue agents' history 017/028/043, governance B1 045, hold-release 031, replied 030).
+        // 30d/90d lists = seeded exemplar supersets (32 / 42 rows); headline stats are AUTHORED 50/185 —
+        // the per-severity "View all" affordance carries the rest.
+        "1d": ["CASE-FG-001","CASE-FG-003","CASE-FG-005","CASE-FG-044","CASE-FG-041"],
+        "7d": ["CASE-FG-001","CASE-FG-003","CASE-FG-005","CASE-FG-044","CASE-FG-041","CASE-FG-002","CASE-FG-018","CASE-FG-011","CASE-FG-014","CASE-FG-021","CASE-FG-022","CASE-FG-017","CASE-FG-028","CASE-FG-043","CASE-FG-045","CASE-FG-030","CASE-FG-006","CASE-FG-031"],
+        "30d": ["CASE-FG-001","CASE-FG-003","CASE-FG-005","CASE-FG-044","CASE-FG-041","CASE-FG-002","CASE-FG-018","CASE-FG-011","CASE-FG-014","CASE-FG-021","CASE-FG-022","CASE-FG-017","CASE-FG-028","CASE-FG-043","CASE-FG-045","CASE-FG-030","CASE-FG-006","CASE-FG-031","CASE-FG-004","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-020","CASE-FG-023","CASE-FG-024","CASE-FG-025","CASE-FG-026","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-033"],
+        "90d": ["CASE-FG-001","CASE-FG-003","CASE-FG-005","CASE-FG-044","CASE-FG-041","CASE-FG-002","CASE-FG-018","CASE-FG-011","CASE-FG-014","CASE-FG-021","CASE-FG-022","CASE-FG-017","CASE-FG-028","CASE-FG-043","CASE-FG-045","CASE-FG-030","CASE-FG-006","CASE-FG-031","CASE-FG-004","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-020","CASE-FG-023","CASE-FG-024","CASE-FG-025","CASE-FG-026","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-033","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-035","CASE-FG-036","CASE-FG-037","CASE-FG-038","CASE-FG-039","CASE-FG-040","CASE-FG-042"]
     },
 
     // ==================== V5.13: CONNECTION STATS BY TIMEFRAME ====================
@@ -2276,59 +2278,59 @@ const DEMO_DATA = {
     // V6.12: ALIGNED to match metricsByTimeframe totals (1d=8, 7d=30, 30d=105, 90d=340)
     // Shows AXIA improvement story - higher cases in 90d (historical), lower in recent periods
     departmentRiskByTimeframe: {
+        // v12 (founder re-baseline): per-timeframe sums = 5/18/50/185, severity splits aligned to
+        // severityByTimeframe (C1/H2/M1/L1 · C5/H6/M5/L2 · C10/H15/M15/L10 · C30/H55/M60/L40)
         "1d": {
-            // V6.27: Total = 8 cases — FundGuard caseTypes
-            "Engineering": { cases: 2, trend: "down", severity: "medium", percentage: 25, critical: 0, high: 1, medium: 1, low: 0, caseTypes: ['NAV engine access'] },
-            "Sales": { cases: 2, trend: "down", severity: "low", percentage: 25, critical: 0, high: 0, medium: 1, low: 1, caseTypes: ['Client portfolio export'] },
-            "Finance": { cases: 2, trend: "stable", severity: "medium", percentage: 25, critical: 1, high: 1, medium: 0, low: 0, caseTypes: ['Investor report'] },
-            "Product": { cases: 1, trend: "down", severity: "low", percentage: 12, critical: 0, high: 0, medium: 0, low: 1, caseTypes: ['Migration analysis'] },
-            "Marketing": { cases: 1, trend: "stable", severity: "low", percentage: 13, critical: 0, high: 0, medium: 0, low: 1, caseTypes: ['Partner comms'] },
+            "Finance": { cases: 1, trend: "stable", severity: "critical", percentage: 20, critical: 1, high: 0, medium: 0, low: 0, caseTypes: ['Investor report'] },
+            "Sales": { cases: 1, trend: "down", severity: "high", percentage: 20, critical: 0, high: 1, medium: 0, low: 0, caseTypes: ['Client portfolio export'] },
+            "Product": { cases: 1, trend: "down", severity: "high", percentage: 20, critical: 0, high: 1, medium: 0, low: 0, caseTypes: ['Migration analysis'] },
+            "Engineering": { cases: 1, trend: "down", severity: "medium", percentage: 20, critical: 0, high: 0, medium: 1, low: 0, caseTypes: ['Agent governance'] },
+            "Marketing": { cases: 1, trend: "stable", severity: "low", percentage: 20, critical: 0, high: 0, medium: 0, low: 1, caseTypes: ['Partner comms'] },
             "HR": { cases: 0, trend: "down", severity: "low", percentage: 0, critical: 0, high: 0, medium: 0, low: 0, caseTypes: [] },
             "Legal": { cases: 0, trend: "stable", severity: "low", percentage: 0, critical: 0, high: 0, medium: 0, low: 0, caseTypes: [] },
             "Executive": { cases: 0, trend: "stable", severity: "low", percentage: 0, critical: 0, high: 0, medium: 0, low: 0, caseTypes: [] }
         },
         "7d": {
-            // V6.27: Total = 30 cases — FundGuard caseTypes
-            "Engineering": { cases: 7, trend: "down", severity: "medium", percentage: 23, critical: 2, high: 2, medium: 2, low: 1, caseTypes: ['NAV engine access', 'API extraction'] },
-            "Sales": { cases: 7, trend: "down", severity: "medium", percentage: 23, critical: 1, high: 2, medium: 2, low: 2, caseTypes: ['Client data export', 'Fund specs'] },
-            "Finance": { cases: 5, trend: "stable", severity: "medium", percentage: 17, critical: 2, high: 1, medium: 2, low: 0, caseTypes: ['Investor allocation'] },
-            "Product": { cases: 5, trend: "down", severity: "low", percentage: 17, critical: 1, high: 1, medium: 2, low: 1, caseTypes: ['Migration analysis'] },
-            "Marketing": { cases: 2, trend: "stable", severity: "low", percentage: 7, critical: 1, high: 0, medium: 0, low: 1, caseTypes: ['Partner comms'] },
-            "HR": { cases: 2, trend: "down", severity: "low", percentage: 7, critical: 1, high: 0, medium: 1, low: 0, caseTypes: ['Employee record'] },
-            "Legal": { cases: 2, trend: "stable", severity: "low", percentage: 7, critical: 0, high: 1, medium: 1, low: 0, caseTypes: ['Compliance findings'] },
+            "Engineering": { cases: 4, trend: "down", severity: "high", percentage: 22, critical: 2, high: 1, medium: 1, low: 0, caseTypes: ['NAV engine access', 'Agent governance'] },
+            "Finance": { cases: 3, trend: "stable", severity: "high", percentage: 17, critical: 1, high: 1, medium: 1, low: 0, caseTypes: ['Investor allocation'] },
+            "Sales": { cases: 3, trend: "down", severity: "medium", percentage: 17, critical: 0, high: 2, medium: 1, low: 0, caseTypes: ['Client data export', 'Fund specs'] },
+            "Product": { cases: 2, trend: "down", severity: "medium", percentage: 11, critical: 1, high: 0, medium: 1, low: 0, caseTypes: ['Migration analysis'] },
+            "Marketing": { cases: 2, trend: "stable", severity: "low", percentage: 11, critical: 1, high: 0, medium: 0, low: 1, caseTypes: ['Partner comms'] },
+            "HR": { cases: 2, trend: "down", severity: "low", percentage: 11, critical: 0, high: 0, medium: 1, low: 1, caseTypes: ['Employee record'] },
+            "Legal": { cases: 2, trend: "stable", severity: "high", percentage: 11, critical: 0, high: 2, medium: 0, low: 0, caseTypes: ['Compliance findings'] },
             "Executive": { cases: 0, trend: "stable", severity: "low", percentage: 0, critical: 0, high: 0, medium: 0, low: 0, caseTypes: [] }
         },
         "30d": {
-            // V6.27: Total = 105 cases — FundGuard caseTypes
-            "Engineering": { cases: 26, trend: "down", severity: "high", percentage: 25, critical: 5, high: 8, medium: 9, low: 4, caseTypes: ['IP exfiltration', 'Departure risk'] },
-            "Sales": { cases: 19, trend: "down", severity: "medium", percentage: 18, critical: 3, high: 5, medium: 7, low: 4, caseTypes: ['Client data export', 'Fund portfolio'] },
-            "Finance": { cases: 16, trend: "stable", severity: "high", percentage: 15, critical: 4, high: 5, medium: 5, low: 2, caseTypes: ['NAV reports', 'Investor allocations'] },
-            "Product": { cases: 13, trend: "down", severity: "medium", percentage: 12, critical: 2, high: 3, medium: 5, low: 3, caseTypes: ['Migration docs', 'Product roadmap'] },
-            "Marketing": { cases: 10, trend: "stable", severity: "low", percentage: 10, critical: 2, high: 2, medium: 3, low: 3, caseTypes: ['Partner comms', 'Partner info'] },
-            "HR": { cases: 10, trend: "down", severity: "medium", percentage: 10, critical: 2, high: 2, medium: 3, low: 3, caseTypes: ['Employee data', 'Comp info'] },
-            "Legal": { cases: 6, trend: "stable", severity: "low", percentage: 6, critical: 2, high: 1, medium: 2, low: 1, caseTypes: ['Compliance docs', 'Regulatory data'] },
-            "Executive": { cases: 5, trend: "stable", severity: "critical", percentage: 5, critical: 2, high: 2, medium: 1, low: 0, caseTypes: ['M&A data', 'Board materials'] }
+            "Engineering": { cases: 11, trend: "down", severity: "high", percentage: 22, critical: 3, high: 4, medium: 3, low: 1, caseTypes: ['IP exfiltration', 'Agent governance'] },
+            "Sales": { cases: 9, trend: "down", severity: "medium", percentage: 18, critical: 2, high: 3, medium: 3, low: 1, caseTypes: ['Client data export', 'Fund portfolio'] },
+            "Finance": { cases: 8, trend: "stable", severity: "high", percentage: 16, critical: 2, high: 3, medium: 2, low: 1, caseTypes: ['NAV reports', 'Investor allocations'] },
+            "Product": { cases: 7, trend: "down", severity: "medium", percentage: 14, critical: 1, high: 2, medium: 2, low: 2, caseTypes: ['Migration docs', 'Product roadmap'] },
+            "Marketing": { cases: 5, trend: "stable", severity: "low", percentage: 10, critical: 1, high: 1, medium: 1, low: 2, caseTypes: ['Partner comms', 'Partner info'] },
+            "HR": { cases: 4, trend: "down", severity: "medium", percentage: 8, critical: 0, high: 1, medium: 2, low: 1, caseTypes: ['Employee data', 'Comp info'] },
+            "Legal": { cases: 4, trend: "stable", severity: "low", percentage: 8, critical: 1, high: 1, medium: 1, low: 1, caseTypes: ['Compliance docs', 'Regulatory data'] },
+            "Executive": { cases: 2, trend: "stable", severity: "medium", percentage: 4, critical: 0, high: 0, medium: 1, low: 1, caseTypes: ['M&A data', 'Board materials'] }
         },
         "90d": {
-            // V6.27: Total = 340 cases — FundGuard caseTypes
-            "Engineering": { cases: 74, trend: "down", severity: "high", percentage: 22, critical: 12, high: 22, medium: 28, low: 12, caseTypes: ['IP exfiltration', 'Departure risk', 'NAV engine access'] },
-            "Sales": { cases: 68, trend: "down", severity: "high", percentage: 20, critical: 10, high: 18, medium: 26, low: 14, caseTypes: ['Client data export', 'Fund portfolio', 'Investor lists'] },
-            "Finance": { cases: 56, trend: "down", severity: "high", percentage: 16, critical: 10, high: 15, medium: 22, low: 9, caseTypes: ['NAV reports', 'Investor allocations', 'M&A data'] },
-            "Product": { cases: 43, trend: "down", severity: "medium", percentage: 13, critical: 7, high: 10, medium: 18, low: 8, caseTypes: ['Migration docs', 'Product roadmap', 'Feature plans'] },
-            "Marketing": { cases: 31, trend: "down", severity: "medium", percentage: 9, critical: 5, high: 7, medium: 12, low: 7, caseTypes: ['Partner comms', 'Partner info', 'Brand assets'] },
-            "HR": { cases: 28, trend: "down", severity: "medium", percentage: 8, critical: 5, high: 7, medium: 10, low: 6, caseTypes: ['Employee data', 'Comp info', 'Performance reviews'] },
-            "Legal": { cases: 22, trend: "down", severity: "medium", percentage: 6, critical: 4, high: 5, medium: 8, low: 5, caseTypes: ['Compliance docs', 'Regulatory data', 'Litigation docs'] },
-            "Executive": { cases: 18, trend: "down", severity: "critical", percentage: 5, critical: 7, high: 6, medium: 4, low: 1, caseTypes: ['M&A data', 'Board materials', 'Strategic plans'] }
+            "Engineering": { cases: 40, trend: "down", severity: "high", percentage: 21, critical: 8, high: 13, medium: 13, low: 6, caseTypes: ['IP exfiltration', 'Departure risk', 'Agent governance'] },
+            "Sales": { cases: 33, trend: "down", severity: "high", percentage: 18, critical: 6, high: 10, medium: 11, low: 6, caseTypes: ['Client data export', 'Fund portfolio', 'Investor lists'] },
+            "Finance": { cases: 30, trend: "down", severity: "high", percentage: 16, critical: 6, high: 9, medium: 9, low: 6, caseTypes: ['NAV reports', 'Investor allocations', 'M&A data'] },
+            "Product": { cases: 26, trend: "down", severity: "medium", percentage: 14, critical: 4, high: 8, medium: 9, low: 5, caseTypes: ['Migration docs', 'Product roadmap', 'Feature plans'] },
+            "Marketing": { cases: 19, trend: "down", severity: "medium", percentage: 10, critical: 2, high: 5, medium: 6, low: 6, caseTypes: ['Partner comms', 'Partner info', 'Brand assets'] },
+            "HR": { cases: 14, trend: "down", severity: "medium", percentage: 8, critical: 1, high: 4, medium: 5, low: 4, caseTypes: ['Employee data', 'Comp info', 'Performance reviews'] },
+            "Legal": { cases: 14, trend: "down", severity: "medium", percentage: 8, critical: 2, high: 4, medium: 4, low: 4, caseTypes: ['Compliance docs', 'Regulatory data', 'Litigation docs'] },
+            "Executive": { cases: 9, trend: "down", severity: "medium", percentage: 5, critical: 1, high: 2, medium: 3, low: 3, caseTypes: ['M&A data', 'Board materials', 'Strategic plans'] }
         }
     },
 
     // ==================== V6.12: COMMAND TOTALS BY TIMEFRAME ====================
     // V6.12: ALIGNED axiaCases with metricsByTimeframe totals
     commandTotalsByTimeframe: {
-        "1d": { axiaCases: 8, dlpAlerted: 3, totalDlpAlarms: 42, validatedByAxia: 3 },
-        "7d": { axiaCases: 30, dlpAlerted: 12, totalDlpAlarms: 98, validatedByAxia: 12 },
-        "30d": { axiaCases: 105, dlpAlerted: 46, totalDlpAlarms: 247, validatedByAxia: 46 },
-        "90d": { axiaCases: 340, dlpAlerted: 142, totalDlpAlarms: 812, validatedByAxia: 142 }
+        // v12 (founder re-baseline): cases 5/18/50/185 · DLP alarms ~118/834/3,612/10,847 (deliberately
+        // off-round). False Alerts = totalDlpAlarms − validatedByAxia ≈ 97-98% noise.
+        "1d": { axiaCases: 5, dlpAlerted: 3, totalDlpAlarms: 118, validatedByAxia: 3 },
+        "7d": { axiaCases: 18, dlpAlerted: 12, totalDlpAlarms: 834, validatedByAxia: 12 },
+        "30d": { axiaCases: 50, dlpAlerted: 38, totalDlpAlarms: 3612, validatedByAxia: 38 },
+        "90d": { axiaCases: 185, dlpAlerted: 152, totalDlpAlarms: 10847, validatedByAxia: 152 }
     },
 
     // ==================== FundGuard: SUPPRESSED DLP ALERTS (False Positives) ====================
@@ -2631,10 +2633,11 @@ const DEMO_DATA = {
 
     // True Alarms Comparison - AXIA vs DLP (VALUE PROOF)
     trueAlarmsComparison: {
-        "1d": { axiaDiscovered: 8, dlpDiscovered: 2 },
-        "7d": { axiaDiscovered: 30, dlpDiscovered: 8 },
-        "30d": { axiaDiscovered: 105, dlpDiscovered: 28 },
-        "90d": { axiaDiscovered: 340, dlpDiscovered: 85 }
+        // v12: aligned to the authored case baseline 5/18/50/185
+        "1d": { axiaDiscovered: 5, dlpDiscovered: 1 },
+        "7d": { axiaDiscovered: 18, dlpDiscovered: 5 },
+        "30d": { axiaDiscovered: 50, dlpDiscovered: 14 },
+        "90d": { axiaDiscovered: 185, dlpDiscovered: 52 }
     },
 
     // False Alarms Trend (Signal vs Noise) - DLP alerts vs AXIA true alerts
@@ -2642,29 +2645,28 @@ const DEMO_DATA = {
     // M1 = 85% FP rate (DLP noise), M2 = 59% FP rate, M3 = 74% FP rate improvement
     // V6.21: Real date labels (based on demo date ~Feb 2026)
     falseAlarmsTrend: {
+        // v12 (founder re-baseline): DLP alerts sum to the alarm headline (118/834/3,612/10,847),
+        // true incidents sum to the case headline (5/18/50/185) → ~96-98% noise, timeframe-aware.
         "1d": {
-            // V6.28.1: ~3% noise reduction (today - DLPs now well-tuned, almost all alerts are real)
             labels: ['6h', '12h', '18h', '24h'],
-            dlpAlerts: [38, 42, 35, 40],
-            axiaTrueAlerts: [37, 40, 34, 39]
+            dlpAlerts: [30, 29, 30, 29],
+            axiaTrueAlerts: [2, 1, 1, 1]
         },
         "7d": {
-            // V6.28.1: 5% noise reduction (this week - DLPs generating mostly true alerts now)
             labels: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-            dlpAlerts: [145, 138, 152, 141, 148, 139, 142],
-            axiaTrueAlerts: [137, 131, 144, 134, 141, 132, 136]
+            dlpAlerts: [120, 118, 122, 119, 117, 120, 118],
+            axiaTrueAlerts: [3, 3, 3, 3, 2, 2, 2]
         },
         "30d": {
-            // V6.28.1: 30% noise reduction (last month - AXIA still training DLP rules)
             labels: ['Jan 10', 'Jan 17', 'Jan 24', 'Jan 31'],
-            dlpAlerts: [612, 548, 492, 445],
-            axiaTrueAlerts: [428, 384, 344, 312]
+            dlpAlerts: [900, 905, 903, 904],
+            axiaTrueAlerts: [14, 13, 12, 11]
         },
         "90d": {
-            // V6.28.1: 95% noise reduction (full quarter - includes early noisy period before AXIA tuned DLPs)
+            // flat alerts (~3.5k/mo) while cases decline 75 → 60 → 50
             labels: ['Nov', 'Dec', 'Jan'],
-            dlpAlerts: [2847, 1923, 1412],
-            axiaTrueAlerts: [142, 96, 71]
+            dlpAlerts: [3547, 3600, 3700],
+            axiaTrueAlerts: [75, 60, 50]
         }
     },
 
@@ -2711,45 +2713,49 @@ const DEMO_DATA = {
     // v9 audit fix: case-volume per timeframe kept CONSISTENT with the Command severity totals
     // (22/30/35/40); open stays 14 across all timeframes (matching the board), closed history grows.
     casesByStatus: {
-        "1d": { open: 14, assigned: 0, unassigned: 0, closed: 8 },
-        "7d": { open: 14, assigned: 0, unassigned: 0, closed: 16 },
-        "30d": { open: 14, assigned: 0, unassigned: 0, closed: 21 },
-        "90d": { open: 14, assigned: 0, unassigned: 0, closed: 26 }
+        // v12: sums = 5/18/50/185 (open per window + authored closed history)
+        "1d": { open: 4, assigned: 0, unassigned: 0, closed: 1 },
+        "7d": { open: 10, assigned: 0, unassigned: 0, closed: 8 },
+        "30d": { open: 10, assigned: 0, unassigned: 0, closed: 40 },
+        "90d": { open: 10, assigned: 0, unassigned: 0, closed: 175 }
     },
 
     // V6.27: Top Case Types by timeframe — FundGuard-specific categories
     caseTypesByTimeframe: {
+        // v12: per-timeframe sums = 5/18/50/185; Agent Governance added (§2.4 governance cases)
         "1d": [
-            { type: 'IP Exfiltration', count: 7, icon: 'code' },
-            { type: 'Client Data Exposure', count: 5, icon: 'group' },
-            { type: 'Departure Risk', count: 4, icon: 'exit_to_app' },
-            { type: 'Compliance Violation', count: 3, icon: 'gavel' },
+            { type: 'IP Exfiltration', count: 1, icon: 'code' },
+            { type: 'Client Data Exposure', count: 1, icon: 'group' },
+            { type: 'Departure Risk', count: 1, icon: 'exit_to_app' },
+            { type: 'Agent Governance', count: 1, icon: 'smart_toy' },
+            { type: 'Compliance Violation', count: 1, icon: 'gavel' }
+        ],
+        "7d": [
+            { type: 'IP Exfiltration', count: 4, icon: 'code' },
+            { type: 'Client Data Exposure', count: 4, icon: 'group' },
+            { type: 'Departure Risk', count: 3, icon: 'exit_to_app' },
+            { type: 'Compliance Violation', count: 2, icon: 'gavel' },
+            { type: 'Agent Governance', count: 2, icon: 'smart_toy' },
             { type: 'Reputation Risk', count: 2, icon: 'trending_down' },
             { type: 'Context-Validated', count: 1, icon: 'verified' }
         ],
-        "7d": [
-            { type: 'IP Exfiltration', count: 9, icon: 'code' },
-            { type: 'Client Data Exposure', count: 6, icon: 'group' },
-            { type: 'Departure Risk', count: 5, icon: 'exit_to_app' },
-            { type: 'Compliance Violation', count: 4, icon: 'gavel' },
-            { type: 'Reputation Risk', count: 3, icon: 'trending_down' },
-            { type: 'Context-Validated', count: 3, icon: 'verified' }
-        ],
         "30d": [
-            { type: 'IP Exfiltration', count: 10, icon: 'code' },
-            { type: 'Client Data Exposure', count: 7, icon: 'group' },
-            { type: 'Departure Risk', count: 6, icon: 'exit_to_app' },
-            { type: 'Compliance Violation', count: 5, icon: 'gavel' },
-            { type: 'Reputation Risk', count: 4, icon: 'trending_down' },
-            { type: 'Context-Validated', count: 3, icon: 'verified' }
+            { type: 'IP Exfiltration', count: 12, icon: 'code' },
+            { type: 'Client Data Exposure', count: 10, icon: 'group' },
+            { type: 'Departure Risk', count: 8, icon: 'exit_to_app' },
+            { type: 'Compliance Violation', count: 7, icon: 'gavel' },
+            { type: 'Reputation Risk', count: 5, icon: 'trending_down' },
+            { type: 'Agent Governance', count: 4, icon: 'smart_toy' },
+            { type: 'Context-Validated', count: 4, icon: 'verified' }
         ],
         "90d": [
-            { type: 'IP Exfiltration', count: 10, icon: 'code' },
-            { type: 'Client Data Exposure', count: 8, icon: 'group' },
-            { type: 'Departure Risk', count: 7, icon: 'exit_to_app' },
-            { type: 'Compliance Violation', count: 6, icon: 'gavel' },
-            { type: 'Reputation Risk', count: 5, icon: 'trending_down' },
-            { type: 'Context-Validated', count: 4, icon: 'verified' }
+            { type: 'IP Exfiltration', count: 45, icon: 'code' },
+            { type: 'Client Data Exposure', count: 38, icon: 'group' },
+            { type: 'Departure Risk', count: 30, icon: 'exit_to_app' },
+            { type: 'Compliance Violation', count: 26, icon: 'gavel' },
+            { type: 'Reputation Risk', count: 20, icon: 'trending_down' },
+            { type: 'Context-Validated', count: 14, icon: 'verified' },
+            { type: 'Agent Governance', count: 12, icon: 'smart_toy' }
         ]
     },
 
@@ -2760,49 +2766,51 @@ const DEMO_DATA = {
     //   sum(closed)+sum(open) == KPI total (14/24/31/40); sum(open)==casesByStatus.open; sum(closed)==closed;
     //   per-period severity sum == per-period (closed+open); severity-mode total == status-mode total.
     casesTimeline: {
+        // v12 (founder re-baseline): per-timeframe bar sums = 5/18/50/185 (open sums match casesByStatus).
+        // The line overlay is now the flat DLP-alert series (was interactions) — cases decline, alerts flat.
         "1d": {
-            // total 14 · open 4 · closed 10 · sev C5/H5/M2/L2
+            // total 5 · open 4 · closed 1 · sev C1/H2/M1/L1
             labels: ['6h', '12h', '18h', '24h'],
-            closed: [3, 3, 2, 2],            // =10
-            open:   [1, 1, 1, 1],            // =4   → per-period totals [4,4,3,3]=14
-            critical: [2, 1, 1, 1],          // =5
-            high:     [1, 2, 1, 1],          // =5
-            medium:   [1, 0, 1, 0],          // =2
-            low:      [0, 1, 0, 1],          // =2   → per-period sev [4,4,3,3]=14
-            interactions: [1105, 1245, 1089, 1082]
+            closed: [0, 0, 0, 1],            // =1
+            open:   [2, 1, 1, 0],            // =4   → per-period totals [2,1,1,1]=5
+            critical: [1, 0, 0, 0],          // =1
+            high:     [1, 1, 0, 0],          // =2
+            medium:   [0, 0, 1, 0],          // =1
+            low:      [0, 0, 0, 1],          // =1   → per-period sev [2,1,1,1]=5
+            interactions: [30, 29, 30, 29]   // DLP alerts overlay =118
         },
         "7d": {
-            // total 24 · open 5 · closed 19 · sev C5/H7/M5/L7
+            // total 18 · open 10 · closed 8 · sev C5/H6/M5/L2
             labels: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-            closed: [3, 3, 3, 3, 3, 2, 2],   // =19
-            open:   [1, 1, 1, 1, 1, 0, 0],   // =5   → per-period totals [4,4,4,4,4,2,2]=24
+            closed: [2, 1, 1, 1, 1, 1, 1],   // =8
+            open:   [1, 2, 2, 2, 1, 1, 1],   // =10  → per-period totals [3,3,3,3,2,2,2]=18
             critical: [1, 1, 1, 1, 1, 0, 0], // =5
-            high:     [1, 1, 1, 1, 1, 1, 1], // =7
-            medium:   [1, 1, 1, 1, 1, 0, 0], // =5
-            low:      [1, 1, 1, 1, 1, 1, 1], // =7   → per-period sev [4,4,4,4,4,2,2]=24
-            interactions: [38420, 41230, 39580, 42150, 40890, 41560, 38626]
+            high:     [1, 1, 1, 1, 0, 1, 1], // =6
+            medium:   [1, 1, 0, 1, 1, 0, 1], // =5
+            low:      [0, 0, 1, 0, 0, 1, 0], // =2   → per-period sev [3,3,3,3,2,2,2]=18
+            interactions: [120, 118, 122, 119, 117, 120, 118] // DLP alerts overlay =834
         },
         "30d": {
-            // total 31 · open 6 · closed 25 · sev C7/H9/M7/L8
+            // total 50 · open 10 · closed 40 · sev C10/H15/M15/L10
             labels: ['Jan 10', 'Jan 17', 'Jan 24', 'Jan 31'],
-            closed: [7, 6, 6, 6],            // =25
-            open:   [2, 2, 1, 1],            // =6   → per-period totals [9,8,7,7]=31
-            critical: [2, 2, 2, 1],          // =7
-            high:     [3, 2, 2, 2],          // =9
-            medium:   [2, 2, 2, 1],          // =7
-            low:      [2, 2, 1, 3],          // =8   → per-period sev [9,8,7,7]=31
-            interactions: [278456, 312890, 298745, 358154]
+            closed: [12, 10, 10, 8],         // =40
+            open:   [2, 3, 2, 3],            // =10  → per-period totals [14,13,12,11]=50
+            critical: [3, 3, 2, 2],          // =10
+            high:     [4, 4, 4, 3],          // =15
+            medium:   [4, 4, 3, 4],          // =15
+            low:      [3, 2, 3, 2],          // =10  → per-period sev [14,13,12,11]=50
+            interactions: [900, 905, 903, 904] // DLP alerts overlay =3612
         },
         "90d": {
-            // total 40 · open 7 · closed 33 · sev C9/H12/M9/L10
+            // total 185 · open 10 · closed 175 · sev C30/H55/M60/L40 — monthly bars DECLINE 75/60/50
             labels: ['Nov', 'Dec', 'Jan'],
-            closed: [11, 11, 11],            // =33
-            open:   [3, 2, 2],               // =7   → per-period totals [14,13,13]=40
-            critical: [3, 3, 3],             // =9
-            high:     [4, 4, 4],             // =12
-            medium:   [3, 3, 3],             // =9
-            low:      [4, 3, 3],             // =10  → per-period sev [14,13,13]=40
-            interactions: [1124567, 1289456, 1342689]
+            closed: [70, 55, 50],            // =175
+            open:   [5, 5, 0],               // =10  → per-period totals [75,60,50]=185
+            critical: [12, 10, 8],           // =30
+            high:     [22, 18, 15],          // =55
+            medium:   [24, 20, 16],          // =60
+            low:      [17, 12, 11],          // =40  → per-period sev [75,60,50]=185
+            interactions: [3547, 3600, 3700] // DLP alerts overlay =10847 (flat)
         }
     },
 
@@ -5773,7 +5781,7 @@ let currentCaseId = null;
 let tourStep = 0;
 let tourActive = false;
 let activeFilters = { severity: [], status: [], actions: [], dlp: [] };
-let currentTimeframe = '1d'; // V5.4: Default to 1 day for Command/Cases
+let currentTimeframe = '7d'; // v12 (founder #2): Command defaults to 7d — the rich board; 1d one click away
 let dashboardTimeframe = '7d'; // V6.20: Dashboard defaults to 7d; 1d restored for tactical view
 // V6.25: dashboardEditMode removed - fixed layout
 
@@ -5996,6 +6004,13 @@ function renderCaseCard(c, compact = false) {
         else if (_nba.mode === 'manual') recommendedControl = recBtn(verb, 'play_arrow');
         else recommendedControl = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-teal/10 text-ops-teal border border-ops-teal/30 min-h-[28px]">${mIcon('auto_mode')}Auto</span>`;
     }
+    // v12 §2.4: OPEN agent cases show the governance stage badge — AXIA already acted (blocked pre-send /
+    // auto-stopped); the case awaits the STEWARD's confirmation, never a person-framed approve button.
+    if (c.actor === 'agent' && stage !== 'closed') {
+        const _st = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : { role: 'CISO team (steward fallback)' };
+        recommendedControl = chip('bg-ops-purple/10 text-ops-purple border border-ops-purple/30', mIcon(c.integration === 'integrated' ? 'gavel' : 'block'),
+            (c.integration === 'integrated' ? 'Blocked pre-send' : 'Auto-stopped') + ' · Awaiting ' + _st.role + '’s confirmation');
+    }
     const channelChip = c.channel ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]">${mIcon(c.channelIcon || 'lan')}${c.channel}</span>` : '';
 
     return `
@@ -6019,14 +6034,18 @@ function renderCaseCard(c, compact = false) {
                 </div>
                 ${(() => {
                     // v7 V2: channel/source tag(s) on the FIRST line; the Recommended-action control BELOW it.
+                    // v12 §2.4: agent cases carry the steward email — ALWAYS already sent by AXIA ("View sent message").
+                    const isAgentGov = (c.actor === 'agent');
                     const isEngageEmail = (c.holdEmail || (c.remediation && c.remediation.family === 'engagement'));
                     let emailChip = '';
-                    if (isEngageEmail) {
-                        const sentState = (stage === 'acting' || stage === 'pending' || stage === 'closed');
+                    if (isEngageEmail || isAgentGov) {
+                        const sentState = isAgentGov || (stage === 'acting' || stage === 'pending' || stage === 'closed');
                         const lbl = sentState ? 'View sent message' : 'View suggested email';
                         const ic = sentState ? 'mark_email_read' : 'outgoing_mail';
                         emailChip = `<button type="button" onclick="event.stopPropagation(); axiaViewEmail('${c.id}')" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-bold bg-white text-ops-teal border border-ops-teal min-h-[28px] shadow-sm hover:bg-ops-teal/5 transition-colors">${mIcon(ic)}${lbl}</button>`;
                     }
+                    // v12 §2.4: governance chip on every agent case (ops-purple / fact_check)
+                    const govChip = isAgentGov ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-ops-purple/10 text-ops-purple border border-ops-purple/30 min-h-[28px]">${mIcon('fact_check')}${c.integration === 'integrated' ? 'Governance · prompt validation' : 'Governance · connect directive'}</span>` : '';
                     const dlpBadge = (c.dlpAlerted && (typeof localStorage !== 'undefined' && localStorage.getItem('axia_show_dlp_badge') === 'true')) ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]"><span class="material-symbols-outlined text-[14px]">shield</span>${c.dlpSystem || 'DLP'}</span>` : '';
                     const actionsTags = (c.actions || []).map(a => `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold bg-primary/10 text-primary border border-primary/30 min-h-[28px]">${a}</span>`).join('');
                     // v9 N4: Phase-2 attribution tags (Verified/Confirmed/Approved-by) — metadata, no authority.
@@ -6036,7 +6055,7 @@ function renderCaseCard(c, compact = false) {
                         const ttl = `${t.type} ${t.person} (${t.source})${t.evidence ? ' — ' + t.evidence : ''}`;
                         return `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-accent-teal/10 text-accent-teal border border-accent-teal/30 min-h-[28px]" title="${ttl}">${mIcon(ic)}${t.type} ${t.person}<span class="material-symbols-outlined text-[12px] opacity-70">${srcIc}</span></span>`;
                     }).join('');
-                    const channelRow = `${channelChip}${dlpBadge}${actionsTags}${attribTags}`;
+                    const channelRow = `${channelChip}${govChip}${dlpBadge}${actionsTags}${attribTags}`;
                     return `
                     ${channelRow.trim() ? `<div class="flex items-center gap-2 mt-2 flex-wrap">${channelRow}</div>` : ''}
                     <div class="flex items-center gap-2 mt-1.5 flex-wrap">
@@ -6304,7 +6323,7 @@ function renderCaseList() {
 const TL_TOKEN = {
     'primary':           { hex: '#2DD4BF', node: 'filled', icon: 'gavel',         role: 'AXIA judgment' },
     'ops-teal':          { hex: '#0D9488', node: 'filled', icon: 'lock',          role: 'Containment / identity' },
-    'accent-teal':       { hex: '#22D3EE', node: 'filled', icon: 'shield',        role: 'Reported to CISO' },
+    'accent-teal':       { hex: '#22D3EE', node: 'filled', icon: 'shield',        role: 'Steward / stakeholder notified' },
     'severity-critical': { hex: '#E74C3C', node: 'filled', icon: 'priority_high', role: 'Open / awaiting confirmation' },
     'severity-medium':   { hex: '#3498DB', node: 'filled', icon: 'schedule',      role: 'Awaiting reply / approval' },
     'status-success':    { hex: '#22C55E', node: 'filled', icon: 'check',         role: 'Closed / released' },
@@ -6644,17 +6663,31 @@ function axiaDecisionTimeline(c){
     const rec = { event: 'AXIA recommended ' + label, time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' };
     const out = c.outcome ? (' · ' + c.outcome) : '';
     const stage = c.stage || (c.status === 'open' ? 'open' : 'closed');
-    // v10: rogue-agent lane — overrides stage/mode. You don't coach a machine: caught → auto-stop → CISO.
+    // v12 §2.4 A1/B1: INTEGRATED agent — judged BEFORE acting (AXIA API / AXIA MCP). The block is silent;
+    // the governance loop is the case: email the steward → validate instructions → steward confirms.
+    if (c.actor === 'agent' && c.integration === 'integrated') {
+        const st0 = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : { role: 'CISO team (steward fallback)' };
+        const evG = [
+            { event: 'Agent consulted AXIA pre-send — sensitive send blocked, data never moved', time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' },
+            { event: 'Emailed ' + st0.role + ' — validate this agent type’s instructions', time: 'moments later', source: 'AXIA', color: 'accent-teal' }
+        ];
+        if (c.status === 'closed') evG.push({ event: st0.role + ' confirmed — agent instructions validated · case closed', time: 'done', source: st0.role, color: 'status-success' });
+        else evG.push({ event: 'Governance case open — awaiting ' + st0.role + '’s confirmation', time: 'now', source: st0.role, color: 'severity-critical' });
+        return evG;   // governance lane is self-contained; no person-branch events, no attribs
+    }
+    // v10/v12 §2.4 A2/B2: rogue-agent lane — overrides stage/mode. You don't coach a machine: caught →
+    // auto-stop → email the STEWARD a connect directive (AXIA API internal / AXIA MCP SaaS) → steward confirms.
     if (c.agentRogue) {
         const gate = c.channel || 'a monitored gate';
         const stop = (c.remediation && c.remediation.label) || 'revoke token · kill session · quarantine';
+        const st1 = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : { role: 'CISO team (steward fallback)', target: 'AXIA API' };
         const ev0 = [
             { event: 'Caught at ' + gate + ' — resolved to a non-human identity', time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' },
             { event: 'Auto-stopped — ' + stop, time: 'moments later', source: 'Identity containment', color: 'ops-teal' },
-            { event: 'Reported to CISO office', time: 'moments later', source: 'AXIA', color: 'accent-teal' }
+            { event: 'Emailed ' + st1.role + ' — directed: connect this agent type to the ' + st1.target, time: 'moments later', source: 'AXIA', color: 'accent-teal' }
         ];
-        if (c.status === 'closed') ev0.push({ event: 'Case closed — contained (CISO office)', time: 'done', source: 'AXIA', color: 'status-success' });
-        else ev0.push({ event: 'Case open — pending CISO office acknowledgement', time: 'now', source: 'CISO office', color: 'severity-critical' });
+        if (c.status === 'closed') ev0.push({ event: st1.role + ' confirmed — agent connected to ' + st1.target + ' · case closed', time: 'done', source: st1.role, color: 'status-success' });
+        else ev0.push({ event: 'Case open — awaiting ' + st1.role + '’s confirmation', time: 'now', source: st1.role, color: 'severity-critical' });
         return ev0;   // agent lane is self-contained; no person-branch events, no attribs
     }
     let ev = [];
@@ -6920,6 +6953,11 @@ function renderCommandTotals() {
                     <span class="material-symbols-outlined text-text-secondary text-[16px] transition-transform duration-300" id="suppressed-chevron">expand_more</span>
                 </div>
             </div>
+        </div>
+        <div class="flex items-center justify-center mt-2">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-status-success/10 text-status-success border border-status-success/20">
+                <span class="material-symbols-outlined text-[14px]">trending_down</span>Cases ↓ 33% over the quarter · DLP alerts flat
+            </span>
         </div>
     `;
 }
@@ -7881,6 +7919,9 @@ function renderCasesTimeline() {
                 <span class="text-2xl font-black text-accent-teal">${totalInteractions.toLocaleString()}</span>
                 <span class="text-[11px] text-text-secondary">interactions analyzed</span>
             </div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-status-success/10 text-status-success border border-status-success/20 ml-auto">
+                <span class="material-symbols-outlined text-[13px]">trending_down</span>Cases ↓ 33% over the quarter · DLP alerts flat
+            </span>
         </div>
         <!-- Prominent chart -->
         <div class="flex-1 flex items-end" style="min-height: 140px;">
@@ -7897,7 +7938,7 @@ function renderCasesTimeline() {
                 <span class="flex items-center gap-1 text-[10px] text-text-secondary"><span class="inline-block w-2.5 h-2.5 rounded-sm" style="background:#eab308"></span>Medium</span>
                 <span class="flex items-center gap-1 text-[10px] text-text-secondary"><span class="inline-block w-2.5 h-2.5 rounded-sm" style="background:#22c55e"></span>Low</span>
             `}
-            <span class="flex items-center gap-1 text-[10px] text-text-secondary ml-auto"><span class="inline-block w-3 h-[2px] rounded-full" style="background:#22D3EE"></span>Interactions (scaled)</span>
+            <span class="flex items-center gap-1 text-[10px] text-text-secondary ml-auto"><span class="inline-block w-3 h-[2px] rounded-full" style="background:#22D3EE"></span>DLP alerts (scaled)</span>
         </div>
     `;
 }
@@ -10446,6 +10487,20 @@ function caseNBA(c){
   };
 }
 
+// ---- v12 §2.4: the accountable STEWARD of an agent (agent-human-judgment-model §2.3/§2.4) ----
+// internal agent → the local IT admin of the agent platform (AXIA API); external/SaaS agent → the
+// partnership IT/Business owner (AXIA MCP); FG-043 keeps the CISO team as its partnership steward (T2);
+// CISO team = fallback when no steward is identified. Role-labels + functional mailboxes only (founder #4).
+function axiaStewardFor(c){
+  c = c || {};
+  if (c.steward && c.steward.role) return { role: c.steward.role, email: c.steward.email || 'ciso-office@fundguard.com', target: (c.origin === 'saas') ? 'AXIA MCP' : 'AXIA API' };
+  if (c.id === 'CASE-FG-043') return { role: 'CISO team (partnership steward)', email: 'ciso-office@fundguard.com', target: 'AXIA MCP' };
+  if (c.origin === 'saas') return { role: 'Partnership owner (IT/Business)', email: 'partner-integrations@fundguard.com', target: 'AXIA MCP' };
+  if (c.origin === 'internal') return { role: 'Platform admin (IT)', email: 'it-platform-admins@fundguard.com', target: 'AXIA API' };
+  return { role: 'CISO team (steward fallback)', email: 'ciso-office@fundguard.com', target: 'AXIA API' };
+}
+window.axiaStewardFor = axiaStewardFor;
+
 // ---- Engagement email draft (PRD §16.5 draft_payload: subject + body, from the org mailbox) ----
 window.__axiaEmail = window.__axiaEmail || {};
 function engagementEmailFor(c){
@@ -10454,6 +10509,40 @@ function engagementEmailFor(c){
   var name = (c.entity && c.entity.name) || 'there';
   var first = name.split(' ')[0];
   var subj, body;
+  // v12 §2.4: AGENT cases — the email goes to the accountable STEWARD (functional mailbox), and AXIA has
+  // ALREADY sent it (the governance case opens awaiting the steward's confirmation; there is no draft state).
+  if (c.actor === 'agent') {
+    var st = axiaStewardFor(c);
+    var agentName = name;
+    var integrated = (c.integration === 'integrated');
+    if (integrated) {
+      subj = 'Governance: validate the instructions of ' + agentName + ' (sensitive send blocked pre-send)';
+      body =
+        'Hi ' + st.role + ' team,\n\n' +
+        'AXIA blocked a sensitive send attempted by ' + agentName + ' before any data moved. The agent consulted AXIA over the ' + st.target + ' and obeyed the blocking judgment — nothing left the environment.\n\n' +
+        'As the steward of this agent, please:\n' +
+        '  • Validate the instructions/prompt of this agent type — why is it attempting sensitive sends?\n' +
+        '  • Reply to confirm once the instructions have been reviewed and corrected.\n\n' +
+        'AXIA opened governance case ' + c.id + ' with you as the owner; it closes on your confirmation.\n\n' +
+        '— FundGuard Security (AXIA)';
+    } else {
+      var viaProvider = (c.origin === 'saas');
+      subj = 'Action required: connect ' + agentName + ' to the ' + st.target + ' (auto-stopped at a gate)';
+      body =
+        'Hi ' + st.role + ' team,\n\n' +
+        'AXIA caught ' + agentName + ' acting at a monitored gate (' + (c.channel || 'a monitored channel') + '), resolved it to a non-human identity, and auto-stopped it (' + ((c.remediation && c.remediation.label) || 'containment executed') + ').\n\n' +
+        'This agent type is not connected to AXIA, so it was stopped after acting instead of judged before. As the steward of this agent, please:\n' +
+        (viaProvider
+          ? '  • Work with the provider to connect this agent type to the ' + st.target + ' so it is judged before it acts.\n'
+          : '  • Connect this agent type to the ' + st.target + ' so it is judged before it acts.\n') +
+        '  • Reply to confirm once it has been connected.\n\n' +
+        'AXIA opened case ' + c.id + ' with you as the owner; it closes on your confirmation.\n\n' +
+        '— FundGuard Security (AXIA)';
+    }
+    var draftA = { from: from, to: st.email, cc: [], role: st.role, subject: subj, body: body };
+    window.__axiaEmail[c.id] = draftA;
+    return draftA;
+  }
   if (c.holdEmail) {
     subj = 'Quick check on an email we placed on a brief hold';
     body =
@@ -10508,7 +10597,9 @@ function axiaViewEmail(id){
   var d = window.__axiaEmail[id] || engagementEmailFor(c);
   var nba = (typeof caseNBA === 'function') ? caseNBA(c) : { gated:false };
   var stage = c.stage || (c.status === 'open' ? 'open' : 'closed');
-  var sent = (stage === 'acting' || stage === 'closed');
+  // v12 §2.4: steward emails on AGENT cases are ALWAYS already sent by AXIA — never a draft, never an
+  // Approve→send button (the case is what awaits the steward's reply, not the analyst's approval).
+  var sent = (stage === 'acting' || stage === 'closed') || (c.actor === 'agent');
   var gated = nba.gated && !sent;
   var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
   var labelChip = sent
@@ -10541,6 +10632,36 @@ window.axiaViewEmail = axiaViewEmail;
 
 // ---- Case Details: the typed NBA panel (replaces the old action-options grid) ----
 function renderNBAPanel(c){
+  // v12 §2.4: AGENT cases get a GOVERNANCE panel, not a person-framed approve flow. AXIA already acted
+  // (blocked pre-send for integrated agents / auto-stopped rogue agents); the sole open item is the
+  // steward's confirmation. No Approve button — the steward email was already sent.
+  if (c && c.actor === 'agent') {
+    var stw = axiaStewardFor(c);
+    var integ = (c.integration === 'integrated');
+    var closedG = (c.status === 'closed');
+    var actLine = integ
+      ? 'Agent consulted AXIA pre-send — sensitive send blocked, data never moved'
+      : 'Auto-stopped at the gate — ' + ((c.remediation && c.remediation.label) || 'containment executed');
+    var askLine = integ
+      ? 'Emailed ' + stw.role + ' — validate this agent type’s instructions'
+      : 'Emailed ' + stw.role + ' — directed: connect this agent type to the ' + stw.target;
+    var stateLine = closedG
+      ? stw.role + ' confirmed · case closed'
+      : 'Awaiting ' + stw.role + '’s confirmation';
+    return ''
+    + '<div class="bg-surface-card rounded-xl border border-border-default overflow-hidden shadow-card">'
+    +   '<div class="px-4 py-3 bg-surface-elevated border-b border-border-default flex items-center justify-between">'
+    +     '<div class="flex items-center gap-2"><span class="material-symbols-outlined text-ops-purple text-lg">fact_check</span><span class="font-bold text-text-primary">Agent governance</span></div>'
+    +     '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-ops-purple/15 text-ops-purple border border-ops-purple/30">' + (integ ? 'Governance · prompt validation' : 'Governance · connect directive') + '</span>'
+    +   '</div>'
+    +   '<div class="p-4 space-y-2">'
+    +     '<div class="flex items-start gap-2 text-sm text-text-primary"><span class="material-symbols-outlined text-primary text-[18px] shrink-0">' + (integ ? 'gavel' : 'block') + '</span><span>' + actLine + '</span></div>'
+    +     '<div class="flex items-start gap-2 text-sm text-text-primary"><span class="material-symbols-outlined text-accent-teal text-[18px] shrink-0">outgoing_mail</span><span>' + askLine + '</span></div>'
+    +     '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg ' + (closedG ? 'bg-status-success/10 border border-status-success/30 text-status-success' : 'bg-ops-purple/10 border border-ops-purple/30 text-ops-purple') + ' text-sm font-bold"><span class="material-symbols-outlined">' + (closedG ? 'check_circle' : 'pending') + '</span>' + stateLine + '</div>'
+    +     '<button type="button" onclick="axiaViewEmail(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg bg-white text-ops-teal border border-ops-teal hover:bg-ops-teal/5 transition-colors text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">mark_email_read</span>View sent message</button>'
+    +   '</div>'
+    + '</div>';
+  }
   var nba = caseNBA(c);
   var fam = NBA_FAMILY[nba.family] || { label: nba.family, icon: 'bolt', exec: '' };
   var stage = c.stage || (c.status === 'open' ? 'open' : 'closed');
@@ -10759,7 +10880,7 @@ function actSeverityChip(id, sev, label, highlighted, actor){
   var offCls = 'bg-surface-hover text-text-muted border-border-subtle hover:text-text-primary';
   return '<button onclick="toggleHeldSeverity(\'' + id + '\',\'' + sev + '\',\'' + actor + '\')" '
     + 'title="' + (actor === 'agent'
-        ? (highlighted ? 'Auto-stopped & reported to CISO' : 'Queued for SOC review')
+        ? (highlighted ? 'Auto-stopped & steward notified (connect directive)' : 'Queued for SOC review')
         : (highlighted ? 'Held for your approval' : 'Auto-executed')) + '" '
     + 'class="px-2 py-0.5 rounded-full text-[10px] font-bold border transition-colors '
     + (highlighted ? onCls : offCls) + '">' + label + '</button>';
@@ -10776,8 +10897,8 @@ function actLane(a, actor, sel){
   };
   var icon      = isAgent ? 'smart_toy' : 'person';
   var iconColor = isAgent ? 'text-ops-purple' : 'text-text-secondary';
-  var title     = isAgent ? 'Agents (rogue) · Auto-stopped & reported to CISO' : 'People · Held for your approval';
-  var helper    = isAgent ? 'AXIA stops rogue agents at these severities and reports to the CISO office.'
+  var title     = isAgent ? 'Agents (rogue) · Auto-stopped & steward notified' : 'People · Held for your approval';
+  var helper    = isAgent ? 'AXIA stops rogue agents at these severities and reports to the agent’s steward — the platform’s IT admin, or the partnership owner / CISO team for SaaS agents.'
                           : 'AXIA auto-executes every other severity. These wait for you.';
   var laneCls   = isAgent ? 'flex flex-col gap-1.5 pt-2 border-t border-border-subtle mt-0.5' : 'flex flex-col gap-1.5';
   var html = '<div class="' + laneCls + '">'
@@ -11023,7 +11144,7 @@ function addActionOption(family){
     'CASE-FG-003': {channel:'Google email (Gmail)',        channelIcon:'mail',          remediation:{family:'engagement',  label:'Coach + brief manager',              icon:'forum'}},
     'CASE-FG-005': {channel:'Microsoft 365 email',         channelIcon:'mail',          remediation:{family:'content',     label:'Quarantine email',                   icon:'block'}},
     'CASE-FG-014': {channel:'SharePoint / OneDrive',       channelIcon:'folder_shared', remediation:{family:'content',     label:'Hold file · restrict access',    icon:'lock'}},
-    'CASE-FG-002': {channel:'Internal API · Box',     channelIcon:'folder',        remediation:{family:'identity',    label:'Step-up auth · revoke token',    icon:'key'}},
+    'CASE-FG-002': {channel:'Internal API · Box',     channelIcon:'folder',        remediation:{family:'identity',    label:'Quarantine email · revoke service-account token',    icon:'key'}},
     'CASE-FG-004': {channel:'Google Drive',                channelIcon:'add_to_drive',  remediation:{family:'content',     label:'Revoke external share',              icon:'link_off'}},
     'CASE-FG-017': {channel:'Dropbox',                     channelIcon:'cloud',         remediation:{family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt'}},
     'CASE-FG-001': {channel:'Microsoft 365 → personal Gmail', channelIcon:'mail',  remediation:{family:'content',     label:'Hold email · revoke shares · Legal', icon:'gavel'}},
@@ -11077,6 +11198,52 @@ function addActionOption(family){
     },
     evidence:{channel:'email', email:{from:'agentforce-svc@fundguard.my.salesforce.com', to:['ingest@unknown-endpoint.io'], cc:[], subject:'automated CRM export batch', sentAt:'2026-04-14T05:04:00Z', bodyMarkdown:'Automated CRM/investor record export initiated by the Agentforce SaaS agent through the Salesforce API. AXIA contained the agent identity (OAuth grant revoked, connector disabled) and reported it to the CISO office.', attachments:[]}},
     canEnforce:false, judgmentOnlyReason:'No static DLP rule covers a third-party SaaS agent acting through an OAuth connector; AXIA contains the agent identity and reports to the CISO office.', judgmentRouteTo:'Identity'
+  });
+
+  // ---------- v12 §2.4: the two GOVERNANCE cases (integrated agents — judged BEFORE acting) ----------
+  // A1 — CASE-FG-044: INTERNAL integrated agent (Copilot Studio, AXIA API). Blocked pre-send; the case
+  // leads with the GOVERNANCE ask (validate the agent's instructions), prevention is a timeline beat.
+  addCase({
+    id:'CASE-FG-044', severity:'medium', status:'open', score:47, time:'35m ago',
+    actor:'agent', agentRogue:false, origin:'internal', integration:'integrated',
+    steward:{role:'Platform admin (IT)', email:'it-platform-admins@fundguard.com'},
+    title:'Prompt validation required — an internal agent attempted a sensitive send (blocked pre-send)',
+    description:'The fin-brief-assistant Copilot Studio agent consulted AXIA through the AXIA API before sending its output and was blocked — the draft carried client-identifying data outside the agent’s approved scope, and nothing moved. AXIA emailed the platform admin (IT) to validate this agent type’s instructions; the governance case is open awaiting their confirmation.',
+    entity:{name:'fin-brief-assistant (Copilot Studio agent)', initials:'CA', role:'Internal automation agent', department:'Engineering', location:'Non-human identity'},
+    actions:[], completedActions:[], dlpAlerted:false,
+    channel:'Copilot Studio (AXIA API)', channelIcon:'smart_toy',
+    remediation:{family:'identity', label:'Validate agent instructions', icon:'fact_check'},
+    stage:'open',
+    analysis:{
+      what:'The fin-brief-assistant internal agent consulted AXIA pre-send over the AXIA API and AXIA blocked the send: the drafted briefing included client-identifying data outside the agent’s approved output scope. The data never moved.',
+      whyMatters:'An integrated agent obeying a pre-send judgment is the system working — but an agent type that keeps drafting sensitive sends has an instructions problem. The governance loop puts the platform’s steward on the hook to validate the agent’s prompt so the whole agent type improves, not just this one send.',
+      whyUnusual:'First blocked sensitive send for this agent type; its approved output scope does not include client identifiers.',
+      riskScore:{total:47, factors:{content:55, behavior:40, context:45}}, dataSources:['AXIA API'], contextSources:['Agent registry'], timeline:[]
+    },
+    evidence:{channel:'email', email:{from:'fin-brief-assistant@fundguard.com', to:['briefing-distribution@fundguard.com'], cc:[], subject:'automated client briefing (blocked pre-send)', sentAt:'2026-04-14T04:40:00Z', bodyMarkdown:'Draft briefing generated by the fin-brief-assistant agent. AXIA blocked the send pre-delivery — client-identifying data outside the agent’s approved scope. Data never moved.', attachments:[]}},
+    canEnforce:false, judgmentOnlyReason:'The agent consulted AXIA before acting (judgment-as-a-service, AXIA API); the block happened pre-send — the open item is the steward’s prompt validation.', judgmentRouteTo:'Identity'
+  });
+  // B1 — CASE-FG-045: SaaS integrated agent (M365 Copilot, AXIA MCP). CLOSED history (7d+): the provider
+  // validated the agent's instructions and the partnership owner confirmed — the governance loop completed.
+  addCase({
+    id:'CASE-FG-045', severity:'medium', status:'closed', score:44, time:'3d ago',
+    actor:'agent', agentRogue:false, origin:'saas', integration:'integrated',
+    steward:{role:'Partnership owner (IT/Business)', email:'partner-integrations@fundguard.com'},
+    title:'Provider prompt validation — an M365 Copilot agent attempted a sensitive share (blocked pre-send)',
+    description:'An M365 Copilot agent operating over the AXIA MCP consulted AXIA before sharing a generated summary and was blocked — the summary drew on restricted fund data, and nothing moved. AXIA emailed the partnership owner (IT/Business) to guide the provider through validating the agent’s instructions; the provider validated and the case closed on the owner’s confirmation.',
+    entity:{name:'M365 Copilot agent (copilot-briefings)', initials:'MC', role:'SaaS automation agent (Microsoft 365)', department:'Client Operations', location:'Non-human identity (SaaS)'},
+    actions:[], completedActions:[], dlpAlerted:false,
+    channel:'Microsoft 365 Copilot (AXIA MCP)', channelIcon:'smart_toy',
+    remediation:{family:'identity', label:'Validate agent instructions (provider)', icon:'fact_check'},
+    closeLabel:'Provider validated agent instructions', stage:'closed',
+    analysis:{
+      what:'The copilot-briefings M365 Copilot agent consulted AXIA pre-share over the AXIA MCP and AXIA blocked the share: the generated summary drew on restricted fund data outside the agent’s approved scope. The data never moved.',
+      whyMatters:'SaaS agents act into the company’s systems through the provider’s platform — the governance loop runs through the partnership: the owner guides the provider to validate the agent’s instructions, and confirms once done. Integrated agents get better over time instead of just being stopped.',
+      whyUnusual:'The summary drew on restricted fund data outside the agent’s approved scope.',
+      riskScore:{total:44, factors:{content:52, behavior:38, context:42}}, dataSources:['AXIA MCP'], contextSources:['Agent registry'], timeline:[]
+    },
+    evidence:{channel:'email', email:{from:'copilot-briefings@fundguard.com', to:['team-briefings@fundguard.com'], cc:[], subject:'generated summary (blocked pre-share)', sentAt:'2026-04-11T10:20:00Z', bodyMarkdown:'Generated summary by the copilot-briefings M365 Copilot agent. AXIA blocked the share pre-delivery — restricted fund data outside the agent’s approved scope. Data never moved.', attachments:[]}},
+    canEnforce:false, judgmentOnlyReason:'The agent consulted AXIA before acting (judgment-as-a-service, AXIA MCP); the block happened pre-share — the governance loop closed on the partnership owner’s confirmation.', judgmentRouteTo:'Identity'
   });
 
   // ---------- 2b. Phase 3: easy-to-automate Medium/Low cases + the hold-email "engage-to-verify" use case ----------
@@ -11172,10 +11339,16 @@ function addActionOption(family){
     'CASE-FG-038':'HR'
   };
   // ownerLabel(c) accepts either a full case object (c.severity, c.entity) or a raw HIST record (c.sev, c.name, c.role).
+  // v12 §2.3/§2.4: agent cases are owned by the accountable human STEWARD of the agent — internal →
+  // Platform admin (IT); SaaS → Partnership owner (IT/Business); FG-043 → CISO team (partnership steward);
+  // CISO team = fallback. System cases (detection pipeline) stay CISO/SOC.
   function ownerLabel(c){
     c = c || {};
     var actor = c.actor || 'person';
-    if (actor === 'agent')  return 'Owner: CISO office · contained';
+    if (actor === 'agent') {
+      var stw = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : null;
+      return 'Owner: ' + (stw ? stw.role : 'CISO team (steward fallback)');
+    }
     if (actor === 'system') return 'Owner: CISO office · forwarded to SOC';
     var sev = c.severity || c.sev;
     var e = c.entity || {};
@@ -11195,7 +11368,7 @@ function addActionOption(family){
       actions:[], completedActions:[], dlpAlerted:!!o.dlp,
       channel:o.channel, channelIcon:o.channelIcon,
       remediation:{family:o.family, label:o.label, icon:o.icon},
-      closeLabel:o.closeLabel||'Resolved', outcome:ownerLabel({id:o.id, actor:o.actor, sev:o.sev, name:o.name, role:o.role}),
+      closeLabel:o.closeLabel||'Resolved', outcome:ownerLabel({id:o.id, actor:o.actor, sev:o.sev, name:o.name, role:o.role, origin:o.origin||null, integration:o.integration||null}),
       analysis:{ what:o.what, whyMatters:o.why, whyUnusual:o.unusual||'Outside the entity’s established baseline.',
         riskScore:{total:o.score, factors:{content:o.score, behavior:o.score, context:o.score}},
         dataSources:[o.channel], contextSources:['HR directory'], timeline:[] },
@@ -11229,15 +11402,9 @@ function addActionOption(family){
   ];
   HIST.forEach(function(h){ addCase(histCase(h)); });
 
-  // keep Command (timeframe-scoped) coherent: surface the new agentic + easy-automation cases there too
-  // (the live 1d set). The new CLOSED history ids are placed per-timeframe in DEMO_DATA.casesByTimeframe directly.
-  try {
-    var NEW_IDS = ['CASE-FG-017','CASE-FG-018','CASE-FG-043','CASE-FG-020','CASE-FG-021','CASE-FG-022','CASE-FG-023'];
-    ['1d','7d','30d','90d'].forEach(function(tf){
-      var arr = DEMO_DATA.casesByTimeframe[tf]; if (!arr) return;
-      NEW_IDS.forEach(function(nid){ if (arr.indexOf(nid) === -1) arr.push(nid); });
-    });
-  } catch(e) {}
+  // v12: the old NEW_IDS force-push is REMOVED. DEMO_DATA.casesByTimeframe is authored directly as the
+  // founder-approved exemplar lists (1d=5, 7d=18, 30d/90d supersets); re-adding ids here would break the
+  // counts==rows invariant on 1d/7d.
 
   // ---------- v8 STATIC: progression engine removed. Cases carry fixed seeded states (see boot). ----------
 
@@ -11270,21 +11437,29 @@ function addActionOption(family){
   window.axiaOutcomeFor = outcomeFor; // used by executeNBA (manual approve) outside this scope
   // (actionVerbFor removed — no acting narration in static mode)
 
-  // ---- Single source of truth: ALL severity tallies derive from live case state, every render ----
+  // ---- v12: severityByTimeframe is AUTHORED (founder re-baseline: 5/18/50/185). deriveTallies is now an
+  // internal consistency CHECK on the exemplar timeframes (1d/7d, where counts MUST equal seeded rows) —
+  // it logs a warning on mismatch and never overwrites the authored stats. 30d/90d headlines are authored
+  // over exemplar lists by design ("View all" carries the rest), so they are not checked against rows. ----
   function deriveTallies(){
     var sevs = ['critical','high','medium','low'];
-    ['1d','7d','30d','90d'].forEach(function(tf){
+    ['1d','7d'].forEach(function(tf){
       var ids = DEMO_DATA.casesByTimeframe[tf] || [];
-      var counts = {}; sevs.forEach(function(s){ counts[s] = {open:0,total:0,dlpAlerted:0}; });
+      var counts = {}; sevs.forEach(function(s){ counts[s] = {open:0,total:0}; });
       casesData.forEach(function(c){
         if (ids.length && ids.indexOf(c.id) === -1) return;
         if (!counts[c.severity]) return;
         if (c.status !== 'open' && c.status !== 'closed') return; // 'incoming' cases are not yet surfaced
         counts[c.severity].total++;
         if (c.status === 'open') counts[c.severity].open++;
-        if (c.dlpAlerted) counts[c.severity].dlpAlerted++;
       });
-      DEMO_DATA.severityByTimeframe[tf] = counts;
+      var auth = (DEMO_DATA.severityByTimeframe || {})[tf] || {};
+      sevs.forEach(function(s){
+        var a = auth[s] || {open:0,total:0};
+        if (a.open !== counts[s].open || a.total !== counts[s].total) {
+          console.warn('[axia v12] authored/derived mismatch @' + tf + ' ' + s + ': authored ' + a.open + '/' + a.total + ' vs seeded rows ' + counts[s].open + '/' + counts[s].total);
+        }
+      });
     });
   }
 
@@ -11302,24 +11477,22 @@ function addActionOption(family){
   window.axiaSyncRender = render; // used by executeNBA (manual approve) to keep tallies in sync
 
   // ---------- v8 STATIC SEED (replaces the old reset()/rebuildState progression) ----------
-  // Fixed, believable "live snapshot": a realistic mix of open / engaged-awaiting-reply (pending) /
-  // closed across the 14 live (1d) cases. No timers, no keys, no focus code -- nothing moves on load.
-  // v9 A2 + N1: 22 cases in the 1d snapshot. 14 open (4C/4H/3M/3L) + 8 closed, the 8 closed
-  // diversified across close-paths (see CLOSEPATH below). Only the ids whose default status/stage
-  // differs from the seed need an entry; the rest of the 40-case history keeps its shipped status.
+  // v12 (founder re-baseline): 10 OPEN cases total (C3/H4/M2/L1) — the same open set in every timeframe —
+  // plus closed history. 1d list = 5 rows (counts==rows) · 7d list = 18 rows (counts==rows); 30d/90d
+  // headline stats are authored (50/185) over seeded exemplar lists. No timers; nothing moves on load.
   var SEED = {
-    // Critical (6): open 4 (001 = the awaiting gate) / closed 2
-    'CASE-FG-001':'awaiting', 'CASE-FG-002':'open', 'CASE-FG-004':'open', 'CASE-FG-018':'open',
-    'CASE-FG-017':'closed', 'CASE-FG-028':'closed',
-    // High (7): open 4 (2 open + 2 engaged-pending) / closed 3
+    // Critical open 3: 001 = the awaiting gate · 002 · 018 (rogue agent, awaiting steward)
+    'CASE-FG-001':'awaiting', 'CASE-FG-002':'open', 'CASE-FG-018':'open',
+    'CASE-FG-017':'closed', 'CASE-FG-028':'closed', 'CASE-FG-004':'closed',
+    // High open 4: 005/014 open · 003/011 engaged-pending
     'CASE-FG-014':'open', 'CASE-FG-005':'open', 'CASE-FG-011':'pending', 'CASE-FG-003':'pending',
     'CASE-FG-043':'closed', 'CASE-FG-024':'closed', 'CASE-FG-030':'closed',
-    // Medium (5): open 3 (2 engaged-awaiting-reply + 1 open) / closed 2
-    'CASE-FG-020':'pending', 'CASE-FG-021':'pending', 'CASE-FG-026':'open',
-    'CASE-FG-006':'closed', 'CASE-FG-031':'closed',
-    // Low (4): open 3 / closed 1
-    'CASE-FG-022':'open', 'CASE-FG-023':'open', 'CASE-FG-033':'open',
-    'CASE-FG-041':'closed'
+    // Medium open 2: 044 governance (awaiting steward) · 021 hold-email engaged-pending
+    'CASE-FG-044':'open', 'CASE-FG-021':'pending',
+    'CASE-FG-020':'closed', 'CASE-FG-026':'closed', 'CASE-FG-006':'closed', 'CASE-FG-031':'closed', 'CASE-FG-045':'closed',
+    // Low open 1: 022
+    'CASE-FG-022':'open',
+    'CASE-FG-023':'closed', 'CASE-FG-033':'closed', 'CASE-FG-041':'closed'
   };
   Object.keys(SEED).forEach(function(id){
     var c = casesData.find(function(x){ return x.id === id; });
@@ -11343,7 +11516,9 @@ function addActionOption(family){
     'CASE-FG-025':'g','CASE-FG-027':'b','CASE-FG-028':'h','CASE-FG-029':'e','CASE-FG-030':'c',
     'CASE-FG-031':'d','CASE-FG-032':'i','CASE-FG-034':'j','CASE-FG-035':'g','CASE-FG-036':'f',
     'CASE-FG-037':'i','CASE-FG-038':'b','CASE-FG-039':'e','CASE-FG-040':'g','CASE-FG-041':'a',
-    'CASE-FG-042':'e'
+    'CASE-FG-042':'e',
+    // v12 re-baseline: cases newly seeded closed (004 revoke-share · 020/023/033 auto-coached · 026 fwd-SOC)
+    'CASE-FG-004':'f','CASE-FG-020':'a','CASE-FG-023':'a','CASE-FG-033':'a','CASE-FG-026':'i'
   };
   // Bespoke close labels for the paths whose stock 'Resolved' would not read the story (c/d/j).
   var CLOSELABEL = {

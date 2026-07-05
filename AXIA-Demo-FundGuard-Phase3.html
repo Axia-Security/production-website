@@ -4156,7 +4156,7 @@ const DEMO_DATA = {
             fatcaBearing: false,
             regulatorAnchors: ['IAA-Section-206'],
             dlpSystem: 'Purview',
-            actions: ['User verified', 'Pending approval'],
+            actions: [], /* v13 N5: loose 'User verified'/'Pending approval' strings replaced by a proper Verified-by attribution tag (ATTRIBS) */
             completedActions: [],
             analysis: {
                 what: 'Sarah Goldman (Solutions Architect, Sales, Boston) emailed the FundGuard Master Services Agreement draft v3 to Stephen Reilly (sreilly@meridiancap.com) during the active Meridian Capital Partners technical evaluation ($3.2M ARR opportunity, POC in progress). The document is a commercial-terms draft with the Schedule B pricing tier still in flux (Gold tier 9 bps with intraday NAV add-on) and contains the standard SOC 2 maintenance commitment and the 5-year mutual confidentiality tail. AXIA inspected the email and the attachment, cross-referenced the recipient against the Meridian POC contact list in Salesforce, and surfaced the share because a draft commercial agreement is not the standard pre-sales technical pack.',
@@ -4182,7 +4182,7 @@ const DEMO_DATA = {
                     type: 'context'
                 }, {
                     time: '6:50 AM',
-                    event: 'AXIA: User verified - legitimate prospect engagement on Meridian Capital Partners POC',
+                    event: 'Verified-by Sarah Goldman (auto — reply comprehension): legitimate prospect engagement on Meridian Capital Partners POC',
                     type: 'action'
                 }, {
                     time: '7:00 AM',
@@ -6008,8 +6008,9 @@ function renderCaseCard(c, compact = false) {
     // auto-stopped); the case awaits the STEWARD's confirmation, never a person-framed approve button.
     if (c.actor === 'agent' && stage !== 'closed') {
         const _st = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : { role: 'CISO team (steward fallback)' };
+        const _stLbl = (typeof window.axiaStewardLabel === 'function') ? window.axiaStewardLabel(_st) : _st.role;
         recommendedControl = chip('bg-ops-purple/10 text-ops-purple border border-ops-purple/30', mIcon(c.integration === 'integrated' ? 'gavel' : 'block'),
-            (c.integration === 'integrated' ? 'Blocked pre-send' : 'Auto-stopped') + ' · Awaiting ' + _st.role + '’s confirmation');
+            (c.integration === 'integrated' ? 'Blocked pre-send' : 'Auto-stopped') + ' · Awaiting ' + _stLbl + '’s confirmation');
     }
     const channelChip = c.channel ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-medium bg-surface-hover text-text-secondary border border-border-default min-h-[28px]">${mIcon(c.channelIcon || 'lan')}${c.channel}</span>` : '';
 
@@ -6036,7 +6037,7 @@ function renderCaseCard(c, compact = false) {
                     // v7 V2: channel/source tag(s) on the FIRST line; the Recommended-action control BELOW it.
                     // v12 §2.4: agent cases carry the steward email — ALWAYS already sent by AXIA ("View sent message").
                     const isAgentGov = (c.actor === 'agent');
-                    const isEngageEmail = (c.holdEmail || (c.remediation && c.remediation.family === 'engagement'));
+                    const isEngageEmail = (c.holdEmail || c.engageComponent || (c.remediation && c.remediation.family === 'engagement')); // v13 N2: + engagement-as-a-component
                     let emailChip = '';
                     if (isEngageEmail || isAgentGov) {
                         const sentState = isAgentGov || (stage === 'acting' || stage === 'pending' || stage === 'closed');
@@ -6667,12 +6668,14 @@ function axiaDecisionTimeline(c){
     // the governance loop is the case: email the steward → validate instructions → steward confirms.
     if (c.actor === 'agent' && c.integration === 'integrated') {
         const st0 = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : { role: 'CISO team (steward fallback)' };
+        const lbl0 = (typeof window.axiaStewardLabel === 'function') ? window.axiaStewardLabel(st0) : st0.role;
         const evG = [
             { event: 'Agent consulted AXIA pre-send — sensitive send blocked, data never moved', time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' },
-            { event: 'Emailed ' + st0.role + ' — validate this agent type’s instructions', time: 'moments later', source: 'AXIA', color: 'accent-teal' }
+            { event: 'Emailed ' + lbl0 + ' — validate this agent type’s instructions', time: 'moments later', source: 'AXIA', color: 'accent-teal' }
         ];
-        if (c.status === 'closed') evG.push({ event: st0.role + ' confirmed — agent instructions validated · case closed', time: 'done', source: st0.role, color: 'status-success' });
-        else evG.push({ event: 'Governance case open — awaiting ' + st0.role + '’s confirmation', time: 'now', source: st0.role, color: 'severity-critical' });
+        if (c.status === 'closed') evG.push({ event: lbl0 + ' confirmed — agent instructions validated · case closed', time: 'done', source: lbl0, color: 'status-success' });
+        // v13 N1: no awaiting/pseudo-state timeline events — the open state is carried by the card badge +
+        // governance panel state line; a timeline shows things that HAPPENED. Open governance case top event = the steward email.
         return evG;   // governance lane is self-contained; no person-branch events, no attribs
     }
     // v10/v12 §2.4 A2/B2: rogue-agent lane — overrides stage/mode. You don't coach a machine: caught →
@@ -6681,27 +6684,27 @@ function axiaDecisionTimeline(c){
         const gate = c.channel || 'a monitored gate';
         const stop = (c.remediation && c.remediation.label) || 'revoke token · kill session · quarantine';
         const st1 = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : { role: 'CISO team (steward fallback)', target: 'AXIA API' };
+        const lbl1 = (typeof window.axiaStewardLabel === 'function') ? window.axiaStewardLabel(st1) : st1.role;
         const ev0 = [
             { event: 'Caught at ' + gate + ' — resolved to a non-human identity', time: c.time || 'recently', source: 'AXIA judgment', color: 'primary' },
             { event: 'Auto-stopped — ' + stop, time: 'moments later', source: 'Identity containment', color: 'ops-teal' },
-            { event: 'Emailed ' + st1.role + ' — directed: connect this agent type to the ' + st1.target, time: 'moments later', source: 'AXIA', color: 'accent-teal' }
+            { event: 'Emailed ' + lbl1 + ' — directed: connect this agent type to the ' + st1.target, time: 'moments later', source: 'AXIA', color: 'accent-teal' }
         ];
-        if (c.status === 'closed') ev0.push({ event: st1.role + ' confirmed — agent connected to ' + st1.target + ' · case closed', time: 'done', source: st1.role, color: 'status-success' });
-        else ev0.push({ event: 'Case open — awaiting ' + st1.role + '’s confirmation', time: 'now', source: st1.role, color: 'severity-critical' });
+        if (c.status === 'closed') ev0.push({ event: lbl1 + ' confirmed — agent connected to ' + st1.target + ' · case closed', time: 'done', source: lbl1, color: 'status-success' });
+        // v13 N1: no awaiting/pseudo-state timeline events — open rogue case top event = the connect directive email.
         return ev0;   // agent lane is self-contained; no person-branch events, no attribs
     }
     let ev = [];
     if (c.status !== 'closed') {
-        if (stage === 'awaiting' || nba.gated) {
-            ev = [rec, { event: 'Awaiting your confirmation — containment gate', time: 'now', source: 'Human-in-the-loop', color: 'severity-critical' }];
-        } else if (stage === 'pending') {
+        // v13 N1: ALL awaiting/pseudo-state events removed (awaiting-confirmation gate, awaiting-reply,
+        // ready-to-auto-execute, awaiting-approval). A timeline shows things that HAPPENED; current state
+        // is carried by the card/status badges and the NBA panel. For open cases the top of the timeline
+        // is the last HAPPENED event (the engagement send on pending cases, else the recommendation).
+        if (stage === 'pending') {
             ev = [rec,
-                { event: 'Engagement email sent to ' + first, time: 'moments later', source: 'Org mailbox', color: 'ops-teal' },
-                { event: 'Awaiting reply from ' + first, time: 'now', source: 'Engagement', color: 'severity-medium' }];
-        } else if (nba.mode === 'automated') {
-            ev = [rec, { event: 'Ready to auto-execute per policy', time: 'now', source: 'Policy', color: 'ops-teal' }];
+                { event: 'Engagement email sent to ' + first, time: 'moments later', source: 'Org mailbox', color: 'ops-teal' }];
         } else {
-            ev = [rec, { event: 'Awaiting your approval', time: 'now', source: 'Human-in-the-loop', color: 'severity-medium' }];
+            ev = [rec];
         }
     } else {
         const p = c.closePath || 'b';
@@ -6953,11 +6956,6 @@ function renderCommandTotals() {
                     <span class="material-symbols-outlined text-text-secondary text-[16px] transition-transform duration-300" id="suppressed-chevron">expand_more</span>
                 </div>
             </div>
-        </div>
-        <div class="flex items-center justify-center mt-2">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-status-success/10 text-status-success border border-status-success/20">
-                <span class="material-symbols-outlined text-[14px]">trending_down</span>Cases ↓ 33% over the quarter · DLP alerts flat
-            </span>
         </div>
     `;
 }
@@ -7919,9 +7917,6 @@ function renderCasesTimeline() {
                 <span class="text-2xl font-black text-accent-teal">${totalInteractions.toLocaleString()}</span>
                 <span class="text-[11px] text-text-secondary">interactions analyzed</span>
             </div>
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-status-success/10 text-status-success border border-status-success/20 ml-auto">
-                <span class="material-symbols-outlined text-[13px]">trending_down</span>Cases ↓ 33% over the quarter · DLP alerts flat
-            </span>
         </div>
         <!-- Prominent chart -->
         <div class="flex-1 flex items-end" style="min-height: 140px;">
@@ -10487,17 +10482,37 @@ function caseNBA(c){
   };
 }
 
-// ---- v12 §2.4: the accountable STEWARD of an agent (agent-human-judgment-model §2.3/§2.4) ----
+// ---- v13 N4: named PERSONAS — the single source for every function-owner / steward NAME. One invented,
+// non-colliding person per function (assert: persona names share no first/last name with any case subject),
+// reused consistently across card badges, timelines, governance panels, emails, and owner chips.
+// Formatter: stewardLabel(p) → "{Name} ({fn})".
+var AXIA_PERSONAS = {
+  platformAdmin:    { name:'Oren Baskin',      fn:'IT',          role:'Platform admin (IT)',             email:'it-platform-admins@fundguard.com' },
+  partnershipOwner: { name:'Keren Malachi',    fn:'IT/Business', role:'Partnership owner (IT/Business)', email:'partner-integrations@fundguard.com' },
+  cisoOffice:       { name:'Ilan Sagiv',       fn:'CISO office', role:'CISO team',                       email:'ciso-office@fundguard.com' },
+  legal:            { name:'Miriam Foss',      fn:'Legal',       role:'Legal counsel',                   email:'legal@fundguard.com' },
+  hr:               { name:'Hannah Reznik',    fn:'HR',          role:'HR partner',                      email:'hr@fundguard.com' },
+  compliance:       { name:'Victor Lindqvist', fn:'Compliance',  role:'Compliance officer',              email:'compliance@fundguard.com' }
+};
+function stewardLabel(p){ return (p && p.name) ? (p.name + ' (' + p.fn + ')') : ((p && p.role) || 'CISO team'); }
+window.AXIA_PERSONAS = AXIA_PERSONAS;
+window.axiaStewardLabel = stewardLabel;
+
+// ---- v12 §2.4 / v13 N4: the accountable STEWARD of an agent (agent-human-judgment-model §2.3/§2.4) ----
 // internal agent → the local IT admin of the agent platform (AXIA API); external/SaaS agent → the
 // partnership IT/Business owner (AXIA MCP); FG-043 keeps the CISO team as its partnership steward (T2);
-// CISO team = fallback when no steward is identified. Role-labels + functional mailboxes only (founder #4).
+// CISO office = fallback when no steward is identified. v13 N4 (supersedes v12 founder call #4): the
+// steward is a NAMED persona holding the function — never the subject/agent identity itself; the
+// functional mailbox stays the address.
 function axiaStewardFor(c){
   c = c || {};
-  if (c.steward && c.steward.role) return { role: c.steward.role, email: c.steward.email || 'ciso-office@fundguard.com', target: (c.origin === 'saas') ? 'AXIA MCP' : 'AXIA API' };
-  if (c.id === 'CASE-FG-043') return { role: 'CISO team (partnership steward)', email: 'ciso-office@fundguard.com', target: 'AXIA MCP' };
-  if (c.origin === 'saas') return { role: 'Partnership owner (IT/Business)', email: 'partner-integrations@fundguard.com', target: 'AXIA MCP' };
-  if (c.origin === 'internal') return { role: 'Platform admin (IT)', email: 'it-platform-admins@fundguard.com', target: 'AXIA API' };
-  return { role: 'CISO team (steward fallback)', email: 'ciso-office@fundguard.com', target: 'AXIA API' };
+  var P = window.AXIA_PERSONAS || AXIA_PERSONAS;
+  var tgt = (c.origin === 'saas') ? 'AXIA MCP' : 'AXIA API';
+  if (c.steward && c.steward.name) return { name: c.steward.name, fn: c.steward.fn || c.steward.role || 'IT', role: c.steward.role || c.steward.fn, email: c.steward.email || P.cisoOffice.email, target: tgt };
+  if (c.id === 'CASE-FG-043') return { name: P.cisoOffice.name, fn: P.cisoOffice.fn, role: 'CISO team (partnership steward)', email: P.cisoOffice.email, target: 'AXIA MCP' };
+  if (c.origin === 'saas') return { name: P.partnershipOwner.name, fn: P.partnershipOwner.fn, role: P.partnershipOwner.role, email: P.partnershipOwner.email, target: 'AXIA MCP' };
+  if (c.origin === 'internal') return { name: P.platformAdmin.name, fn: P.platformAdmin.fn, role: P.platformAdmin.role, email: P.platformAdmin.email, target: 'AXIA API' };
+  return { name: P.cisoOffice.name, fn: P.cisoOffice.fn, role: 'CISO team (steward fallback)', email: P.cisoOffice.email, target: 'AXIA API' };
 }
 window.axiaStewardFor = axiaStewardFor;
 
@@ -10513,12 +10528,13 @@ function engagementEmailFor(c){
   // ALREADY sent it (the governance case opens awaiting the steward's confirmation; there is no draft state).
   if (c.actor === 'agent') {
     var st = axiaStewardFor(c);
+    var stLbl = stewardLabel(st);
     var agentName = name;
     var integrated = (c.integration === 'integrated');
     if (integrated) {
       subj = 'Governance: validate the instructions of ' + agentName + ' (sensitive send blocked pre-send)';
       body =
-        'Hi ' + st.role + ' team,\n\n' +
+        'Hi ' + stLbl + ',\n\n' +
         'AXIA blocked a sensitive send attempted by ' + agentName + ' before any data moved. The agent consulted AXIA over the ' + st.target + ' and obeyed the blocking judgment — nothing left the environment.\n\n' +
         'As the steward of this agent, please:\n' +
         '  • Validate the instructions/prompt of this agent type — why is it attempting sensitive sends?\n' +
@@ -10529,7 +10545,7 @@ function engagementEmailFor(c){
       var viaProvider = (c.origin === 'saas');
       subj = 'Action required: connect ' + agentName + ' to the ' + st.target + ' (auto-stopped at a gate)';
       body =
-        'Hi ' + st.role + ' team,\n\n' +
+        'Hi ' + stLbl + ',\n\n' +
         'AXIA caught ' + agentName + ' acting at a monitored gate (' + (c.channel || 'a monitored channel') + '), resolved it to a non-human identity, and auto-stopped it (' + ((c.remediation && c.remediation.label) || 'containment executed') + ').\n\n' +
         'This agent type is not connected to AXIA, so it was stopped after acting instead of judged before. As the steward of this agent, please:\n' +
         (viaProvider
@@ -10539,9 +10555,31 @@ function engagementEmailFor(c){
         'AXIA opened case ' + c.id + ' with you as the owner; it closes on your confirmation.\n\n' +
         '— FundGuard Security (AXIA)';
     }
-    var draftA = { from: from, to: st.email, cc: [], role: st.role, subject: subj, body: body };
+    var draftA = { from: from, to: st.email, cc: [], role: stLbl, subject: subj, body: body };
     window.__axiaEmail[c.id] = draftA;
     return draftA;
+  }
+  // v13 N2: engagement-as-a-COMPONENT — the recommendation includes engaging a FUNCTION (e.g. FG-001
+  // "Hold email · revoke shares · Legal"). The draft goes to the NAMED persona holding that function
+  // (functional mailbox as the address) and is NEVER addressed to the subject employee — this branch
+  // sits BEFORE the holdEmail/coach templates so the case can never fall through to a "Hi {subject}" draft.
+  if (c.engageComponent && c.engageComponent.role) {
+    var P2 = window.AXIA_PERSONAS || {};
+    var fnKey = String(c.engageComponent.role).toLowerCase();
+    var fp = (fnKey === 'legal') ? P2.legal : (fnKey === 'hr') ? P2.hr : (fnKey === 'compliance') ? P2.compliance : P2.cisoOffice;
+    var fpLbl = stewardLabel(fp);
+    subj = c.engageComponent.role + ' advisory requested — containment holding on ' + c.id + ' (departure-adjacent IP exfiltration)';
+    body =
+      'Hi ' + fpLbl + ',\n\n' +
+      'AXIA contained a critical exfiltration case and is holding it at the containment gate:\n\n' +
+      '  • The outbound email is held — nothing has been delivered.\n' +
+      '  • External shares tied to the same content have been revoked.\n\n' +
+      'The sender is a departing employee and the content matched the trade-secret catalog. As the ' + c.engageComponent.role + ' owner on this case, please advise on the departure / IP posture — evidence preservation, exit obligations, and any notice steps — before further action is taken.\n\n' +
+      'Case ' + c.id + ' is open with you as the accountable function owner.\n\n' +
+      '— FundGuard Security (AXIA)';
+    var draftF = { from: from, to: (fp && fp.email) || 'legal@fundguard.com', cc: [], role: fpLbl, subject: subj, body: body };
+    window.__axiaEmail[c.id] = draftF;
+    return draftF;
   }
   if (c.holdEmail) {
     subj = 'Quick check on an email we placed on a brief hold';
@@ -10616,7 +10654,9 @@ function axiaViewEmail(id){
     +   '<div class="flex items-center gap-2"><span class="material-symbols-outlined text-ops-teal">outgoing_mail</span><span class="text-sm font-bold text-text-primary">' + (sent ? 'Message sent by AXIA' : 'Suggested email') + '</span></div>'
     +   '<button onclick="closePolicyModal()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-hover text-text-secondary"><span class="material-symbols-outlined">close</span></button>'
     + '</div>'
-    + '<div class="mb-2">' + labelChip + '</div>'
+    + '<div class="mb-2 flex items-center gap-2 flex-wrap">' + labelChip
+    +   (gated ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-severity-critical/15 text-severity-critical border border-severity-critical/30"><span class="material-symbols-outlined text-[12px]">verified_user</span>Sends on containment approval</span>' : '') /* v13 N2 */
+    + '</div>'
     + '<div class="grid grid-cols-[52px_1fr] gap-y-1 text-[12px] mb-2">'
     +   '<span class="text-text-muted">From</span><span class="text-text-primary font-medium">' + esc(d.from) + '</span>'
     +   '<span class="text-text-muted">To</span><span class="text-text-primary font-medium">' + esc(d.to) + ' <span class="text-text-muted">(' + esc(d.role) + ')</span></span>'
@@ -10637,17 +10677,18 @@ function renderNBAPanel(c){
   // steward's confirmation. No Approve button — the steward email was already sent.
   if (c && c.actor === 'agent') {
     var stw = axiaStewardFor(c);
+    var stwLbl = stewardLabel(stw);
     var integ = (c.integration === 'integrated');
     var closedG = (c.status === 'closed');
     var actLine = integ
       ? 'Agent consulted AXIA pre-send — sensitive send blocked, data never moved'
       : 'Auto-stopped at the gate — ' + ((c.remediation && c.remediation.label) || 'containment executed');
     var askLine = integ
-      ? 'Emailed ' + stw.role + ' — validate this agent type’s instructions'
-      : 'Emailed ' + stw.role + ' — directed: connect this agent type to the ' + stw.target;
+      ? 'Emailed ' + stwLbl + ' — validate this agent type’s instructions'
+      : 'Emailed ' + stwLbl + ' — directed: connect this agent type to the ' + stw.target;
     var stateLine = closedG
-      ? stw.role + ' confirmed · case closed'
-      : 'Awaiting ' + stw.role + '’s confirmation';
+      ? stwLbl + ' confirmed · case closed'
+      : 'Awaiting ' + stwLbl + '’s confirmation';
     return ''
     + '<div class="bg-surface-card rounded-xl border border-border-default overflow-hidden shadow-card">'
     +   '<div class="px-4 py-3 bg-surface-elevated border-b border-border-default flex items-center justify-between">'
@@ -10704,11 +10745,12 @@ function renderNBAPanel(c){
   var nbaExtras = '';
   {
     // v6 #N1: "Copy for personal use" only for engagement (there's an email to copy); non-engagement NBAs have nothing to copy.
-    if (nba.family === 'engagement' || c.holdEmail) {
+    // v13 N2: + engagement-as-a-COMPONENT cases (c.engageComponent) — their function-owner draft is copyable too.
+    if (nba.family === 'engagement' || c.holdEmail || c.engageComponent) {
       nbaExtras += '<button type="button" onclick="axiaCopyNBA(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-2 h-9 px-3 rounded-lg bg-surface-hover text-text-secondary border border-border-default hover:text-text-primary transition-colors text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">content_copy</span>Copy for personal use</button>';
     }
-    // suggested engagement email for the engaging-people / hold-email path
-    if (nba.family === 'engagement' || c.holdEmail) {
+    // suggested engagement email for the engaging-people / hold-email / engagement-as-a-component path (v13 N2)
+    if (nba.family === 'engagement' || c.holdEmail || c.engageComponent) {
       var d = engagementEmailFor(c);
       var esc = function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
       nbaExtras += ''
@@ -10728,7 +10770,9 @@ function renderNBAPanel(c){
         +     '<pre class="text-[11px] text-text-secondary whitespace-pre-wrap font-sans leading-relaxed bg-surface-elevated rounded p-2 border border-border-subtle">' + esc(d.body) + '</pre>'
         +     '<div class="flex items-center gap-2">'
         +       '<button type="button" onclick="axiaCopyEngageEmail(\'' + c.id + '\')" class="flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg bg-surface-hover text-text-secondary border border-border-default hover:text-text-primary transition-colors text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">content_copy</span>Copy</button>'
-        +       ((nba.gated || executed) ? '' : '<button type="button" onclick="axiaSendEngagement(\'' + c.id + '\')" class="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg bg-ops-teal text-white hover:opacity-90 transition-opacity text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">send</span>Approve → AXIA sends</button>')
+        +       ((nba.gated && !executed)
+              ? '<span class="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg bg-severity-critical/10 text-severity-critical border border-severity-critical/30 text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">verified_user</span>Sends on containment approval</span>' /* v13 N2: gated draft state line */
+              : (executed ? '' : '<button type="button" onclick="axiaSendEngagement(\'' + c.id + '\')" class="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg bg-ops-teal text-white hover:opacity-90 transition-opacity text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">send</span>Approve → AXIA sends</button>'))
         +     '</div>'
         +   '</div>'
         + '</div>';
@@ -11147,7 +11191,7 @@ function addActionOption(family){
     'CASE-FG-002': {channel:'Internal API · Box',     channelIcon:'folder',        remediation:{family:'identity',    label:'Quarantine email · revoke service-account token',    icon:'key'}},
     'CASE-FG-004': {channel:'Google Drive',                channelIcon:'add_to_drive',  remediation:{family:'content',     label:'Revoke external share',              icon:'link_off'}},
     'CASE-FG-017': {channel:'Dropbox',                     channelIcon:'cloud',         remediation:{family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt'}},
-    'CASE-FG-001': {channel:'Microsoft 365 → personal Gmail', channelIcon:'mail',  remediation:{family:'content',     label:'Hold email · revoke shares · Legal', icon:'gavel'}},
+    'CASE-FG-001': {channel:'Microsoft 365 → personal Gmail', channelIcon:'mail',  remediation:{family:'content',     label:'Hold email · revoke shares · Legal', icon:'gavel'}, engageComponent:{role:'Legal'}}, /* v13 N2: engagement is a COMPONENT of the recommendation (…· Legal) — explicit flag, not label parsing */
     // closed history cases — channel-coverage chips only
     'CASE-FG-006': {channel:'Slack',                       channelIcon:'forum',         remediation:{family:'content',     label:'Message removed',                    icon:'block'}},
     'CASE-FG-012': {channel:'Microsoft Teams',             channelIcon:'groups',        remediation:{family:'engagement',  label:'Coached employee',                   icon:'forum'}},
@@ -11206,7 +11250,7 @@ function addActionOption(family){
   addCase({
     id:'CASE-FG-044', severity:'medium', status:'open', score:47, time:'35m ago',
     actor:'agent', agentRogue:false, origin:'internal', integration:'integrated',
-    steward:{role:'Platform admin (IT)', email:'it-platform-admins@fundguard.com'},
+    steward:{name:'Oren Baskin', fn:'IT', role:'Platform admin (IT)', email:'it-platform-admins@fundguard.com'},
     title:'Prompt validation required — an internal agent attempted a sensitive send (blocked pre-send)',
     description:'The fin-brief-assistant Copilot Studio agent consulted AXIA through the AXIA API before sending its output and was blocked — the draft carried client-identifying data outside the agent’s approved scope, and nothing moved. AXIA emailed the platform admin (IT) to validate this agent type’s instructions; the governance case is open awaiting their confirmation.',
     entity:{name:'fin-brief-assistant (Copilot Studio agent)', initials:'CA', role:'Internal automation agent', department:'Engineering', location:'Non-human identity'},
@@ -11228,7 +11272,7 @@ function addActionOption(family){
   addCase({
     id:'CASE-FG-045', severity:'medium', status:'closed', score:44, time:'3d ago',
     actor:'agent', agentRogue:false, origin:'saas', integration:'integrated',
-    steward:{role:'Partnership owner (IT/Business)', email:'partner-integrations@fundguard.com'},
+    steward:{name:'Keren Malachi', fn:'IT/Business', role:'Partnership owner (IT/Business)', email:'partner-integrations@fundguard.com'},
     title:'Provider prompt validation — an M365 Copilot agent attempted a sensitive share (blocked pre-send)',
     description:'An M365 Copilot agent operating over the AXIA MCP consulted AXIA before sharing a generated summary and was blocked — the summary drew on restricted fund data, and nothing moved. AXIA emailed the partnership owner (IT/Business) to guide the provider through validating the agent’s instructions; the provider validated and the case closed on the owner’s confirmation.',
     entity:{name:'M365 Copilot agent (copilot-briefings)', initials:'MC', role:'SaaS automation agent (Microsoft 365)', department:'Client Operations', location:'Non-human identity (SaaS)'},
@@ -11329,33 +11373,43 @@ function addActionOption(family){
   // These give (a) the Act families live Identity/Verdict-out breadth across Okta/Ping/Splunk-SOAR, and
   // (b) the strict nested timeframe supersets (1d ⊂ 7d ⊂ 30d ⊂ 90d). They are `closed` history, so the
   // 1d live-drain set stays exactly C5/H5/M2/L2 = 14 and the Command operational board is unaffected.
-  // v10 D1: actor-aware ownership. agent/system → CISO office; person low/med → the user (the subject);
-  // person high/crit → business function (role-label, never an invented named person).
+  // v10 D1 / v13 N4: actor-aware ownership. agent → the NAMED steward persona; system → the named
+  // CISO-office persona (routing carve-out unchanged: forwarded to SOC); person low/med → the user (the
+  // subject); person high/crit → the business function held by a NAMED persona (v13 N4: named persona
+  // holding the function; never the subject employee). Legal/HR/Compliance use the single shared personas
+  // (AXIA_PERSONAS); Reporting Managers are named PER CASE — derived from existing CC emails where present
+  // (michael.brenner / sarah.klein / rachel.stein), else authored non-colliding names.
   var FUNCTION_OWNER = {
-    'CASE-FG-001':'Legal','CASE-FG-002':'Legal','CASE-FG-004':'Reporting Manager','CASE-FG-017':'Compliance',
-    'CASE-FG-027':'Legal','CASE-FG-034':'Legal','CASE-FG-035':'Reporting Manager','CASE-FG-003':'Reporting Manager',
-    'CASE-FG-005':'Compliance','CASE-FG-011':'Reporting Manager','CASE-FG-014':'HR','CASE-FG-024':'Reporting Manager',
-    'CASE-FG-030':'Reporting Manager','CASE-FG-025':'Reporting Manager','CASE-FG-029':'Compliance','CASE-FG-036':'Legal',
-    'CASE-FG-038':'HR'
+    'CASE-FG-001':{name:'Miriam Foss', fn:'Legal'},            'CASE-FG-002':{name:'Miriam Foss', fn:'Legal'},
+    'CASE-FG-004':{name:'Erik Vandermeer', fn:'Reporting Manager'}, 'CASE-FG-017':{name:'Victor Lindqvist', fn:'Compliance'},
+    'CASE-FG-027':{name:'Miriam Foss', fn:'Legal'},            'CASE-FG-034':{name:'Miriam Foss', fn:'Legal'},
+    'CASE-FG-035':{name:'Felix Marchetti', fn:'Reporting Manager'}, 'CASE-FG-003':{name:'Michael Brenner', fn:'Reporting Manager'},
+    'CASE-FG-005':{name:'Victor Lindqvist', fn:'Compliance'},  'CASE-FG-011':{name:'Sarah Klein', fn:'Reporting Manager'},
+    'CASE-FG-014':{name:'Hannah Reznik', fn:'HR'},             'CASE-FG-024':{name:'Tamar Rosenblit', fn:'Reporting Manager'},
+    'CASE-FG-030':{name:'Claire Dubois', fn:'Reporting Manager'}, 'CASE-FG-025':{name:'Boris Antonov', fn:'Reporting Manager'},
+    'CASE-FG-029':{name:'Victor Lindqvist', fn:'Compliance'},  'CASE-FG-036':{name:'Miriam Foss', fn:'Legal'},
+    'CASE-FG-038':{name:'Hannah Reznik', fn:'HR'}
   };
   // ownerLabel(c) accepts either a full case object (c.severity, c.entity) or a raw HIST record (c.sev, c.name, c.role).
   // v12 §2.3/§2.4: agent cases are owned by the accountable human STEWARD of the agent — internal →
   // Platform admin (IT); SaaS → Partnership owner (IT/Business); FG-043 → CISO team (partnership steward);
-  // CISO team = fallback. System cases (detection pipeline) stay CISO/SOC.
+  // CISO office = fallback. System cases (detection pipeline) display the named CISO-office persona; SOC routing unchanged.
   function ownerLabel(c){
     c = c || {};
     var actor = c.actor || 'person';
+    var SL = (typeof window.axiaStewardLabel === 'function') ? window.axiaStewardLabel : function(p){ return (p && p.name) ? (p.name + ' (' + p.fn + ')') : ((p && p.role) || 'CISO team'); };
     if (actor === 'agent') {
       var stw = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : null;
-      return 'Owner: ' + (stw ? stw.role : 'CISO team (steward fallback)');
+      return 'Owner: ' + (stw ? SL(stw) : 'CISO team (steward fallback)');
     }
-    if (actor === 'system') return 'Owner: CISO office · forwarded to SOC';
+    if (actor === 'system') return 'Owner: ' + SL((window.AXIA_PERSONAS || {}).cisoOffice) + ' · forwarded to SOC';
     var sev = c.severity || c.sev;
     var e = c.entity || {};
     var nm = e.name || c.name || 'the user';
     var rl = e.role || c.role || 'user';
     if (sev === 'low' || sev === 'medium') return 'Owner: ' + nm + ' (' + rl + ')';
-    return 'Owner: ' + (FUNCTION_OWNER[c.id] || 'Reporting Manager');
+    var fo = FUNCTION_OWNER[c.id];
+    return 'Owner: ' + (fo ? (fo.name + ' (' + fo.fn + ')') : 'Reporting Manager');
   }
   var HIST_OWNERS = ['Alex Rivera (SOC)','Priya Nair (SOC)','Marcus Webb (SOC)','Dana Cohen (Security Ops)','Sam Okafor (SOC)'];
   function histCase(o){
@@ -11526,13 +11580,16 @@ function addActionOption(family){
     'CASE-FG-031':'Released after verify',        // d: content held -> sender verified -> released
     'CASE-FG-034':'Containment confirmed'         // j: human-confirmed containment (gate mirror)
   };
-  // v9 N4: Phase-2 PRD attribution tags (Verified-by / Confirmed-by / Approved-by). Metadata only,
-  // no authority, not a gate. `auto` = reply-comprehension on engage->replied / hold-verify paths;
-  // `manual` = analyst/approver action on gate + notified/Legal paths. Attributed to the identity whose
-  // existing story supports it (never invented; fits each case's shipped copy).
+  // v9 N4 / v13 N5: Phase-2 PRD attribution tags (Verified-by / Confirmed-by / Approved-by). Metadata only,
+  // no authority, not a gate. ONE format, always a named person; chip + timeline use identical naming.
+  // `auto` = reply-comprehension on engage->replied / hold-verify paths; `manual` = analyst/approver action.
+  // v13 N5: FG-011's loose 'User verified' action strings became a proper Verified-by tag; FG-031 carries
+  // Verified-by AND Confirmed-by side by side (verified the FACT; confirmed the CLOSURE — PRD §3.10 semantics).
   var ATTRIBS = {
+    'CASE-FG-011': [{type:'Verified-by',  person:'Sarah Goldman', source:'auto', evidence:'reply comprehension — legitimate prospect engagement on the Meridian Capital Partners POC'}],
     'CASE-FG-030': [{type:'Confirmed-by', person:'Tal Mizrahi', source:'auto',   evidence:'reply: "removed the notebook from my personal drive"'}],
-    'CASE-FG-031': [{type:'Confirmed-by', person:'Yael Adler',  source:'auto',   evidence:'reply: "confirmed the runbook is safe to release"'}],
+    'CASE-FG-031': [{type:'Verified-by',  person:'Yael Adler',  source:'auto',   evidence:'reply comprehension — verified the held runbook contents as safe to release'},
+                    {type:'Confirmed-by', person:'Yael Adler',  source:'auto',   evidence:'reply: "confirmed the runbook is safe to release"'}],
     'CASE-FG-034': [{type:'Approved-by',  person:'Sam Okafor (SOC)',  source:'manual', evidence:'analyst confirmed containment before execute'}],
     'CASE-FG-027': [{type:'Approved-by',  person:'Marcus Webb (SOC)', source:'manual', evidence:'analyst approved hold + external-share revoke; Legal notified'}]
   };

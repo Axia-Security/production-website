@@ -229,14 +229,21 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 .slide{padding-bottom:96px}
 
 /* ===== SLIDE E - ecosystem roster (typographic chips, spec section 10.3) ===== */
-.eco-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,4.5vw,72px);margin-top:38px;align-items:start}
+.eco-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,4.5vw,72px);margin-top:30px;align-items:start}
 .eco-head{font-family:var(--font-mono);font-size:13.5px;font-weight:600;letter-spacing:2.4px;color:var(--cyan)}
 .eco-desc{font-size:14.5px;color:var(--slate);margin-top:9px;line-height:1.5}
 .slide.light .eco-desc{color:#9CB8B3}
 .eco-chips{display:flex;flex-wrap:wrap;gap:11px;margin-top:20px;max-width:520px}
 .eco-chip{font-family:var(--font-mono);font-size:13px;font-weight:500;line-height:1;padding:9px 14px;border-radius:10px;
   border:1px solid rgba(255,255,255,.14);color:#C7EFE9;background:rgba(255,255,255,.035);white-space:nowrap}
-.eco-foot{margin-top:40px;font-family:var(--font-mono);font-size:13.5px;color:rgba(199,239,233,.55);letter-spacing:.3px}
+.eco-foot{margin-top:24px;font-family:var(--font-mono);font-size:13.5px;color:rgba(199,239,233,.55);letter-spacing:.3px}
+/* ===== SLIDE E - channel/gate strip (spec section 11, founder directive) ===== */
+.eco-gates{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:28px}
+.eco-gates-label{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.6px;color:rgba(199,239,233,.42);margin-right:2px;white-space:nowrap}
+.gate-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:9px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.02);line-height:1;white-space:nowrap}
+.gate-chip svg{flex:0 0 auto;stroke:#7FF3E6;opacity:.55}
+.gate-chip .g-name{font-family:var(--font-mono);font-size:12px;font-weight:600;color:rgba(199,239,233,.8)}
+.gate-chip .g-ex{font-family:var(--font-mono);font-size:11px;color:rgba(199,239,233,.42)}
 @media (max-width:860px){.eco-grid{grid-template-columns:1fr}.eco-chips{max-width:none}}
 </style>
 </head>
@@ -643,6 +650,14 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
           <span class="eco-chip">Harvey</span>
         </div>
       </div>
+    </div>
+    <div class="eco-gates" role="list" aria-label="The five channel gates AXIA judges at">
+      <span class="eco-gates-label">the same gates:</span>
+      <span class="gate-chip" role="listitem"><svg width="15" height="12" viewBox="0 0 24 19" fill="none" stroke-width="2.2" aria-hidden="true"><rect x="1" y="2" width="22" height="15" rx="3"/><path d="M1 3 l11 8 l11 -8"/></svg><span class="g-name">Email</span><span class="g-ex">M365 &middot; Gmail</span></span>
+      <span class="gate-chip" role="listitem"><svg width="15" height="12" viewBox="0 0 30 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 1 h20 a4 4 0 0 1 4 4 v8 a4 4 0 0 1 -4 4 h-12 l-6 5 v-5 h-2 a4 4 0 0 1 -4 -4 v-8 a4 4 0 0 1 4 -4 z"/></svg><span class="g-name">Chat</span><span class="g-ex">Slack &middot; Teams</span></span>
+      <span class="gate-chip" role="listitem"><svg width="16" height="10" viewBox="0 0 32 20" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M4 1 h8 l4 4 h12 a3 3 0 0 1 3 3 v8 a3 3 0 0 1 -3 3 h-24 a3 3 0 0 1 -3 -3 v-12 a3 3 0 0 1 3 -3 z"/></svg><span class="g-name">Storage</span><span class="g-ex">Drive &middot; Box &middot; SharePoint</span></span>
+      <span class="gate-chip" role="listitem"><svg width="15" height="10" viewBox="0 0 24 16" fill="none" stroke-width="2.2" aria-hidden="true"><path d="M8 1 l-7 7 l7 7 M16 1 l7 7 l-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="g-name">Code</span><span class="g-ex">GitHub &middot; GitLab</span></span>
+      <span class="gate-chip" role="listitem"><svg width="13" height="13" viewBox="0 0 22 22" fill="none" stroke-width="2" aria-hidden="true"><rect x="1" y="1" width="8" height="8" rx="2"/><rect x="13" y="1" width="8" height="8" rx="2"/><rect x="1" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg><span class="g-name">SaaS</span><span class="g-ex">Salesforce</span></span>
     </div>
     <p class="eco-foot">And the next one you deploy: same gates, day one.</p>
   </div>

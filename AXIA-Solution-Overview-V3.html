@@ -247,6 +247,8 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 .gate-chip .g-name{font-family:var(--font-mono);font-size:12px;font-weight:600;color:rgba(199,239,233,.8)}
 .gate-chip .g-ex{font-family:var(--font-mono);font-size:11px;color:rgba(199,239,233,.42)}
 @media (max-width:860px){.eco-grid{grid-template-columns:1fr}.eco-chips{max-width:none}}
+
+.foot{display:none} /* founder polish 2026-07-05: hide deck footnotes */
 </style>
 </head>
 <body>
@@ -273,7 +275,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide dark">
   <div class="wrap">
     <div class="eyebrow" style="color:var(--cyan)">The wedge · the verdict at the gate</div>
-    <h2 class="title" style="max-width:18ch">One engine renders one explainable verdict — at the moment data moves.</h2>
+    <h2 class="title" style="max-width:28ch">One engine renders one explainable verdict — at the moment data moves.</h2>
     <div class="grid g3" style="margin-top:8px">
       <div class="card"><div class="ic"><span class="material-symbols-outlined" style="color:var(--cyan)">gavel</span></div>
         <h3>Judges every channel</h3><p>WHO is moving WHAT, to WHOM — content sensitivity, identity and behavior, and destination, fused into one verdict.</p></div>
@@ -396,7 +398,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">Stage 1 · Ingest · every channel, agentless</div>
-    <h2 class="title">It connects through the APIs you already run.<br>Nothing on the endpoint.</h2>
+    <h2 class="title" style="font-size:clamp(30px,4.4vw,54px)">It connects through the APIs you already run.<br>Nothing on the endpoint.</h2>
     <div class="figure">
       <svg viewBox="0 0 1180 360" role="img" aria-label="An intake fan: channel connectors, identity and HR context, and Browser Guard plus opt-in thin sensors all arrow into the Ingest stage. No endpoint or kernel agent.">
         <defs><marker id="i-ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#0D9488"/></marker></defs>
@@ -449,7 +451,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">Stage 2 · Understand · the millisecond Gatekeeper</div>
-    <h2 class="title">A local classifier judges WHO × WHAT × to WHOM —<br>in milliseconds, with no egress.</h2>
+    <h2 class="title" style="font-size:clamp(30px,4.4vw,49px)">A local classifier judges WHO × WHAT × to WHOM —<br>in milliseconds, with no egress.</h2>
     <div class="figure">
       <svg viewBox="0 0 1180 340" role="img" aria-label="The WHO, WHAT, WHOM fusion glyph: content-sensitivity (WHAT), identity and behavior (WHO) and destination (WHOM) feed up into one verdict at the millisecond Gatekeeper, sharpened by the file and user priors read from the side.">
         <defs><marker id="gk-ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#0D9488"/></marker>
@@ -578,7 +580,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 
           <rect x="470" y="152" width="320" height="56" rx="12" fill="#161B22" stroke="rgba(13,148,136,.45)" stroke-width="1.4"/>
           <text x="486" y="176" font-weight="800" font-size="13.5" fill="#5EEAD4">(c) Identity</text>
-          <text x="486" y="195" font-family="JetBrains Mono" font-size="10.5" fill="#8B949E">step-up / disable · incl. agent identities</text>
+          <text x="486" y="195" font-family="JetBrains Mono" font-size="10.5" fill="#8B949E">disable / revoke · incl. agent identities</text>
 
           <rect x="470" y="218" width="320" height="56" rx="12" fill="#161B22" stroke="rgba(13,148,136,.45)" stroke-width="1.4"/>
           <text x="486" y="242" font-weight="800" font-size="13.5" fill="#5EEAD4">(d) Verdict-out</text>
@@ -776,7 +778,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">Integration · API-first, bi-directional where it matters</div>
-    <h2 class="title">AXIA is a hub.<br>It reads your stack and pushes intelligence back.</h2>
+    <h2 class="title" style="font-size:clamp(30px,4.4vw,50px)">AXIA is a hub.<br>It reads your stack and pushes intelligence back.</h2>
     <div class="figure">
       <svg viewBox="0 0 1180 320" role="img" aria-label="AXIA in the center as a hub. Priors flow in from the left (file prior, user prior, identity priors), channels connect bi-directionally at the top, and the verdict-out flows to the SOC on the right.">
         <defs><marker id="h-ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#0D9488"/></marker>
@@ -862,7 +864,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">The agent ecosystem</div>
-    <h2 class="title" style="max-width:22ch">Wherever your agents come from, they meet the same gates.</h2>
+    <h2 class="title" style="max-width:25ch">Wherever your agents come from, they meet the same gates.</h2>
     <p class="lead" style="max-width:940px">Built in-house or bought as a product: every agent acts through the same channels, and AXIA judges every one of them.</p>
     <div class="eco-grid">
       <div class="eco-col">

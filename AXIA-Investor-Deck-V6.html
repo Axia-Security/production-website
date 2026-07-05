@@ -222,6 +222,8 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 .nav .b.next{justify-self:end!important}
 .center,.counter{color:#C9D4DF!important}
 .slide{padding-bottom:96px}
+
+.foot{display:none} /* founder polish 2026-07-05: hide deck footnotes */
 </style>
 <link rel="icon" type="image/png" href="data:image/png;base64,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"/>
 </head>
@@ -249,7 +251,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide dark">
   <div class="wrap">
     <div class="eyebrow" style="color:var(--cyan)">Why us · the founder team</div>
-    <h2 class="title" style="max-width:22ch">We have spent our careers in this space.<br>We see exactly what is broken.</h2>
+    <h2 class="title">We have spent our careers in this space.<br>We see exactly what is broken.</h2>
     <p class="lead" style="color:#CFF7F1;max-width:820px">AXIA was founded by security and product leaders who spent years on both sides of the insider-risk problem. Not a team that discovered it in a market report.</p>
     <div class="grid g3" style="margin-top:30px;max-width:920px">
       <div class="card" style="text-align:center">
@@ -317,7 +319,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">The gap · structural to the category</div>
-    <h2 class="title">Every tool draws a better map.<br>None renders the verdict that stops the movement.</h2>
+    <h2 class="title" style="font-size:clamp(30px,4.4vw,47px)">Every tool draws a better map.<br>None renders the verdict that stops the movement.</h2>
     <div class="figure">
       <svg viewBox="0 0 1180 380" role="img" aria-label="A departing engineer moves data; DSPM, the sensitivity label and the SIEM each saw it, and the data still left.">
         <defs>
@@ -447,8 +449,8 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
           <text x="323" y="372" font-size="11.5" fill="#8B949E">quarantine &#183; revoke collab</text>
           <rect x="590" y="308" width="265" height="86" rx="12" fill="#161B22" stroke="#1F5A53" stroke-width="1.5"/>
           <text x="608" y="334" font-weight="700" font-size="15" fill="#E6EDF3">Identity</text>
-          <text x="608" y="356" font-size="11.5" fill="#8B949E">step-up / disable (Entra,</text>
-          <text x="608" y="372" font-size="11.5" fill="#8B949E">Okta) &#8212; incl. AI agents</text>
+          <text x="608" y="356" font-size="11.5" fill="#8B949E">disable sessions &#183; revoke tokens</text>
+          <text x="608" y="372" font-size="11.5" fill="#8B949E">(Entra, Okta) &#183; incl. AI agents</text>
           <rect x="875" y="308" width="285" height="86" rx="12" fill="#161B22" stroke="#1F5A53" stroke-width="1.5"/>
           <text x="893" y="334" font-weight="700" font-size="15" fill="#E6EDF3">Verdict-out</text>
           <text x="893" y="356" font-size="11.5" fill="#8B949E">SIEM &#183; SOAR &#183; ticket &#8212;</text>
@@ -511,7 +513,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">Owns the action · the per-channel reality</div>
-    <h2 class="title">AXIA renders the verdict and owns the action —<br>wherever the platform allows.</h2>
+    <h2 class="title" style="font-size:clamp(30px,4.4vw,52px)">AXIA renders the verdict and owns the action —<br>wherever the platform allows.</h2>
     <div class="matrix">
       <div class="lane t-hold">
         <div class="name">Hold-then-decide <small>act before it leaves</small></div>
@@ -574,7 +576,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide dark">
   <div class="wrap">
     <div class="eyebrow" style="color:var(--cyan)">The headline · queue vs outcome</div>
-    <h2 class="title" style="max-width:20ch">Every other tool gives your team <span style="color:#FFD9A0">more cases</span>.<br>AXIA gives them <span style="color:#7FF3E6">fewer</span>.</h2>
+    <h2 class="title">Every other tool gives your team <span style="color:#FFD9A0">more cases</span>.<br>AXIA gives them <span style="color:#7FF3E6">fewer</span>.</h2>
     <div class="figure">
       <svg viewBox="0 0 1180 400" role="img" aria-label="A self-resolving loop: Gatekeeper flags, Judge renders the verdict, AXIA opens the case, engages and coaches, the employee confirms, AXIA auto-closes and learns. Critical and Legal always wait for a human.">
         <defs>
@@ -635,7 +637,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
           <text x="816" y="174" font-size="11" fill="#CFF7F1">hold &#183; remove &#183; delete &#183; quarantine &#183; revoke collab</text>
           <rect x="800" y="192" width="358" height="48" rx="10" fill="rgba(34,211,238,.16)" stroke="#22D3EE"/>
           <text x="816" y="212" font-weight="700" fill="#EAFBF8">Identity</text>
-          <text x="816" y="230" font-size="11" fill="#CFF7F1">step-up / disable on Entra &#183; Okta &#8212; incl. agent identities</text>
+          <text x="816" y="230" font-size="11" fill="#CFF7F1">disable sessions &#183; revoke tokens &#183; incl. agent identities</text>
           <rect x="800" y="248" width="358" height="48" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.28)"/>
           <text x="816" y="268" font-weight="700" fill="#fff">Verdict-out</text>
           <text x="816" y="286" font-size="11" fill="#CFF7F1">SIEM &#183; SOAR &#183; ticket &#8212; lands where your SOC works</text>
@@ -687,12 +689,12 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">AI agents · same gate, new subject</div>
-    <h2 class="title">When an AI agent acts for the company,<br>AXIA judges it as an insider — and agents can ask first.</h2>
+    <h2 class="title" style="font-size:clamp(30px,4.4vw,45px)">When an AI agent acts for the company,<br>AXIA judges it as an insider — and agents can ask first.</h2>
     <div class="grid g2" style="margin-top:8px">
       <div class="card">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V4M8 14h.01M16 14h.01"/></svg></div>
         <h3>Caught at the gate</h3>
-        <p>An agent's risky move is judged under the same gate as a person; AXIA contains it via identity — step-up or disable on agent identities.</p>
+        <p>An agent's risky move is judged under the same gate as a person; AXIA contains it via identity: disable sessions, revoke tokens and shares, on agent identities.</p>
       </div>
       <div class="card" style="border-color:rgba(34,211,238,.4)">
         <div class="ic" style="background:rgba(34,211,238,.14)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2"><path d="M8 6l-4 6 4 6M16 6l4 6-4 6"/></svg></div>
@@ -708,7 +710,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">The platform · the operator model</div>
-    <h2 class="title">One engine, end to end.<br>Read the stack, render the verdict, own the outcome.</h2>
+    <h2 class="title" style="font-size:clamp(30px,4.4vw,46px)">One engine, end to end.<br>Read the stack, render the verdict, own the outcome.</h2>
     <div class="figure">
       <svg viewBox="0 0 1180 380" role="img" aria-label="The AXIA operator model in five stages: Ingest from every channel and read the stack as priors; Understand via the millisecond Gatekeeper; Decide via the near real-time Judge that renders the explainable verdict; Orchestrate by owning the action, auto-open and auto-close, and verdict-out to the SOC; Learn from every confirmed case, which feeds back to sharpen the verdict.">
         <defs>
@@ -749,8 +751,8 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
         <text x="750" y="112" font-family="JetBrains Mono" font-size="12" fill="#22D3EE">04</text>
         <text x="750" y="138" font-family="Manrope" font-weight="800" font-size="18" fill="#E6EDF3">Orchestrate</text>
         <text x="750" y="164" font-family="Manrope" font-size="12" fill="#8B949E">Owns the action: engage,</text>
-        <text x="750" y="181" font-family="Manrope" font-size="12" fill="#8B949E">act on content, step up</text>
-        <text x="750" y="198" font-family="Manrope" font-size="12" fill="#8B949E">identity (incl. agents),</text>
+        <text x="750" y="181" font-family="Manrope" font-size="12" fill="#8B949E">act on content, disable or</text>
+        <text x="750" y="198" font-family="Manrope" font-size="12" fill="#8B949E">revoke identity (+ agents),</text>
         <text x="750" y="215" font-family="Manrope" font-size="12" fill="#8B949E">verdict-out · auto-close.</text>
         <path d="M932 155 H966" stroke="#0D9488" stroke-width="2.5" marker-end="url(#arp)"/>
         <!-- 05 LEARN -->
@@ -927,7 +929,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide dark">
   <div class="wrap">
     <div class="eyebrow" style="color:var(--cyan)">Agentless by design · a deliberate moat choice</div>
-    <h2 class="title" style="max-width:20ch">We refuse the EDR war —<br>and take the surface no one's fighting for.</h2>
+    <h2 class="title">We refuse the EDR war —<br>and take the surface no one's fighting for.</h2>
     <div class="grid g3" style="margin-top:8px">
       <div class="card">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div>

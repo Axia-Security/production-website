@@ -245,6 +245,8 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 .gate-chip .g-name{font-family:var(--font-mono);font-size:12px;font-weight:600;color:rgba(199,239,233,.8)}
 .gate-chip .g-ex{font-family:var(--font-mono);font-size:11px;color:rgba(199,239,233,.42)}
 @media (max-width:860px){.eco-grid{grid-template-columns:1fr}.eco-chips{max-width:none}}
+
+.foot{display:none} /* founder polish 2026-07-05: hide deck footnotes */
 </style>
 </head>
 <body>
@@ -405,8 +407,8 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
           <text x="323" y="372" font-size="11.5" fill="#8B949E">quarantine &#183; revoke collab</text>
           <rect x="590" y="308" width="265" height="86" rx="12" fill="#161B22" stroke="#1F5A53" stroke-width="1.5"/>
           <text x="608" y="334" font-weight="700" font-size="15" fill="#E6EDF3">Identity</text>
-          <text x="608" y="356" font-size="11.5" fill="#8B949E">step-up / disable (Entra,</text>
-          <text x="608" y="372" font-size="11.5" fill="#8B949E">Okta) &#8212; incl. AI agents</text>
+          <text x="608" y="356" font-size="11.5" fill="#8B949E">disable sessions &#183; revoke tokens</text>
+          <text x="608" y="372" font-size="11.5" fill="#8B949E">(Entra, Okta) &#183; incl. AI agents</text>
           <rect x="875" y="308" width="285" height="86" rx="12" fill="#161B22" stroke="#1F5A53" stroke-width="1.5"/>
           <text x="893" y="334" font-weight="700" font-size="15" fill="#E6EDF3">Verdict-out</text>
           <text x="893" y="356" font-size="11.5" fill="#8B949E">SIEM &#183; SOAR &#183; ticket &#8212;</text>
@@ -415,7 +417,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
         <text x="590" y="420" text-anchor="middle" font-family="Manrope" font-size="12.5" fill="#8B949E">next-best-action = a per-verdict field &#183; auto or human-approved</text>
       </svg>
     </div>
-    <p class="kicker">One mechanism: a millisecond gate, a near real-time verdict, then one of four action families — engage, act on the content, step up or disable the identity, or hand the verdict to your SOC. Every channel is just an adapter feeding the same engine.</p>
+    <p class="kicker">One mechanism: a millisecond gate, a near real-time verdict, then one of four action families: engage, act on the content, disable or revoke the identity, or hand the verdict to your SOC. Every channel is just an adapter feeding the same engine.</p>
   </div>
 </section>
 
@@ -469,7 +471,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">Owns the action · the per-channel reality</div>
-    <h2 class="title">AXIA renders the verdict and owns the action —<br>wherever the platform allows.</h2>
+    <h2 class="title" style="font-size:clamp(30px,4.4vw,52px)">AXIA renders the verdict and owns the action —<br>wherever the platform allows.</h2>
     <div class="matrix">
       <div class="lane t-hold">
         <div class="name">Hold-then-decide <small>act before it leaves</small></div>
@@ -506,7 +508,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide dark">
   <div class="wrap">
     <div class="eyebrow" style="color:var(--cyan)">The headline · queue vs outcome</div>
-    <h2 class="title" style="max-width:20ch">Every other tool gives your team <span style="color:#FFD9A0">more cases</span>.<br>AXIA gives them <span class="g" style="-webkit-background-clip:text;background-clip:text;color:#7FF3E6">fewer</span>.</h2>
+    <h2 class="title">Every other tool gives your team <span style="color:#FFD9A0">more cases</span>.<br>AXIA gives them <span class="g" style="-webkit-background-clip:text;background-clip:text;color:#7FF3E6">fewer</span>.</h2>
     <div class="figure">
       <svg viewBox="0 0 1180 400" role="img" aria-label="A self-resolving loop: Gatekeeper flags, Judge renders the verdict, AXIA opens the case, engages and coaches, the employee confirms, AXIA auto-closes and learns. Critical and Legal always wait for a human.">
         <defs>
@@ -567,7 +569,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
           <text x="816" y="174" font-size="11" fill="#CFF7F1">hold &#183; remove &#183; delete &#183; quarantine &#183; revoke collab</text>
           <rect x="800" y="192" width="358" height="48" rx="10" fill="rgba(13,148,136,.16)" stroke="#2DB5A6"/>
           <text x="816" y="212" font-weight="700" fill="#EAFBF8">Identity</text>
-          <text x="816" y="230" font-size="11" fill="#CFF7F1">step-up / disable on Entra &#183; Okta &#8212; incl. agent identities</text>
+          <text x="816" y="230" font-size="11" fill="#CFF7F1">disable sessions &#183; revoke tokens &#183; incl. agent identities</text>
           <rect x="800" y="248" width="358" height="48" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.28)"/>
           <text x="816" y="268" font-weight="700" fill="#fff">Verdict-out</text>
           <text x="816" y="286" font-size="11" fill="#CFF7F1">SIEM &#183; SOAR &#183; ticket &#8212; lands where your SOC works</text>
@@ -615,7 +617,7 @@ nav.nav{position:fixed;bottom:0;left:0;right:0;height:60px;display:grid;grid-tem
 <section class="slide light">
   <div class="wrap">
     <div class="eyebrow">The agent ecosystem</div>
-    <h2 class="title" style="max-width:22ch">Wherever your agents come from, they meet the same gates.</h2>
+    <h2 class="title" style="max-width:25ch">Wherever your agents come from, they meet the same gates.</h2>
     <p class="lead" style="max-width:940px">Built in-house or bought as a product: every agent acts through the same channels, and AXIA judges every one of them.</p>
     <div class="eco-grid">
       <div class="eco-col">

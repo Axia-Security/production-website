@@ -1495,7 +1495,7 @@
                         <span class="text-[14px] text-text-secondary shrink-0">Try:</span>
                         <button onclick="sendSuggestedPrompt('Summarize this week')" class="shrink-0 text-[14px] text-primary hover:text-text-primary bg-primary/10 hover:bg-primary/20 px-2 py-1 rounded transition-colors">"Summarize this week"</button>
                         <button onclick="sendSuggestedPrompt('What patterns should I watch?')" class="shrink-0 text-[14px] text-primary hover:text-text-primary bg-primary/10 hover:bg-primary/20 px-2 py-1 rounded transition-colors">"Watch patterns"</button>
-                        <button onclick="sendSuggestedPrompt('Send Sarah Kim\\'s manager a check-in email')" class="shrink-0 text-[14px] text-primary hover:text-text-primary bg-primary/10 hover:bg-primary/20 px-2 py-1 rounded transition-colors">"Send manager email"</button>
+                        <button onclick="sendSuggestedPrompt('Send Tom Avery\\'s manager a check-in email')" class="shrink-0 text-[14px] text-primary hover:text-text-primary bg-primary/10 hover:bg-primary/20 px-2 py-1 rounded transition-colors">"Send manager email"</button>
                     </div>
                 </div>
             </div>
@@ -2710,8 +2710,8 @@ const DEMO_DATA = {
     },
 
     // V6.25: Cases by Status - ALIGNED with metricsByTimeframe.
-    // v9 audit fix: case-volume per timeframe kept CONSISTENT with the Command severity totals
-    // (22/30/35/40); open stays 14 across all timeframes (matching the board), closed history grows.
+    // v12 re-baseline: case-volume per timeframe kept CONSISTENT with the Command severity totals
+    // (5/18/50/185); open stays 10 across 7d+ timeframes (matching the board), closed history grows.
     casesByStatus: {
         // v12: sums = 5/18/50/185 (open per window + authored closed history)
         "1d": { open: 4, assigned: 0, unassigned: 0, closed: 1 },
@@ -2761,9 +2761,9 @@ const DEMO_DATA = {
 
     // V6.25: Cases Timeline - per-period NEW cases (not cumulative)
     // Story: cases DECLINE over time as AXIA eliminates medium/low noise
-    // Aligned with severityByTimeframe totals: 1d=8, 7d=30, 30d=105, 90d=340
+    // Aligned with severityByTimeframe totals (v12 re-baseline): 1d=5, 7d=18, 30d=50, 90d=185
     // v6 #N8: per-period bars must match the cases + their status. Each timeframe satisfies ALL:
-    //   sum(closed)+sum(open) == KPI total (14/24/31/40); sum(open)==casesByStatus.open; sum(closed)==closed;
+    //   sum(closed)+sum(open) == KPI total (5/18/50/185); sum(open)==casesByStatus.open; sum(closed)==closed;
     //   per-period severity sum == per-period (closed+open); severity-mode total == status-mode total.
     casesTimeline: {
         // v12 (founder re-baseline): per-timeframe bar sums = 5/18/50/185 (open sums match casesByStatus).
@@ -2848,7 +2848,7 @@ const DEMO_DATA = {
             // V5.9: Purview covers Microsoft ecosystem
             coversChannels: ['ms-365', 'sharepoint', 'onedrive', 'teams'],
             stats: {
-                dataProcessed: '142 alerts ingested',
+                dataProcessed: '≈90 DLP alerts/day ingested',
                 coverage: '96% of endpoints',
                 integration: 'Real-time API',
                 interactions: 0,
@@ -2923,7 +2923,7 @@ const DEMO_DATA = {
             // V5.9: Netskope covers non-Microsoft cloud apps
             coversChannels: ['gmail', 'slack', 'dropbox', 'box', 'google-drive'],
             stats: {
-                dataProcessed: '78 alerts ingested',
+                dataProcessed: '≈30 DLP alerts/day ingested',
                 coverage: '91% of cloud apps',
                 integration: 'REST API',
                 interactions: 67890,
@@ -3335,10 +3335,10 @@ const DEMO_DATA = {
         { title: 'Performance Dashboard', content: 'The Dashboard shows AXIA value through department risk heatmaps with case type breakdowns. Click any department to drill into cases.', screen: 'dashboard-view', position: 'center' },
         { title: 'Critical Cases', content: 'Expand accordions to see recent cases. Each shows the risk score, entity involved, DLP status, and actions taken.', screen: 'dashboard', position: 'bottom' },
         { title: 'Case Investigation', content: "The Cases screen is your investigation workbench. Use filters to narrow down cases by severity, status, actions taken, or DLP status.", screen: 'cases', position: 'top' },
-        { title: 'Connections', content: "See all connected data sources with their coverage, integration details, and policies. Email and SaaS channels show their DLP coverage.", screen: 'connections', position: 'center' },
-        { title: 'Connection Policies', content: "Each connection shows collapsible policy scenarios: When this happens / AXIA does this / Through this channel / To these recipients. Policies are born from resolved cases.", screen: 'connections', position: 'bottom' },
+        { title: 'Act — the Action Catalog', content: "The Act screen is AXIA's action catalog: four families — Engagement, Content, Identity, and Forward to SOC — each set to auto-execute or hold for your approval, keyed on actor and severity.", screen: 'connections', position: 'center' },
+        { title: 'Actor-Aware Posture', content: "People and agents get different lanes: people are auto-engaged at the low end and held for your approval at the top; rogue agents are auto-stopped at High and Critical and the agent's steward is notified.", screen: 'connections', position: 'bottom' },
         { title: 'Structured Analysis', content: 'Each case provides structured analysis: What happened, Why it matters, and Why it is unusual. This context helps you make informed decisions.', screen: 'case-details', position: 'center', caseId: 'CASE-FG-001' },
-        { title: 'From Case to Prevention', content: 'Resolved cases can become enforcement rules with one click. Define scenarios in natural language to prevent similar incidents.', screen: 'case-details', position: 'bottom' },
+        { title: 'Judgment, Owned to Close', content: "Every case closes with the right human: people cases route to the user or the business function, and agent cases open a governance case with the agent's steward — awaiting their confirmation.", screen: 'case-details', position: 'bottom' },
         { title: 'Intel Advisor', content: 'Ask AXIA questions about risk patterns, upload documents for analysis, or simulate scenarios before they happen.', screen: 'intel', position: 'center' },
         { title: 'AI Boundaries', content: "Critical for trust: AXIA clearly defines what it may suggest vs. what it may NEVER do autonomously. Humans remain in control.", screen: 'settings', position: 'top' },
         { title: 'Tour Complete!', content: "You've seen the core of AXIA - contextual intelligence protecting your organization with judgment, not just enforcement.", screen: 'dashboard', position: 'center' }
@@ -4978,12 +4978,8 @@ const DEMO_DATA = {
             { label: 'Forwarded to the SOC', prompt: 'What has AXIA forwarded to Splunk / Sentinel and which SOAR playbooks fired this week?' },
             { label: 'Content actions', prompt: 'What files did AXIA hold, quarantine, or revoke shares on this week, and on which systems?' },
             { label: 'Department risk', prompt: 'Which departments have the highest risk scores?' }
-        ],
-        caseContext: [
-            { label: 'Why this action / family', prompt: 'Why did AXIA choose this action family for this case, and what systems would it touch?' },
-            { label: 'Similar past cases', prompt: 'Show me similar cases from the past and how they were resolved' },
-            { label: 'Recommended response', prompt: 'What response do you recommend for this case and why?' }
         ]
+        // v14: caseContext prompt set removed — defined since Phase 3 but never rendered by any code path (dead data).
     },
 
     // ==================== V5.11: TIME SERIES DATA (90 days - AXIA Improvement Story) ====================
@@ -5123,196 +5119,160 @@ const DEMO_RESPONSES = {
 
 **Role:** Senior Quantitative Developer | **Department:** Engineering | **Location:** Tel Aviv
 
-### Current Risk Assessment: **CRITICAL** (Score: 97)
+### Current Risk Assessment: **CRITICAL** (Score: 97) — CASE-FG-001
 
-Liam Hoffman submitted his resignation 10 days ago and has accepted a position at **SS&C Technologies**, a direct competitor in fund administration software.
+Liam Hoffman is departure-imminent (credential-rotation cadence has shifted to a departure-imminent baseline) and emailed four attachments from his corporate mailbox to a personal Gmail address AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator — an **SS&C** contact.
 
-### Behavioral Anomalies Detected
+### What Was Emailed (content-matched against the NAV-Engine Trade-Secret Catalog)
 
-Over the past 3 days, Liam has exhibited an **18x increase** in repository access volume:
+| Attachment | What it carries |
+|----------|----------|
+| NAV-engine v4.2 source archive | 128 files, complete pricing library + fund-accounting state machine, full commit history |
+| Multi-currency valuation models | The 47-jurisdiction matrix — the differentiator SS&C has no clean answer for |
+| Patent-pending optimization algorithms | 3 filed-but-unpublished algorithm files, exact Catalog match |
 
-| Activity | Volume | Baseline | Deviation |
-|----------|--------|----------|-----------|
-| Repository file downloads | 128 files | 5-8/day | **18x normal** |
-| NAV engine access | 81 core files | 0-1/day | **New behavior** |
-| Patent-pending algorithm docs | 3 documents | 0/month | **First access** |
-
-### Accessed Sensitive Materials
-- Core NAV calculation engine (patent-pending)
-- Multi-currency valuation models (47 jurisdictions)
-- Reconciliation algorithm source code
-- Fund accounting state machine
-
-### Actions Taken
-- ✅ Silent evidence collection enabled
-- ✅ HR team notified
-- ✅ Manager Yael Ben-David notified
-- ⏳ Legal evidence packet prepared
+### Judgment & Actions
+- ✅ Outbound email **held** before delivery
+- ✅ External shares **revoked**
+- ✅ Escalated to **Legal** — Miriam Foss (Legal) owns the case
+- ⏳ **Containment gate** — awaiting your confirmation
 
 ### Recommendation
-**Immediate escalation to Legal recommended.** The breadth of access (NAV engine + valuation models + reconciliation algorithms) combined with departure to SS&C suggests systematic IP collection. Consider expedited exit with garden leave.`,
+**Confirm the containment gate.** The breadth of the send (NAV engine + valuation models + patent-pending algorithms) combined with the SS&C destination reads as systematic IP collection. Consider expedited exit with garden leave once Legal has the evidence packet.`,
 
     'flight risk': `## Flight Risk Summary
 
 Based on current monitoring, I've identified **2 high-priority risk patterns** requiring attention:
 
-### 🔴 Critical: Liam Hoffman
-- **Status:** Resignation submitted, credential-rotation cadence has shifted to a departure-imminent baseline
-- **Destination:** SS&C Technologies (direct competitor)
+### 🔴 Critical: Liam Hoffman — CASE-FG-001
+- **Status:** Departure-imminent — credential-rotation cadence has shifted to a departure-imminent baseline
+- **Destination:** SS&C (matched via the External-Counterparty Register, competitor-administrator flag)
 - **Risk Score:** 97
-- **Concern:** 18x volume spike in NAV engine repository access, 128 sharing events surfaced by AXIA via DLP and email-egress signals
-- **Action:** Silent evidence collection active, legal packet prepared
+- **Concern:** NAV-engine v4.2 archive (128 files) + the 47-jurisdiction valuation models + 3 patent-pending algorithm files emailed to the SS&C contact — exact match against the NAV-Engine Trade-Secret Catalog
+- **Judgment:** Email held · external shares revoked · Legal escalation (Miriam Foss) — **containment gate awaiting your confirmation**
 
-### 🔴 Critical: Natasha Orlov
+### 🔴 Critical: Natasha Orlov — CASE-FG-002
 - **Status:** Active employee, conflict of interest detected
-- **Destination:** Husband's competing fund admin consultancy
+- **Destination:** Husband's competing fund-administration consultancy
 - **Risk Score:** 94
-- **Concern:** Emailed 156 client fund portfolios ($47.2B AUM) from service account to personal address
-- **Action:** Service account suspended, manager notified
+- **Concern:** Emailed the full client book — 156 client fund portfolios ($47.2B AUM) — via the ops service account to a personal address, no ticket trail
+- **Judgment:** Email **quarantined** · **service-account token revoked**
 
 ### Recommendations
 
-1. **Liam Hoffman:** Escalate to Legal immediately. Evidence suggests systematic IP collection of patent-pending algorithms.
+1. **Liam Hoffman:** Confirm the containment gate — Legal has the case; the evidence reads as systematic IP collection of patent-pending algorithms.
 
-2. **Natasha Orlov:** Engage HR for conflict-of-interest review. Restrict API access to territory-limited scope.
+2. **Natasha Orlov:** Engage HR for the conflict-of-interest review; the quarantine and token revocation are holding containment.
 
-3. **General:** Review all employees with competitor connections for anomalous data access patterns.
+3. **General:** Review employees with competitor connections for anomalous data-movement patterns.
 
 *Would you like me to generate a detailed evidence packet for either case?*`,
 
-    'risk patterns': `## Weekly Risk Patterns Analysis
+    'risk patterns': `## This Week at a Glance (7 days)
 
-### Top Risk Patterns This Week
+**18 cases** (10 open · 8 closed) against **834 DLP alarms** — AXIA validated 12 of those alarms into the true-case set; the rest were dispositioned as noise through contextual analysis.
 
-#### 1. **Pre-Departure IP Collection** (1 case)
-- Liam Hoffman (Engineering) - Score: 97
-- *Pattern: NAV engine source code + patent-pending algorithms emailed externally to a personal account at SS&C, flagged by AXIA via NAV-Engine Trade-Secret Catalog content match*
+### Top Patterns This Week
 
-#### 2. **Conflict-of-Interest Data Extraction** (1 case)
-- Natasha Orlov (Client Operations) - Score: 94
-- *Pattern: Full client book extraction, husband's competing consultancy*
+#### 1. **Pre-Departure Data Collection**
+- **Liam Hoffman** (Engineering) — Score 97 · Critical · NAV-engine archive + patent-pending algorithms emailed to an SS&C contact. Email held, shares revoked — the case sits at the **containment gate awaiting your confirmation** (CASE-FG-001).
+- **Priya Ramanathan** (Tax & Compliance) — Score 96 · FATCA review-queue export before departure; contained and closed (CASE-FG-017).
 
-#### 3. **Reputation Risk - Internal Disclosures** (2 cases)
-- Aaron Weiss shared NAV incident post-mortem with journalist
-- Rachel Tanaka forwarded client migration failures to competitor
-- *Pattern: Internal operational documents reaching external parties*
+#### 2. **Conflict-of-Interest Client-Data Extraction**
+- **Natasha Orlov** (Client Operations) — Score 94 · Critical · full client book (156 funds, $47.2B AUM) pulled via the ops service account (CASE-FG-002). Email quarantined · service-account token revoked.
 
-#### 4. **DLP False Positive Noise** (5 cases this week)
-- Staging NAV data, KYC test payloads, CI/CD test credentials, training data, load test CSVs
-- *All auto-resolved by AXIA contextual analysis*
-- *Recommendation: Create DLP exceptions for test/staging pipelines*
+#### 3. **Agent Governance**
+- **svc-nav-export** — rogue internal agent auto-stopped at the gate; steward **Oren Baskin (IT)** directed to connect this agent type to the AXIA API (CASE-FG-018, awaiting his confirmation).
+- **fin-brief-assistant** — integrated agent blocked pre-send; prompt-validation governance case open with **Oren Baskin (IT)** (CASE-FG-044).
 
-### Department Risk Distribution
+#### 4. **Reputation Risk — Internal Disclosures**
+- **Paul Novak** (Revenue Strategy) — NAV post-mortem + pricing model emailed to personal Gmail with stated forward intent to a pre-disclosure-press recipient (CASE-FG-003, engaged — awaiting his reply).
 
-| Department | Open Cases | Highest Severity |
-|------------|------------|------------------|
-| Engineering | 2 | Critical |
-| Sales | 2 | Critical |
-| Product | 1 | Critical |
-| Legal | 1 | High |
+### Cases by Department (7d)
 
-### Recommended Actions
+| Department | Cases |
+|------------|-------|
+| Engineering | 4 |
+| Finance | 3 |
+| Sales | 3 |
+| Product | 2 |
+| Marketing | 2 |
+| HR | 2 |
+| Legal | 2 |
 
-1. **Immediate:** Address Liam Hoffman IP exfiltration - legal escalation
-2. **This Week:** Resolve Natasha Orlov conflict of interest with HR
-3. **Ongoing:** Create DLP exceptions for staging/test pipelines to reduce false positive noise
+### Where Your Attention Is Needed
+
+1. **CASE-FG-001** — confirm the containment gate (hold email · revoke shares · Legal escalation with Miriam Foss).
+2. **CASE-FG-002** — the HR conflict-of-interest review is the open human loop.
+3. **CASE-FG-044** — Oren Baskin (IT)'s prompt-validation confirmation closes the governance loop.
 
 *Want me to drill down into any specific pattern?*`,
 
-    'enforcement': `## Enforcement Opportunities
+    'enforcement': `## Automation Posture Review
 
-Based on cases with recurring patterns, I've identified **3 opportunities** for automated enforcement rules:
+FundGuard runs the four-family judgment catalog — **Engagement · Content · Identity · Forward to SOC** — with defaults keyed on **actor × severity**. Based on the current board, here's how the posture is holding and where I'd look:
 
-### 1. Departure Data Collection Alert
-**Pattern detected in:** CASE-FG-001
-**Scenario:**
-- **When:** Any employee with resignation submitted
-- **Does:** Downloads or syncs >50 repository files in 7 days
-- **Through:** Any channel including egress to personal account
-- **To:** Any personal storage destination
+### People lane — auto the low end, hold the top
+- **Coaching and manager notifications are carrying the volume.** Low/Medium engagement runs automatically (CASE-FG-022 resolved with an auto-nudge); **Critical stays held for your approval** everywhere — CASE-FG-001 is at the containment gate awaiting your confirmation right now.
+- **Hold-and-verify is working.** CASE-FG-021's outbound email is held while the sender verifies it isn't confidential — keeping quarantine-and-engage instead of hard-blocking keeps the business moving and still stops a genuine leak.
 
-**Recommended action:** Block + Manager + HR notification
-**Estimated impact:** Prevent ~3 IP collection incidents/quarter
+### Agents lane — auto-stop, top-anchored
+- **Keep High + Critical auto-stop** on Content / Identity / Forward-to-SOC — that's what contained CASE-FG-018 and CASE-FG-043 at machine speed, with the steward loop opening the governance case.
+- **The governance loop is the close:** integrated agents get prompt validation (CASE-FG-044, awaiting Oren Baskin (IT)); un-wired agents get connect directives to the AXIA API / MCP.
 
-### 2. Bulk Client Data API Export
-**Pattern detected in:** CASE-FG-002
-**Scenario:**
-- **When:** Any Client Operations role
-- **Does:** Exports >50 client fund records via API
-- **Through:** Internal reporting API
-- **To:** Local storage or personal destinations
+Posture lives on the **Act** screen — each action's severity chips flip between auto-execute and held, per lane. Want me to walk through a specific family?`,
 
-**Recommended action:** Require approval + Audit log
-**Estimated impact:** Reduce unauthorized client data exports by ~85%
+    'false positives': `## False Positive & Noise Analysis
 
-### 3. Multi-Hop Email Forwarding Chain
-**Pattern detected in:** CASE-FG-004
-**Scenario:**
-- **When:** Any employee
-- **Does:** Forwards internal documents to personal email, subsequently forwarded externally
-- **Through:** Email (multi-hop chain)
-- **To:** Known competitor domains
+Of the **834 DLP alarms** this week, AXIA validated **12** into the true-case set — the rest were dispositioned as noise through contextual analysis, without an analyst touching them.
 
-**Recommended action:** Block + Manager alert
-**Estimated impact:** Detect document exfiltration via personal email relay
+### The Recurring Noise Patterns
 
-*Would you like me to create any of these enforcement rules?*`,
+All are DLP pattern-matching firing on legitimate fintech development workflows:
 
-    'false positives': `## False Positive Analysis
+| Pattern | Example | How AXIA dispositions it |
+|---------|---------|--------------------------|
+| Staging / synthetic NAV data | CASE-FG-006 — synthetic fund data, clearly labeled [STAGING] | Context-validated and closed |
+| Vendor sandbox payloads | CASE-FG-007 — KYC test applicant data on a vendor sandbox URL | Auto-resolved on context match |
+| Labeled training data | CASE-FG-009 — synthetic data in AML training materials | Auto-resolved on label + content match |
 
-### This Week: 5 False Positives Suppressed by AXIA
+### What the Pattern Says
 
-All triggered by DLP pattern matching on legitimate fintech development workflows:
+The staging environment, test pipelines, and training materials keep re-triggering pattern-only DLP — that's structural, not behavioral. AXIA absorbs the noise either way, but the DLP scopes on those pipelines are worth a review with the teams that own them.
 
-| Case | Trigger | Context | Resolution |
-|------|---------|---------|------------|
-| FG-006 | NAV test data in staging | Synthetic fund data, clearly labeled [STAGING] | Auto-resolved, 3 min |
-| FG-007 | KYC sandbox payloads | Test applicant data, vendor sandbox URL | Auto-resolved, 5 min |
-| FG-008 | API test keys in CI/CD | Example credentials in documentation branch | Auto-resolved, 5 min |
-| FG-009 | AML training text | Synthetic SSN/card data, labeled "Training Scenario" | Auto-resolved, 2 min |
-| FG-010 | Load test transactions | TST- prefixed IDs, "Test" fund names | Auto-resolved, 5 min |
+*Want me to pull the full disposition trail on any of these?*`,
 
-### Impact
-- **Analyst time saved:** ~4.2 hours (vs. manual review of each alert)
-- **Mean resolution time:** 4 minutes (vs. 45+ minutes manually)
-- **Recurring alerts:** FG-010 fires every Tuesday during load tests
-
-### Recommendation
-Create DLP exceptions for:
-1. Staging environment (\\*.staging.fundguard.internal)
-2. Performance testing pipeline (Tuesday 1-4 AM window)
-3. Documentation branches (docs/* in deployment repo)
-
-This would eliminate ~80% of recurring false positives without reducing security coverage.
-
-*Want me to create these DLP exception rules?*`,
-
-    'default': `I can help you analyze risk patterns, investigate specific employees, review false positive trends, or provide strategic recommendations.
+    'default': `I can help you analyze risk patterns, investigate specific people or agent identities, review noise trends, or check your automation posture.
 
 Here are some things you can ask me:
 
 - **"Tell me about Liam Hoffman"** - Get a complete risk profile
+- **"Who are the highest-risk employees right now?"** - Top open cases by score
 - **"Which employees should I watch?"** - Flight risk and conflict-of-interest summary
-- **"What are this week's risk patterns?"** - Pattern analysis
+- **"Summarize this week"** - The 7-day board at a glance
+- **"Which agent identities are acting off-baseline?"** - The agent governance picture
+- **"Which departments have the highest risk?"** - Department risk view
 - **"Show me false positive trends"** - DLP noise analysis
-- **"What enforcement rules should I create?"** - Automated protection opportunities
-- **"Summarize the critical cases"** - Current critical incidents
+- **"How is my automation posture holding up?"** - The Act catalog defaults, reviewed
 
 I have access to all case data, behavioral baselines, and organizational context for FundGuard. How can I assist?`,
 
     // ===== Phase 3: four-family / agent-identity / verdict-out aware answers (names families + systems; no invented numbers) =====
-    'agent identities': `## Non-Human / Agent Identities Acting Off-Baseline
+    'agent identities': `## Agent Identities — Judged Like Every Other Actor
 
-AXIA treats agent and service identities as first-class actors and contains them the same way it would a person.
+AXIA treats agents and service identities as first-class actors. Agents wired into AXIA are judged **before** they act; rogue agents are caught at the **same gates as people**, auto-stopped, and the agent's **steward** is engaged — every agent event ends in a steward-owned governance case awaiting confirmation.
 
-### Currently flagged
-- **svc-nav-export (AI agent)** — pulling NAV reference datasets on a stale OAuth token to an external endpoint. **Action:** AXIA revoked the token and disabled the session via **Entra** (*identity* family).
-- **Cursor coding agent (MCP)** — asked AXIA for a decision before writing live API keys into a shared repo. AXIA returned **BLOCK** over MCP; the agent self-corrected. *AXIA's decision served as a capability — prevented, no case to work.*
+### On the board right now
+- **svc-nav-export** (CASE-FG-018 · Critical · open) — rogue internal agent caught at the gate pulling NAV reference datasets on a stale token. Auto-stopped: token revoked, session terminated via **Entra**. AXIA emailed the steward — **Oren Baskin (IT)** — directing him to connect this agent type to the **AXIA API**; the case is open awaiting his confirmation.
+- **fin-brief-assistant** (CASE-FG-044 · Medium · open) — integrated Copilot Studio agent that consulted AXIA over the **AXIA API** before sending. AXIA judged the draft and blocked the send — client-identifying data outside its approved scope; nothing moved. The prompt-validation governance case is open awaiting **Oren Baskin (IT)**'s confirmation.
+- **Agentforce agent svc-crm-sync** (CASE-FG-043 · High · closed) — rogue SaaS agent caught at the Salesforce gate; auto-stopped (OAuth grant revoked, connector disabled). The steward — the **CISO team (partnership steward)** — was directed to work with the provider to connect the agent to the **AXIA MCP**. Contained and closed.
+- **M365 Copilot agent copilot-briefings** (CASE-FG-045 · Medium · closed) — integrated over the **AXIA MCP**; a sensitive share was blocked pre-delivery. The provider validated the agent's instructions and the partnership owner confirmed — the governance loop completed.
+
+### Steward routing
+**Internal agents → the platform's IT admin. SaaS agents → the partnership owner or the CISO team.** Stopping the machine is the reflex; the close is the human governance loop — validate the agent's instructions, or wire the agent into AXIA's judgment (API for internal, MCP for SaaS).
 
 ### Identity rails AXIA acts through
-**Entra · Okta · Ping**, plus agent-specific rails **Entra Agent ID** and **Okta Cross-App Access**.
-
-Agent identities move data at machine speed and are routinely over-permissioned — AXIA's judgment closes the loop by revoking the credential or disabling the session at the identity layer.`,
+**Entra · Okta · Ping**, plus agent-specific rails **Entra Agent ID** and **Okta Cross-App Access**.`,
 
     'verdicts': `## Forwarded to the SOC (SIEM / SOAR)
 
@@ -5337,7 +5297,61 @@ AXIA owns the content enforcement and acts on the specific system the content li
 | **Remove message** | Slack (Grid) · Teams · Email | Customer record pasted into a public Slack channel |
 | **Revoke external share** | Google Drive · Box · Slack · Atlassian · Salesforce | Client onboarding folder shared to a personal account |
 
-Most held emails are legitimate — for the borderline ones AXIA **holds and engages the sender to verify** rather than hard-blocking, keeping the business moving while still stopping a genuine leak.`
+Most held emails are legitimate — for the borderline ones AXIA **holds and engages the sender to verify** rather than hard-blocking, keeping the business moving while still stopping a genuine leak.`,
+
+    // ===== v14: welcome-chip answers (top risk · department risk) + the manager check-in draft =====
+    'top risk': `## Highest-Risk Employees Right Now
+
+Top open person cases by risk score:
+
+| # | Employee | Department | Score | Severity | Case |
+|---|----------|------------|-------|----------|------|
+| 1 | **Liam Hoffman** | Engineering | 97 | Critical | CASE-FG-001 — NAV engine + patent-pending algorithms to an SS&C contact · containment gate awaiting your confirmation |
+| 2 | **Natasha Orlov** | Client Operations | 94 | Critical | CASE-FG-002 — full client book (156 funds, $47.2B AUM) via the ops service account · email quarantined, token revoked |
+| 3 | **Paul Novak** | Revenue Strategy | 83 | High | CASE-FG-003 — NAV post-mortem + pricing model to personal Gmail · engaged, awaiting his reply |
+| 4 | **Maya Patel** | Legal | 80 | High | CASE-FG-005 — draft SOC 2 findings + KYC investor extract to an unapproved consultant |
+| 5 | **Diane Okafor** | People Operations | 78 | High | CASE-FG-014 — workforce-reduction plan emailed to a personal address before WARN notification |
+
+Agent identities are tracked separately — ask me about **agent identities** for the governance picture (CASE-FG-018 · CASE-FG-044).
+
+*Want the full profile on any of them?*`,
+
+    'department risk': `## Department Risk — 7-Day View
+
+| Department | Cases (7d) |
+|------------|------------|
+| **Engineering** | 4 |
+| Finance | 3 |
+| Sales | 3 |
+| Product | 2 |
+| Marketing | 2 |
+| HR | 2 |
+| Legal | 2 |
+
+### What's driving it
+- **Engineering** leads on volume and severity — the Liam Hoffman NAV-engine exfiltration (CASE-FG-001) plus both internal agent-governance events (CASE-FG-018 · CASE-FG-044) land here.
+- **Legal**'s cases are high-severity compliance-artifact handling — the draft SOC 2 findings send (CASE-FG-005) is the one to watch.
+- The low-end volume (Marketing, HR) is coaching-grade and resolves automatically.
+
+The full heatmap with per-department case types is on the **Insights** screen.`,
+
+    'manager email': `## Manager Check-in Draft — Tom Avery (CASE-FG-022)
+
+Tom Avery (Operations Associate, London) was auto-coached this week after pasting a short internal snippet into a consumer note-taking app — Low severity, no sensitive content left the environment.
+
+Here's a check-in draft for his reporting manager, sent from the org mailbox (soc@fundguard.com):
+
+> **Subject:** Quick check-in — approved-tools nudge for Tom Avery
+>
+> Hi,
+>
+> AXIA flagged a low-severity policy nudge for Tom Avery this week (CASE-FG-022): a short internal text snippet was pasted into a consumer note-taking app. Tom has already received an automatic coaching note on approved tools, and no sensitive content left the environment.
+>
+> No action needed — this is a habit-awareness heads-up. The case details are linked if you'd like the specifics.
+>
+> — AXIA, on behalf of the FundGuard security team
+
+Per your Act posture, manager notifications at Low/Medium run automatically — say the word and I'll queue this one.`
 };
 
 function getDemoResponse(message) {
@@ -5345,6 +5359,22 @@ function getDemoResponse(message) {
 
     if (lowerMessage.includes('liam hoffman') || lowerMessage.includes('liam') || lowerMessage.includes('hoffman')) {
         return DEMO_RESPONSES['liam hoffman'];
+    }
+    // v14: the manager check-in draft (Try-prompt) — before the generic matchers
+    if (lowerMessage.includes('check-in') || lowerMessage.includes('tom avery') || (lowerMessage.includes('manager') && lowerMessage.includes('email'))) {
+        return DEMO_RESPONSES['manager email'];
+    }
+    // v14: department view (checked before top-risk — both prompts mention "highest")
+    if (lowerMessage.includes('department')) {
+        return DEMO_RESPONSES['department risk'];
+    }
+    // v14: top-risk people
+    if (lowerMessage.includes('highest-risk') || lowerMessage.includes('top risk') || lowerMessage.includes('riskiest') || (lowerMessage.includes('highest') && lowerMessage.includes('employee'))) {
+        return DEMO_RESPONSES['top risk'];
+    }
+    // v14: automation posture — checked before the content matcher ("holding up" would otherwise hit 'hold')
+    if (lowerMessage.includes('posture') || lowerMessage.includes('automation')) {
+        return DEMO_RESPONSES['enforcement'];
     }
     // Phase 3: four-family / agent-identity / verdict-out routing (checked before the people-centric matches)
     if (lowerMessage.includes('agent') || lowerMessage.includes('non-human') || lowerMessage.includes('nonhuman') || lowerMessage.includes('identit') || lowerMessage.includes('token') || lowerMessage.includes('service account')) {
@@ -5368,7 +5398,7 @@ function getDemoResponse(message) {
     if (lowerMessage.includes('risk pattern') || lowerMessage.includes('patterns') || lowerMessage.includes('this week') || lowerMessage.includes('summary') || lowerMessage.includes('summarize')) {
         return DEMO_RESPONSES['risk patterns'];
     }
-    if (lowerMessage.includes('enforcement') || lowerMessage.includes('enforce') || lowerMessage.includes('rule') || lowerMessage.includes('policy') || lowerMessage.includes('automate')) {
+    if (lowerMessage.includes('enforcement') || lowerMessage.includes('enforce') || lowerMessage.includes('rule') || lowerMessage.includes('policy') || lowerMessage.includes('automat') || lowerMessage.includes('posture')) {
         return DEMO_RESPONSES['enforcement'];
     }
 
@@ -5523,7 +5553,7 @@ function renderFullChat() {
                         <span class="material-symbols-outlined text-primary text-3xl">psychology</span>
                     </div>
                     <h2 class="text-lg font-bold text-text-primary mb-2">How can I help?</h2>
-                    <p class="text-sm text-text-secondary">Ask me about risk patterns, analyze documents, create enforcement rules, or get strategic recommendations.</p>
+                    <p class="text-sm text-text-secondary">Ask me about risk patterns, analyze documents, review your automation posture, or get strategic recommendations.</p>
                 </div>
             </div>
             <div class="flex flex-wrap justify-center gap-2 pb-4">
@@ -5535,11 +5565,11 @@ function renderFullChat() {
                     <button onclick="sendSuggestedPrompt('What are the top risk patterns in Engineering this quarter?')" class="px-4 py-2 rounded-full bg-surface-card border border-border-subtle text-text-secondary hover:text-text-primary hover:border-primary transition-colors text-sm">
                         Risk patterns in Engineering
                     </button>
-                    <button onclick="sendSuggestedPrompt('Tell me about Marcus Chen')" class="px-4 py-2 rounded-full bg-surface-card border border-border-subtle text-text-secondary hover:text-text-primary hover:border-primary transition-colors text-sm">
-                        Analyze Marcus Chen
+                    <button onclick="sendSuggestedPrompt('Tell me about Liam Hoffman')" class="px-4 py-2 rounded-full bg-surface-card border border-border-subtle text-text-secondary hover:text-text-primary hover:border-primary transition-colors text-sm">
+                        Analyze Liam Hoffman
                     </button>
-                    <button onclick="sendSuggestedPrompt('What enforcement rules should I create?')" class="px-4 py-2 rounded-full bg-surface-card border border-border-subtle text-text-secondary hover:text-text-primary hover:border-primary transition-colors text-sm">
-                        Enforcement opportunities
+                    <button onclick="sendSuggestedPrompt('How is my automation posture holding up?')" class="px-4 py-2 rounded-full bg-surface-card border border-border-subtle text-text-secondary hover:text-text-primary hover:border-primary transition-colors text-sm">
+                        Automation posture
                     </button>
                 `}
             </div>
@@ -5676,18 +5706,15 @@ async function sendMessage() {
         renderFullChat();
 
     } catch (error) {
-        console.error('Error:', error);
+        // v14 fork (b): graceful fallback — if the live proxy path fails for ANY reason (proxy down,
+        // origin not allowlisted, assistant missing), answer silently from the canned demo engine
+        // instead of surfacing an error bubble. fork (a) — the full live-assistant fix — is a follow-up.
+        console.warn('AXIA Intel live path unavailable — falling back to canned response:', error && error.message);
         const indicator = document.getElementById('typing-indicator');
         if (indicator) indicator.remove();
 
-        chat.innerHTML += `
-            <div class="flex flex-col items-start gap-2 max-w-[95%]">
-                <div class="chat-bubble-ai bg-severity-critical-bg p-4 shadow-lg border border-severity-critical/30">
-                    <p class="text-sm text-severity-critical"><strong>Error:</strong> ${escapeHtml(error.message)}</p>
-                    <p class="text-xs text-text-secondary mt-2">Check your API key in Settings.</p>
-                </div>
-            </div>
-        `;
+        chatMessages.push({ role: 'assistant', content: getDemoResponse(displayMessage) });
+        renderFullChat();
     } finally {
         isLoading = false;
         document.getElementById('intel-send-btn').disabled = false;
@@ -9675,6 +9702,13 @@ function renderConnectScreen() {
             { name: 'Token Security', icon: 'key', status: 'available' },
             { name: 'Oasis', icon: 'smart_toy', status: 'coming-soon' }
         ],
+        // v14 CON-2 (§2.4): the AXIA-side agent-judgment surfaces the steward emails direct to —
+        // "connect this agent type to the AXIA API" / "work with the provider to connect to the AXIA MCP".
+        'Agent judgment surfaces': [
+            { name: 'AXIA API — internal agents', icon: 'api', status: 'available' },
+            { name: 'AXIA MCP — SaaS agents', icon: 'hub', status: 'available' },
+            { name: 'Agent-identity rails', icon: 'badge', status: 'coming-soon' }
+        ],
         'Identity &amp; access': [
             { name: 'Entra', icon: 'badge', status: 'in-environment' },
             { name: 'Okta', icon: 'verified_user', status: 'available' },
@@ -9695,6 +9729,10 @@ function renderConnectScreen() {
             { name: 'Jira', icon: 'task', status: 'in-environment' }
         ]
     };
+    // v14 CON-2: per-group captions (founder YES on naming agent platforms inside the group description).
+    const AVAIL_CAPTIONS = {
+        'Agent judgment surfaces': 'Wire agents into judged-before-acting: internal agent platforms (Microsoft Copilot Studio, AWS Bedrock AgentCore, Vertex AI Agent Builder-class) connect via the AXIA API; SaaS agents (Salesforce Agentforce, ServiceNow Now Assist, Microsoft 365 Copilot-class) via the AXIA MCP. Agent-identity rails (Entra Agent ID · Okta Cross-App Access) carry credential revocation.'
+    };
     let availHtml = '';
     Object.keys(AVAIL).forEach(group => {
         const items = AVAIL[group].filter(c => {
@@ -9702,8 +9740,10 @@ function renderConnectScreen() {
             return !connectedNames.has(k) && !connectedShort.has(k);
         });
         if (!items.length) return;
+        const caption = AVAIL_CAPTIONS[group] ? `<p class="text-[10px] text-text-muted leading-snug mb-2">${AVAIL_CAPTIONS[group]}</p>` : '';
         availHtml += `<div class="mb-4">
             <h4 class="text-[11px] font-medium text-text-secondary mb-2">${group}</h4>
+            ${caption}
             <div class="grid grid-cols-2 gap-2">${items.map(c => renderAddConnCard(c)).join('')}</div>
         </div>`;
     });
@@ -10857,7 +10897,9 @@ function executeNBA(id){
   // Preferred path: hand to the driver so the approve shows the live acting animation → auto-resolve
   // (acting → closed with analyst owner + ≤1 CC), keeping tallies in sync via the driver's render().
   if (typeof window.axiaApprove === 'function') { try { window.axiaApprove(id); return; } catch(e){} }
-  // Fallback (driver absent): close immediately with a SOC-analyst owner, never the subject employee.
+  // Fallback (driver absent): close immediately. Owner comes from axiaOutcomeFor (v10+ actor-aware:
+  // agent → steward · system → CISO office · person → user or business function); literal string is a
+  // last-resort default that never fires in the static build (axiaOutcomeFor is always defined).
   c.stage = 'closed'; c.status = 'closed';
   c.outcome = (typeof window.axiaOutcomeFor === 'function') ? window.axiaOutcomeFor(c) : 'Owner: SOC analyst (Security Ops)';
   // v9 A1: stamp _justClosed so the card animates out via the clean dark fade+slide (axiaExit)
@@ -10942,7 +10984,7 @@ function actLane(a, actor, sel){
   var icon      = isAgent ? 'smart_toy' : 'person';
   var iconColor = isAgent ? 'text-ops-purple' : 'text-text-secondary';
   var title     = isAgent ? 'Agents (rogue) · Auto-stopped & steward notified' : 'People · Held for your approval';
-  var helper    = isAgent ? 'AXIA stops rogue agents at these severities and reports to the agent’s steward — the platform’s IT admin, or the partnership owner / CISO team for SaaS agents.'
+  var helper    = isAgent ? 'AXIA stops rogue agents at these severities and reports to the agent’s steward — the platform’s IT admin, or the partnership owner / CISO team for SaaS agents — and opens a governance case awaiting the steward’s confirmation.'
                           : 'AXIA auto-executes every other severity. These wait for you.';
   var laneCls   = isAgent ? 'flex flex-col gap-1.5 pt-2 border-t border-border-subtle mt-0.5' : 'flex flex-col gap-1.5';
   var html = '<div class="' + laneCls + '">'
@@ -11609,9 +11651,43 @@ function addActionOption(family){
   window.axiaConfirm = function(id){ if (typeof executeNBA === 'function') executeNBA(id); };
   window.axiaSend    = function(id){ if (typeof executeNBA === 'function') executeNBA(id); };
 
+  // ---------- v14: Intel canned-answer integrity assert ----------
+  // Every case id referenced by DEMO_RESPONSES must exist in casesData, and every person/agent name
+  // the canned answers cite must resolve to a board entity, steward, persona, or function owner.
+  // console.warn on any miss (same convention as deriveTallies); result exposed for headless verify.
+  function assertIntelReferences(){
+    try {
+      if (typeof DEMO_RESPONSES === 'undefined') return;
+      var validIds = {}; casesData.forEach(function(c){ validIds[c.id] = true; });
+      var validNames = [];
+      var addName = function(n){ if (n) validNames.push(String(n).toLowerCase()); };
+      casesData.forEach(function(c){
+        if (c.entity && c.entity.name) addName(c.entity.name);
+        if (c.steward && c.steward.name) addName(c.steward.name);
+      });
+      Object.keys(FUNCTION_OWNER).forEach(function(k){ addName(FUNCTION_OWNER[k].name); });
+      var P = window.AXIA_PERSONAS || {};
+      Object.keys(P).forEach(function(k){ addName(P[k].name); });
+      var text = Object.keys(DEMO_RESPONSES).map(function(k){ return DEMO_RESPONSES[k]; }).join('\n');
+      var idRe = /CASE-FG-\d{3}/g, m, missIds = {};
+      while ((m = idRe.exec(text)) !== null) { if (!validIds[m[0]]) missIds[m[0]] = true; }
+      // Person/agent names the canned answers cite (authored inventory — kept in sync with DEMO_RESPONSES).
+      var INTEL_NAME_REFS = ['Liam Hoffman','Natasha Orlov','Paul Novak','Maya Patel','Diane Okafor',
+        'Priya Ramanathan','Tom Avery','Oren Baskin','Miriam Foss',
+        'svc-nav-export','fin-brief-assistant','svc-crm-sync','copilot-briefings'];
+      var missNames = INTEL_NAME_REFS.filter(function(n){
+        var nl = n.toLowerCase();
+        return !validNames.some(function(v){ return v.indexOf(nl) !== -1 || nl.indexOf(v) !== -1; });
+      });
+      if (Object.keys(missIds).length) console.warn('[axia v14] Intel cites case ids NOT in casesData: ' + Object.keys(missIds).join(', '));
+      if (missNames.length) console.warn('[axia v14] Intel cites names NOT on the board: ' + missNames.join(', '));
+      window.__axiaIntelRefAssert = { missingIds: Object.keys(missIds), missingNames: missNames };
+    } catch(e){ console.warn('[axia v14] Intel reference assert failed to run:', e && e.message); }
+  }
+
   // Single render at load; deriveTallies() (inside render) recomputes severity tallies from the seeded
-  // states so the 14/24/31/40 magnitudes and open/closed splits stay self-consistent.
-  function boot(){ deriveTallies(); render(); }
+  // states so the 5/18/50/185 magnitudes and open/closed splits stay self-consistent.
+  function boot(){ deriveTallies(); assertIntelReferences(); render(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
 </script>

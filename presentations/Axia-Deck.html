@@ -821,7 +821,7 @@ h3 {
   })();
   function gateCheck() {
     if (new Date() > new Date('2026-07-30T23:59:59')) return;
-    if (document.getElementById('gate-input').value === 'AxiaMamdas!') {
+    if (['AxiaMamdas!','Axia180!'].includes(document.getElementById('gate-input').value)) {
       document.getElementById('axia-gate').style.display = 'none';
     } else {
       document.getElementById('gate-error').style.display = 'block';

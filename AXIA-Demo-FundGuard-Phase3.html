@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // AXIA Demo V6.28.1 - Removed FG-008/FG-010 from cases (DLP FPs belong in False Alerts panel only), all Dana lab observations verified utilized
+        // AXIA Demo V6.28.1 - Removed FG-4808/FG-4810 from cases (DLP FPs belong in False Alerts panel only), all Dana lab observations verified utilized
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -983,6 +983,13 @@
                     <button class="time-btn shrink-0 h-9 px-4 rounded-lg bg-surface-card text-text-secondary text-xs font-medium border border-border-subtle hover:bg-surface-hover hover:text-text-primary transition-colors min-w-[44px]" data-range="30d">30d</button>
                     <button class="time-btn shrink-0 h-9 px-4 rounded-lg bg-surface-card text-text-secondary text-xs font-medium border border-border-subtle hover:bg-surface-hover hover:text-text-primary transition-colors min-w-[44px]" data-range="90d">90d</button>
                 </div>
+                <!-- v15 (D4): actor scope toggle — a View selector, divided from the timeframe row above -->
+                <div id="actor-selector" class="flex items-center gap-2 px-5 pb-4 pt-3 border-t border-border-subtle overflow-x-auto no-scrollbar w-full">
+                    <span class="text-[11px] font-bold text-text-secondary uppercase tracking-wider shrink-0 mr-1">View:</span>
+                    <button class="actor-btn shrink-0 h-9 px-4 rounded-lg bg-primary text-white text-xs font-bold border border-primary shadow-sm shadow-primary/20 min-w-[44px]" data-actor="all" onclick="window.axiaSetActorFilter('all')">All</button>
+                    <button class="actor-btn shrink-0 h-9 px-4 rounded-lg bg-surface-card text-text-secondary text-xs font-medium border border-border-subtle hover:bg-surface-hover hover:text-text-primary transition-colors min-w-[44px]" data-actor="person" onclick="window.axiaSetActorFilter('person')">People</button>
+                    <button class="actor-btn shrink-0 h-9 px-4 rounded-lg bg-surface-card text-text-secondary text-xs font-medium border border-border-subtle hover:bg-surface-hover hover:text-text-primary transition-colors min-w-[44px]" data-actor="agent" onclick="window.axiaSetActorFilter('agent')">AI Agents</button>
+                </div>
             </header>
 
             <main class="flex flex-col px-4 pt-4 gap-4">
@@ -1185,6 +1192,14 @@
                         <input id="case-search" class="w-full bg-transparent border-none text-sm text-text-primary placeholder-text-secondary focus:ring-0 h-10" placeholder="Try: &quot;Critical cases involving Engineering&quot;" type="text"/>
                         <button class="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-bold text-xs transition-colors shrink-0 min-h-[36px]">Search</button>
                     </div>
+                </div>
+
+                <!-- v15 (D4): actor scope toggle — a View selector; a scope, divided from the attribute Filters below -->
+                <div id="cases-actor-selector" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-1 border-b border-border-subtle">
+                    <span class="text-[14px] font-bold text-text-secondary uppercase tracking-wider shrink-0">View:</span>
+                    <button class="actor-btn shrink-0 h-9 px-4 rounded-lg bg-primary text-white text-xs font-bold border border-primary shadow-sm shadow-primary/20 min-w-[44px]" data-actor="all" onclick="window.axiaSetActorFilter('all')">All</button>
+                    <button class="actor-btn shrink-0 h-9 px-4 rounded-lg bg-surface-card text-text-secondary text-xs font-medium border border-border-subtle hover:bg-surface-hover hover:text-text-primary transition-colors min-w-[44px]" data-actor="person" onclick="window.axiaSetActorFilter('person')">People</button>
+                    <button class="actor-btn shrink-0 h-9 px-4 rounded-lg bg-surface-card text-text-secondary text-xs font-medium border border-border-subtle hover:bg-surface-hover hover:text-text-primary transition-colors min-w-[44px]" data-actor="agent" onclick="window.axiaSetActorFilter('agent')">AI Agents</button>
                 </div>
 
                 <!-- Filters with Dropdowns -->
@@ -1406,7 +1421,14 @@
                 <div id="widget-true-incidents" class="col-span-12 sm:col-span-6 lg:col-span-3 dashboard-widget bg-white rounded-xl p-3 border border-border-subtle shadow-sm flex flex-col" data-widget="true-incidents">
                     <!-- True Incidents Found - same width as Top Case Types above -->
                 </div>
-                <!-- V6.28.1: Add Widget card -->
+                <!-- v15 (D3): Row 4 — AI-agent Insights. W1 Agent Fleet (6) + W2 Agent Events (3) + relocated Add-Widget (3) -->
+                <div id="widget-agent-fleet" class="col-span-12 lg:col-span-6 dashboard-widget bg-white rounded-xl p-3 border border-border-subtle shadow-sm flex flex-col" data-widget="agent-fleet" style="min-height: 200px;">
+                    <!-- Agent Fleet: wired (judged before acting) vs un-wired (caught at gates) platform roster -->
+                </div>
+                <div id="widget-agent-events" class="col-span-12 sm:col-span-6 lg:col-span-3 dashboard-widget bg-white rounded-xl p-3 border border-border-subtle shadow-sm flex flex-col" data-widget="agent-events" style="min-height: 200px;">
+                    <!-- Agent Events: Prevented vs Governed -->
+                </div>
+                <!-- V6.28.1: Add Widget card (relocated to Row 4 in v15) -->
                 <div id="widget-add-new" class="col-span-12 sm:col-span-6 lg:col-span-3 dashboard-widget bg-white rounded-xl p-3 border-2 border-dashed border-border-subtle shadow-sm flex flex-col items-center justify-center cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all group" onclick="showAddWidgetToast()" style="min-height: 120px;">
                     <span class="material-symbols-outlined text-4xl text-text-muted group-hover:text-primary/60 transition-colors mb-2">add_circle</span>
                     <span class="text-xs font-medium text-text-muted group-hover:text-primary/60 transition-colors">Add Widget</span>
@@ -1717,7 +1739,7 @@ const tailwindConfig = {
 // OpenAI Assistant configuration
 const ASSISTANT_ID = 'asst_ms4ijasmhsdK1nbfVroPjmi3';
 const BUILD_VERSION = '[engine-derived-at-F2]';
-const ASSISTANT_VERSION = 'V6.31.0.fundguard.20260603';
+const ASSISTANT_VERSION = 'V6.32.0.fundguard.20260708';
 const DLP_ALERTED_BADGE_DEFAULT_ON = false;
 // V6.30.1 ASSISTANT_VERSION bootstrap (Tech Lead L19)
 (function () {
@@ -2220,12 +2242,12 @@ const DEMO_DATA = {
         // 1d = 5 rows == headline 5 (001 gate awaiting · 003 pending · 005 open · 044 governance open · 041 closed auto-coached).
         // 7d = 18 rows == headline 18 (open 10 = C:001,002,018 H:003,005,011,014 M:021,044 L:022 · closed 8 incl.
         //      all 3 rogue agents' history 017/028/043, governance B1 045, hold-release 031, replied 030).
-        // 30d/90d lists = seeded exemplar supersets (32 / 42 rows); headline stats are AUTHORED 50/185 —
+        // 30d/90d lists = seeded exemplar supersets (30 / 39 rows); headline stats are AUTHORED 50/185 —
         // the per-severity "View all" affordance carries the rest.
-        "1d": ["CASE-FG-001","CASE-FG-003","CASE-FG-005","CASE-FG-044","CASE-FG-041"],
-        "7d": ["CASE-FG-001","CASE-FG-003","CASE-FG-005","CASE-FG-044","CASE-FG-041","CASE-FG-002","CASE-FG-018","CASE-FG-011","CASE-FG-014","CASE-FG-021","CASE-FG-022","CASE-FG-017","CASE-FG-028","CASE-FG-043","CASE-FG-045","CASE-FG-030","CASE-FG-006","CASE-FG-031"],
-        "30d": ["CASE-FG-001","CASE-FG-003","CASE-FG-005","CASE-FG-044","CASE-FG-041","CASE-FG-002","CASE-FG-018","CASE-FG-011","CASE-FG-014","CASE-FG-021","CASE-FG-022","CASE-FG-017","CASE-FG-028","CASE-FG-043","CASE-FG-045","CASE-FG-030","CASE-FG-006","CASE-FG-031","CASE-FG-004","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-020","CASE-FG-023","CASE-FG-024","CASE-FG-025","CASE-FG-026","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-033"],
-        "90d": ["CASE-FG-001","CASE-FG-003","CASE-FG-005","CASE-FG-044","CASE-FG-041","CASE-FG-002","CASE-FG-018","CASE-FG-011","CASE-FG-014","CASE-FG-021","CASE-FG-022","CASE-FG-017","CASE-FG-028","CASE-FG-043","CASE-FG-045","CASE-FG-030","CASE-FG-006","CASE-FG-031","CASE-FG-004","CASE-FG-007","CASE-FG-009","CASE-FG-012","CASE-FG-013","CASE-FG-020","CASE-FG-023","CASE-FG-024","CASE-FG-025","CASE-FG-026","CASE-FG-027","CASE-FG-029","CASE-FG-032","CASE-FG-033","CASE-FG-015","CASE-FG-016","CASE-FG-034","CASE-FG-035","CASE-FG-036","CASE-FG-037","CASE-FG-038","CASE-FG-039","CASE-FG-040","CASE-FG-042"]
+        "1d": ["CASE-FG-4801","CASE-FG-4803","CASE-FG-4805","CASE-FG-4844","CASE-FG-4841"],
+        "7d": ["CASE-FG-4801","CASE-FG-4803","CASE-FG-4805","CASE-FG-4844","CASE-FG-4841","CASE-FG-4802","CASE-FG-4818","CASE-FG-4811","CASE-FG-4814","CASE-FG-4821","CASE-FG-4822","CASE-FG-4817","CASE-FG-4828","CASE-FG-4843","CASE-FG-4845","CASE-FG-4830","CASE-FG-4806","CASE-FG-4831"],
+        "30d": ["CASE-FG-4801","CASE-FG-4803","CASE-FG-4805","CASE-FG-4844","CASE-FG-4841","CASE-FG-4802","CASE-FG-4818","CASE-FG-4811","CASE-FG-4814","CASE-FG-4821","CASE-FG-4822","CASE-FG-4817","CASE-FG-4828","CASE-FG-4843","CASE-FG-4845","CASE-FG-4830","CASE-FG-4806","CASE-FG-4831","CASE-FG-4804","CASE-FG-4807","CASE-FG-4809","CASE-FG-4812","CASE-FG-4813","CASE-FG-4820","CASE-FG-4823","CASE-FG-4824","CASE-FG-4825","CASE-FG-4827","CASE-FG-4829","CASE-FG-4833"],
+        "90d": ["CASE-FG-4801","CASE-FG-4803","CASE-FG-4805","CASE-FG-4844","CASE-FG-4841","CASE-FG-4802","CASE-FG-4818","CASE-FG-4811","CASE-FG-4814","CASE-FG-4821","CASE-FG-4822","CASE-FG-4817","CASE-FG-4828","CASE-FG-4843","CASE-FG-4845","CASE-FG-4830","CASE-FG-4806","CASE-FG-4831","CASE-FG-4804","CASE-FG-4807","CASE-FG-4809","CASE-FG-4812","CASE-FG-4813","CASE-FG-4820","CASE-FG-4823","CASE-FG-4824","CASE-FG-4825","CASE-FG-4827","CASE-FG-4829","CASE-FG-4833","CASE-FG-4815","CASE-FG-4816","CASE-FG-4834","CASE-FG-4835","CASE-FG-4836","CASE-FG-4838","CASE-FG-4839","CASE-FG-4840","CASE-FG-4842"]
     },
 
     // ==================== V5.13: CONNECTION STATS BY TIMEFRAME ====================
@@ -3211,7 +3233,7 @@ const DEMO_DATA = {
             triggerCount: 9,
             lastTriggered: '1 day ago',
             status: 'active',
-            sourceCase: 'CASE-FG-001'
+            sourceCase: 'CASE-FG-4801'
         },
         {
             id: 'rule-002',
@@ -3228,7 +3250,7 @@ const DEMO_DATA = {
             triggerCount: 6,
             lastTriggered: '3 hours ago',
             status: 'active',
-            sourceCase: 'CASE-FG-004'
+            sourceCase: 'CASE-FG-4804'
         },
         {
             id: 'rule-003',
@@ -3245,7 +3267,7 @@ const DEMO_DATA = {
             triggerCount: 2,
             lastTriggered: '2 weeks ago',
             status: 'active',
-            sourceCase: 'CASE-FG-005'
+            sourceCase: 'CASE-FG-4805'
         },
         {
             id: 'rule-004',
@@ -3262,7 +3284,7 @@ const DEMO_DATA = {
             triggerCount: 4,
             lastTriggered: '5 days ago',
             status: 'active',
-            sourceCase: 'CASE-FG-002'
+            sourceCase: 'CASE-FG-4802'
         },
         {
             id: 'rule-005',
@@ -3313,7 +3335,7 @@ const DEMO_DATA = {
             triggerCount: 3,
             lastTriggered: '1 week ago',
             status: 'active',
-            sourceCase: 'CASE-FG-001'
+            sourceCase: 'CASE-FG-4801'
         }
     ],
 
@@ -3337,7 +3359,7 @@ const DEMO_DATA = {
         { title: 'Case Investigation', content: "The Cases screen is your investigation workbench. Use filters to narrow down cases by severity, status, actions taken, or DLP status.", screen: 'cases', position: 'top' },
         { title: 'Act — the Action Catalog', content: "The Act screen is AXIA's action catalog: four families — Engagement, Content, Identity, and Forward to SOC — each set to auto-execute or hold for your approval, keyed on actor and severity.", screen: 'connections', position: 'center' },
         { title: 'Actor-Aware Posture', content: "People and agents get different lanes: people are auto-engaged at the low end and held for your approval at the top; rogue agents are auto-stopped at High and Critical and the agent's steward is notified.", screen: 'connections', position: 'bottom' },
-        { title: 'Structured Analysis', content: 'Each case provides structured analysis: What happened, Why it matters, and Why it is unusual. This context helps you make informed decisions.', screen: 'case-details', position: 'center', caseId: 'CASE-FG-001' },
+        { title: 'Structured Analysis', content: 'Each case provides structured analysis: What happened, Why it matters, and Why it is unusual. This context helps you make informed decisions.', screen: 'case-details', position: 'center', caseId: 'CASE-FG-4801' },
         { title: 'Judgment, Owned to Close', content: "Every case closes with the right human: people cases route to the user or the business function, and agent cases open a governance case with the agent's steward — awaiting their confirmation.", screen: 'case-details', position: 'bottom' },
         { title: 'Intel Advisor', content: 'Ask AXIA questions about risk patterns, upload documents for analysis, or simulate scenarios before they happen.', screen: 'intel', position: 'center' },
         { title: 'AI Boundaries', content: "Critical for trust: AXIA clearly defines what it may suggest vs. what it may NEVER do autonomously. Humans remain in control.", screen: 'settings', position: 'top' },
@@ -3348,30 +3370,30 @@ const DEMO_DATA = {
     // FundGuard Customization - Fund Administration / Investment Accounting context
     //
     // TRUE POSITIVES (DLP MISSED - Critical/High, dlpAlerted: false):
-    //    FG-001: NAV algorithm IP exfiltration (leaked business info)
-    //    FG-002: Client fund portfolio data extraction (leaked customer info)
-    //    FG-003: NAV error post-mortem to journalist (reputation - internal info)
-    //    FG-004: Client migration failures to competitor (reputation - business/customer)
-    //    FG-005: SOC 2 findings + investor KYC to unapproved consultant (compliance risk) [VALIDATED: Sensitive 0.9]
-    //    FG-014: Workforce reduction plan with employee PII (HR data leak) [VALIDATED: Sensitive 0.9]
+    //    FG-4801: NAV algorithm IP exfiltration (leaked business info)
+    //    FG-4802: Client fund portfolio data extraction (leaked customer info)
+    //    FG-4803: NAV error post-mortem to journalist (reputation - internal info)
+    //    FG-4804: Client migration failures to competitor (reputation - business/customer)
+    //    FG-4805: SOC 2 findings + investor KYC to unapproved consultant (compliance risk) [VALIDATED: Sensitive 0.9]
+    //    FG-4814: Workforce reduction plan with employee PII (HR data leak) [VALIDATED: Sensitive 0.9]
     //
     // FALSE POSITIVES (DLP alerted, AXIA suppressed — shown as cases):
-    //    FG-006: NAV test data in staging environment [VALIDATED: Safe 0.0]
-    //    FG-007: KYC sandbox test payloads
-    //    FG-009: AML investigation training text [VALIDATED: Safe 0.0]
-    //    FG-015: ML fraud-model training dataset [VALIDATED: Safe 0.0]
-    //    FG-016: Payment decline simulation file [VALIDATED: Safe 0.0]
+    //    FG-4806: NAV test data in staging environment [VALIDATED: Safe 0.0]
+    //    FG-4807: KYC sandbox test payloads
+    //    FG-4809: AML investigation training text [VALIDATED: Safe 0.0]
+    //    FG-4815: ML fraud-model training dataset [VALIDATED: Safe 0.0]
+    //    FG-4816: Payment decline simulation file [VALIDATED: Safe 0.0]
     //
     // MOVED TO FALSE ALERTS PANEL ONLY (V6.28.1 — not AXIA cases, pure DLP FPs):
-    //    FG-008: Custodian API test credentials in CI/CD → FP-DLP-003 [VALIDATED: Safe 0.0]
-    //    FG-010: Synthetic transaction load-test data → FP-DLP-008
+    //    FG-4808: Custodian API test credentials in CI/CD → FP-DLP-003 [VALIDATED: Safe 0.0]
+    //    FG-4810: Synthetic transaction load-test data → FP-DLP-008
     //
     // CONTEXT REVEALS LEGITIMATE ACTIVITY:
-    //    FG-011: Fund specs shared with verified prospect
-    //    FG-013: Open-source SWIFT parser contribution
+    //    FG-4811: Fund specs shared with verified prospect
+    //    FG-4813: Open-source SWIFT parser contribution
     //
     // ENGAGEMENT-DRIVEN RESOLUTION:
-    //    FG-012: Investor allocation report to personal email - coached
+    //    FG-4812: Investor allocation report to personal email - coached
     //
     // ==================== PERSONA EMAIL GRAPH (V6.30.1) ====================
     personaEmailGraph: {
@@ -3480,7 +3502,7 @@ const DEMO_DATA = {
         // ========== CRITICAL CASES (3 open) ==========
 
         {
-            id: 'CASE-FG-001',
+            id: 'CASE-FG-4801',
             title: 'Proprietary NAV calculation engine and patent-pending algorithms emailed to SS&C contact before departure',
             severity: 'critical',
             status: 'open',
@@ -3601,7 +3623,7 @@ const DEMO_DATA = {
         },
 
         {
-            id: 'CASE-FG-002',
+            id: 'CASE-FG-4802',
             title: 'Complete client fund portfolio data extracted via internal API and emailed to personal address',
             severity: 'critical',
             status: 'open',
@@ -3707,7 +3729,7 @@ const DEMO_DATA = {
         },
 
         {
-            id: 'CASE-FG-004',
+            id: 'CASE-FG-4804',
             title: 'Client migration failure analysis forwarded via personal Gmail to a recipient matching a competitor-administrator register flag',
             severity: 'critical',
             status: 'open',
@@ -3815,7 +3837,7 @@ const DEMO_DATA = {
         // ========== HIGH CASES (3 open) ==========
 
         {
-            id: 'CASE-FG-003',
+            id: 'CASE-FG-4803',
             title: 'NAV miscalculation incident post-mortem and pricing model emailed to personal Gmail with stated forward intent to a pre-disclosure-press recipient',
             severity: 'high',
             status: 'open',
@@ -3930,7 +3952,7 @@ const DEMO_DATA = {
         },
 
         {
-            id: 'CASE-FG-005',
+            id: 'CASE-FG-4805',
             title: 'Draft SOC 2 findings and KYC investor extract for 847 investors emailed to unapproved consultant before NDA in place',
             severity: 'high',
             status: 'open',
@@ -4041,7 +4063,7 @@ const DEMO_DATA = {
         },
 
         {
-            id: 'CASE-FG-014',
+            id: 'CASE-FG-4814',
             title: 'Q1 workforce reduction plan with 25 employee names and $2.8M severance emailed to personal address before WARN notification',
             severity: 'high',
             status: 'open',
@@ -4135,7 +4157,7 @@ const DEMO_DATA = {
         },
 
         {
-            id: 'CASE-FG-011',
+            id: 'CASE-FG-4811',
             title: 'Draft MSA shared with Meridian Capital Partners contact during active POC pending verification',
             severity: 'high',
             status: 'open',
@@ -4230,7 +4252,7 @@ const DEMO_DATA = {
         // ========== FALSE POSITIVE CASES - DLP alerted, AXIA suppressed ==========
 
         {
-            id: 'CASE-FG-006',
+            id: 'CASE-FG-4806',
             title: 'DLP alert on synthetic fund data in NAV staging environment',
             severity: 'medium',
             status: 'closed',
@@ -4316,10 +4338,10 @@ const DEMO_DATA = {
             }
         },
 
-        // CASE-FG-008 removed in V6.28.1 — DLP false positive, belongs in False Alerts panel only (FP-DLP-003)
+        // CASE-FG-4808 removed in V6.28.1 — DLP false positive, belongs in False Alerts panel only (FP-DLP-003)
 
         {
-            id: 'CASE-FG-012',
+            id: 'CASE-FG-4812',
             title: 'Investor allocation report forwarded to personal Gmail for after-hours client call prep, resolved through coaching',
             severity: 'medium',
             status: 'closed',
@@ -4430,7 +4452,7 @@ const DEMO_DATA = {
         // ========== LOW CASES ==========
 
         {
-            id: 'CASE-FG-007',
+            id: 'CASE-FG-4807',
             title: 'DLP alert on KYC test payloads in vendor integration sandbox',
             severity: 'low',
             status: 'closed',
@@ -4517,7 +4539,7 @@ const DEMO_DATA = {
         },
 
         {
-            id: 'CASE-FG-009',
+            id: 'CASE-FG-4809',
             title: 'DLP alert on synthetic data in AML investigation training materials',
             severity: 'low',
             status: 'closed',
@@ -4603,10 +4625,10 @@ const DEMO_DATA = {
             }
         },
 
-        // CASE-FG-010 removed in V6.28.1 — DLP false positive, belongs in False Alerts panel only (FP-DLP-008)
+        // CASE-FG-4810 removed in V6.28.1 — DLP false positive, belongs in False Alerts panel only (FP-DLP-008)
 
         {
-            id: 'CASE-FG-013',
+            id: 'CASE-FG-4813',
             title: 'Open-source SWIFT format parser contribution verified legitimate',
             severity: 'low',
             status: 'closed',
@@ -4693,7 +4715,7 @@ const DEMO_DATA = {
         },
 
         {
-            id: 'CASE-FG-015',
+            id: 'CASE-FG-4815',
             title: 'DLP alert on synthetic fraud-model training dataset',
             severity: 'low',
             status: 'closed',
@@ -4781,7 +4803,7 @@ const DEMO_DATA = {
         },
 
         {
-            id: 'CASE-FG-016',
+            id: 'CASE-FG-4816',
             title: 'DLP alert on payment-decline simulation test file',
             severity: 'low',
             status: 'closed',
@@ -4867,7 +4889,7 @@ const DEMO_DATA = {
             }
         },
 
-        // V6.30.1 FundGuard F1 fixture for CASE-FG-017 (case-replace-from-fixture mutator, insertIfMissing)
+        // V6.30.1 FundGuard F1 fixture for CASE-FG-4817 (case-replace-from-fixture mutator, insertIfMissing)
         // Source: AXIA/Product/V6.30.1-fundguard-fg-017-fixture-content-2026-05-13.md §2 (~290-line MD,
         //   AUTHORED per B.-1.5 sub-step per Yohay Option A lock 2026-05-13 — close FG-1 N=4 sub-class B
         //   (FATCA cross-border indicia) coverage gap surfaced at delta MD §9 Q1).
@@ -4881,7 +4903,7 @@ const DEMO_DATA = {
         // phiBearing/pvBearing intentionally false per fixture MD §11 (not load-bearing for sub-class B;
         //   only fatcaBearing carries the regime-scope-breach discriminator).
         {
-            id: 'CASE-FG-017',
+            id: 'CASE-FG-4817',
             title: 'FATCA cross-border indicia review queue export and recalcitrant-classification flags emailed to personal Gmail before departure',
             severity: 'critical',
             status: 'open',
@@ -5119,7 +5141,7 @@ const DEMO_RESPONSES = {
 
 **Role:** Senior Quantitative Developer | **Department:** Engineering | **Location:** Tel Aviv
 
-### Current Risk Assessment: **CRITICAL** (Score: 97) — CASE-FG-001
+### Current Risk Assessment: **CRITICAL** (Score: 97) — CASE-FG-4801
 
 Liam Hoffman is departure-imminent (credential-rotation cadence has shifted to a departure-imminent baseline) and emailed four attachments from his corporate mailbox to a personal Gmail address AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator — an **SS&C** contact.
 
@@ -5144,14 +5166,14 @@ Liam Hoffman is departure-imminent (credential-rotation cadence has shifted to a
 
 Based on current monitoring, I've identified **2 high-priority risk patterns** requiring attention:
 
-### 🔴 Critical: Liam Hoffman — CASE-FG-001
+### 🔴 Critical: Liam Hoffman — CASE-FG-4801
 - **Status:** Departure-imminent — credential-rotation cadence has shifted to a departure-imminent baseline
 - **Destination:** SS&C (matched via the External-Counterparty Register, competitor-administrator flag)
 - **Risk Score:** 97
 - **Concern:** NAV-engine v4.2 archive (128 files) + the 47-jurisdiction valuation models + 3 patent-pending algorithm files emailed to the SS&C contact — exact match against the NAV-Engine Trade-Secret Catalog
 - **Judgment:** Email held · external shares revoked · Legal escalation (Miriam Foss) — **containment gate awaiting your confirmation**
 
-### 🔴 Critical: Natasha Orlov — CASE-FG-002
+### 🔴 Critical: Natasha Orlov — CASE-FG-4802
 - **Status:** Active employee, conflict of interest detected
 - **Destination:** Husband's competing fund-administration consultancy
 - **Risk Score:** 94
@@ -5175,18 +5197,18 @@ Based on current monitoring, I've identified **2 high-priority risk patterns** r
 ### Top Patterns This Week
 
 #### 1. **Pre-Departure Data Collection**
-- **Liam Hoffman** (Engineering) — Score 97 · Critical · NAV-engine archive + patent-pending algorithms emailed to an SS&C contact. Email held, shares revoked — the case sits at the **containment gate awaiting your confirmation** (CASE-FG-001).
-- **Priya Ramanathan** (Tax & Compliance) — Score 96 · FATCA review-queue export before departure; contained and closed (CASE-FG-017).
+- **Liam Hoffman** (Engineering) — Score 97 · Critical · NAV-engine archive + patent-pending algorithms emailed to an SS&C contact. Email held, shares revoked — the case sits at the **containment gate awaiting your confirmation** (CASE-FG-4801).
+- **Priya Ramanathan** (Tax & Compliance) — Score 96 · FATCA review-queue export before departure; contained and closed (CASE-FG-4817).
 
 #### 2. **Conflict-of-Interest Client-Data Extraction**
-- **Natasha Orlov** (Client Operations) — Score 94 · Critical · full client book (156 funds, $47.2B AUM) pulled via the ops service account (CASE-FG-002). Email quarantined · service-account token revoked.
+- **Natasha Orlov** (Client Operations) — Score 94 · Critical · full client book (156 funds, $47.2B AUM) pulled via the ops service account (CASE-FG-4802). Email quarantined · service-account token revoked.
 
 #### 3. **Agent Governance**
-- **svc-nav-export** — rogue internal agent auto-stopped at the gate; steward **Oren Baskin (IT)** directed to connect this agent type to the AXIA API (CASE-FG-018, awaiting his confirmation).
-- **fin-brief-assistant** — integrated agent blocked pre-send; prompt-validation governance case open with **Oren Baskin (IT)** (CASE-FG-044).
+- **svc-nav-export** — rogue internal agent auto-stopped at the gate; steward **Oren Baskin (IT)** directed to connect this agent type to the AXIA API (CASE-FG-4818, awaiting his confirmation).
+- **fin-brief-assistant** — integrated agent blocked pre-send; prompt-validation governance case open with **Oren Baskin (IT)** (CASE-FG-4844).
 
 #### 4. **Reputation Risk — Internal Disclosures**
-- **Paul Novak** (Revenue Strategy) — NAV post-mortem + pricing model emailed to personal Gmail with stated forward intent to a pre-disclosure-press recipient (CASE-FG-003, engaged — awaiting his reply).
+- **Paul Novak** (Revenue Strategy) — NAV post-mortem + pricing model emailed to personal Gmail with stated forward intent to a pre-disclosure-press recipient (CASE-FG-4803, engaged — awaiting his reply).
 
 ### Cases by Department (7d)
 
@@ -5202,9 +5224,9 @@ Based on current monitoring, I've identified **2 high-priority risk patterns** r
 
 ### Where Your Attention Is Needed
 
-1. **CASE-FG-001** — confirm the containment gate (hold email · revoke shares · Legal escalation with Miriam Foss).
-2. **CASE-FG-002** — the HR conflict-of-interest review is the open human loop.
-3. **CASE-FG-044** — Oren Baskin (IT)'s prompt-validation confirmation closes the governance loop.
+1. **CASE-FG-4801** — confirm the containment gate (hold email · revoke shares · Legal escalation with Miriam Foss).
+2. **CASE-FG-4802** — the HR conflict-of-interest review is the open human loop.
+3. **CASE-FG-4844** — Oren Baskin (IT)'s prompt-validation confirmation closes the governance loop.
 
 *Want me to drill down into any specific pattern?*`,
 
@@ -5213,12 +5235,12 @@ Based on current monitoring, I've identified **2 high-priority risk patterns** r
 FundGuard runs the four-family judgment catalog — **Engagement · Content · Identity · Forward to SOC** — with defaults keyed on **actor × severity**. Based on the current board, here's how the posture is holding and where I'd look:
 
 ### People lane — auto the low end, hold the top
-- **Coaching and manager notifications are carrying the volume.** Low/Medium engagement runs automatically (CASE-FG-022 resolved with an auto-nudge); **Critical stays held for your approval** everywhere — CASE-FG-001 is at the containment gate awaiting your confirmation right now.
-- **Hold-and-verify is working.** CASE-FG-021's outbound email is held while the sender verifies it isn't confidential — keeping quarantine-and-engage instead of hard-blocking keeps the business moving and still stops a genuine leak.
+- **Coaching and manager notifications are carrying the volume.** Low/Medium engagement runs automatically (CASE-FG-4822 resolved with an auto-nudge); **Critical stays held for your approval** everywhere — CASE-FG-4801 is at the containment gate awaiting your confirmation right now.
+- **Hold-and-verify is working.** CASE-FG-4821's outbound email is held while the sender verifies it isn't confidential — keeping quarantine-and-engage instead of hard-blocking keeps the business moving and still stops a genuine leak.
 
 ### Agents lane — auto-stop, top-anchored
-- **Keep High + Critical auto-stop** on Content / Identity / Forward-to-SOC — that's what contained CASE-FG-018 and CASE-FG-043 at machine speed, with the steward loop opening the governance case.
-- **The governance loop is the close:** integrated agents get prompt validation (CASE-FG-044, awaiting Oren Baskin (IT)); un-wired agents get connect directives to the AXIA API / MCP.
+- **Keep High + Critical auto-stop** on Content / Identity / Forward-to-SOC — that's what contained CASE-FG-4818 and CASE-FG-4843 at machine speed, with the steward loop opening the governance case.
+- **The governance loop is the close:** integrated agents get prompt validation (CASE-FG-4844, awaiting Oren Baskin (IT)); un-wired agents get connect directives to the AXIA API / MCP.
 
 Posture lives on the **Act** screen — each action's severity chips flip between auto-execute and held, per lane. Want me to walk through a specific family?`,
 
@@ -5232,9 +5254,9 @@ All are DLP pattern-matching firing on legitimate fintech development workflows:
 
 | Pattern | Example | How AXIA dispositions it |
 |---------|---------|--------------------------|
-| Staging / synthetic NAV data | CASE-FG-006 — synthetic fund data, clearly labeled [STAGING] | Context-validated and closed |
-| Vendor sandbox payloads | CASE-FG-007 — KYC test applicant data on a vendor sandbox URL | Auto-resolved on context match |
-| Labeled training data | CASE-FG-009 — synthetic data in AML training materials | Auto-resolved on label + content match |
+| Staging / synthetic NAV data | CASE-FG-4806 — synthetic fund data, clearly labeled [STAGING] | Context-validated and closed |
+| Vendor sandbox payloads | CASE-FG-4807 — KYC test applicant data on a vendor sandbox URL | Auto-resolved on context match |
+| Labeled training data | CASE-FG-4809 — synthetic data in AML training materials | Auto-resolved on label + content match |
 
 ### What the Pattern Says
 
@@ -5263,10 +5285,10 @@ I have access to all case data, behavioral baselines, and organizational context
 AXIA treats agents and service identities as first-class actors. Agents wired into AXIA are judged **before** they act; rogue agents are caught at the **same gates as people**, auto-stopped, and the agent's **steward** is engaged — every agent event ends in a steward-owned governance case awaiting confirmation.
 
 ### On the board right now
-- **svc-nav-export** (CASE-FG-018 · Critical · open) — rogue internal agent caught at the gate pulling NAV reference datasets on a stale token. Auto-stopped: token revoked, session terminated via **Entra**. AXIA emailed the steward — **Oren Baskin (IT)** — directing him to connect this agent type to the **AXIA API**; the case is open awaiting his confirmation.
-- **fin-brief-assistant** (CASE-FG-044 · Medium · open) — integrated Copilot Studio agent that consulted AXIA over the **AXIA API** before sending. AXIA judged the draft and blocked the send — client-identifying data outside its approved scope; nothing moved. The prompt-validation governance case is open awaiting **Oren Baskin (IT)**'s confirmation.
-- **Agentforce agent svc-crm-sync** (CASE-FG-043 · High · closed) — rogue SaaS agent caught at the Salesforce gate; auto-stopped (OAuth grant revoked, connector disabled). The steward — the **CISO team (partnership steward)** — was directed to work with the provider to connect the agent to the **AXIA MCP**. Contained and closed.
-- **M365 Copilot agent copilot-briefings** (CASE-FG-045 · Medium · closed) — integrated over the **AXIA MCP**; a sensitive share was blocked pre-delivery. The provider validated the agent's instructions and the partnership owner confirmed — the governance loop completed.
+- **svc-nav-export** (CASE-FG-4818 · Critical · open) — rogue internal agent caught at the gate pulling NAV reference datasets on a stale token. Auto-stopped: token revoked, session terminated via **Entra**. AXIA emailed the steward — **Oren Baskin (IT)** — directing him to connect this agent type to the **AXIA API**; the case is open awaiting his confirmation.
+- **fin-brief-assistant** (CASE-FG-4844 · Medium · open) — integrated Copilot Studio agent that consulted AXIA over the **AXIA API** before sending. AXIA judged the draft and blocked the send — client-identifying data outside its approved scope; nothing moved. The prompt-validation governance case is open awaiting **Oren Baskin (IT)**'s confirmation.
+- **Agentforce agent svc-crm-sync** (CASE-FG-4843 · High · closed) — rogue SaaS agent caught at the Salesforce gate; auto-stopped (OAuth grant revoked, connector disabled). The steward — the **CISO team (partnership steward)** — was directed to work with the provider to connect the agent to the **AXIA MCP**. Contained and closed.
+- **M365 Copilot agent copilot-briefings** (CASE-FG-4845 · Medium · closed) — integrated over the **AXIA MCP**; a sensitive share was blocked pre-delivery. The provider validated the agent's instructions and the partnership owner confirmed — the governance loop completed.
 
 ### Steward routing
 **Internal agents → the platform's IT admin. SaaS agents → the partnership owner or the CISO team.** Stopping the machine is the reflex; the close is the human governance loop — validate the agent's instructions, or wire the agent into AXIA's judgment (API for internal, MCP for SaaS).
@@ -5306,13 +5328,13 @@ Top open person cases by risk score:
 
 | # | Employee | Department | Score | Severity | Case |
 |---|----------|------------|-------|----------|------|
-| 1 | **Liam Hoffman** | Engineering | 97 | Critical | CASE-FG-001 — NAV engine + patent-pending algorithms to an SS&C contact · containment gate awaiting your confirmation |
-| 2 | **Natasha Orlov** | Client Operations | 94 | Critical | CASE-FG-002 — full client book (156 funds, $47.2B AUM) via the ops service account · email quarantined, token revoked |
-| 3 | **Paul Novak** | Revenue Strategy | 83 | High | CASE-FG-003 — NAV post-mortem + pricing model to personal Gmail · engaged, awaiting his reply |
-| 4 | **Maya Patel** | Legal | 80 | High | CASE-FG-005 — draft SOC 2 findings + KYC investor extract to an unapproved consultant |
-| 5 | **Diane Okafor** | People Operations | 78 | High | CASE-FG-014 — workforce-reduction plan emailed to a personal address before WARN notification |
+| 1 | **Liam Hoffman** | Engineering | 97 | Critical | CASE-FG-4801 — NAV engine + patent-pending algorithms to an SS&C contact · containment gate awaiting your confirmation |
+| 2 | **Natasha Orlov** | Client Operations | 94 | Critical | CASE-FG-4802 — full client book (156 funds, $47.2B AUM) via the ops service account · email quarantined, token revoked |
+| 3 | **Paul Novak** | Revenue Strategy | 83 | High | CASE-FG-4803 — NAV post-mortem + pricing model to personal Gmail · engaged, awaiting his reply |
+| 4 | **Maya Patel** | Legal | 80 | High | CASE-FG-4805 — draft SOC 2 findings + KYC investor extract to an unapproved consultant |
+| 5 | **Diane Okafor** | People Operations | 78 | High | CASE-FG-4814 — workforce-reduction plan emailed to a personal address before WARN notification |
 
-Agent identities are tracked separately — ask me about **agent identities** for the governance picture (CASE-FG-018 · CASE-FG-044).
+Agent identities are tracked separately — ask me about **agent identities** for the governance picture (CASE-FG-4818 · CASE-FG-4844).
 
 *Want the full profile on any of them?*`,
 
@@ -5329,13 +5351,13 @@ Agent identities are tracked separately — ask me about **agent identities** fo
 | Legal | 2 |
 
 ### What's driving it
-- **Engineering** leads on volume and severity — the Liam Hoffman NAV-engine exfiltration (CASE-FG-001) plus both internal agent-governance events (CASE-FG-018 · CASE-FG-044) land here.
-- **Legal**'s cases are high-severity compliance-artifact handling — the draft SOC 2 findings send (CASE-FG-005) is the one to watch.
+- **Engineering** leads on volume and severity — the Liam Hoffman NAV-engine exfiltration (CASE-FG-4801) plus both internal agent-governance events (CASE-FG-4818 · CASE-FG-4844) land here.
+- **Legal**'s cases are high-severity compliance-artifact handling — the draft SOC 2 findings send (CASE-FG-4805) is the one to watch.
 - The low-end volume (Marketing, HR) is coaching-grade and resolves automatically.
 
 The full heatmap with per-department case types is on the **Insights** screen.`,
 
-    'manager email': `## Manager Check-in Draft — Tom Avery (CASE-FG-022)
+    'manager email': `## Manager Check-in Draft — Tom Avery (CASE-FG-4822)
 
 Tom Avery (Operations Associate, London) was auto-coached this week after pasting a short internal snippet into a consumer note-taking app — Low severity, no sensitive content left the environment.
 
@@ -5345,7 +5367,7 @@ Here's a check-in draft for his reporting manager, sent from the org mailbox (so
 >
 > Hi,
 >
-> AXIA flagged a low-severity policy nudge for Tom Avery this week (CASE-FG-022): a short internal text snippet was pasted into a consumer note-taking app. Tom has already received an automatic coaching note on approved tools, and no sensitive content left the environment.
+> AXIA flagged a low-severity policy nudge for Tom Avery this week (CASE-FG-4822): a short internal text snippet was pasted into a consumer note-taking app. Tom has already received an automatic coaching note on approved tools, and no sensitive content left the environment.
 >
 > No action needed — this is a habit-awareness heads-up. The case details are linked if you'd like the specifics.
 >
@@ -5809,6 +5831,24 @@ let tourStep = 0;
 let tourActive = false;
 let activeFilters = { severity: [], status: [], actions: [], dlp: [] };
 let currentTimeframe = '7d'; // v12 (founder #2): Command defaults to 7d — the rich board; 1d one click away
+// v15 (D4, scope A): actor scope toggle shared across Command + Cases. Filters case LISTS only
+// (renderCaseList + renderDashboardCases); authored severity cards / command totals stay static.
+let actorFilter = 'all'; // 'all' | 'person' | 'agent'
+window.axiaSyncActorButtons = function(){
+    document.querySelectorAll('.actor-btn').forEach(function(b){
+        var on = b.dataset.actor === actorFilter;
+        b.classList.remove('bg-primary','text-white','border-primary','shadow-sm','shadow-primary/20','font-bold','bg-surface-card','text-text-secondary','border-border-subtle','font-medium');
+        if (on) b.classList.add('bg-primary','text-white','border-primary','shadow-sm','shadow-primary/20','font-bold');
+        else b.classList.add('bg-surface-card','text-text-secondary','border-border-subtle','font-medium');
+    });
+};
+window.axiaSetActorFilter = function(val){
+    actorFilter = (val === 'person' || val === 'agent') ? val : 'all';
+    // Re-render both case lists so the scope persists across tab switches (both DOMs always exist).
+    if (typeof renderDashboardCases === 'function') renderDashboardCases();
+    if (typeof renderCaseList === 'function') renderCaseList();
+    window.axiaSyncActorButtons();
+};
 let dashboardTimeframe = '7d'; // V6.20: Dashboard defaults to 7d; 1d restored for tactical view
 // V6.25: dashboardEditMode removed - fixed layout
 
@@ -6225,9 +6265,11 @@ function renderDashboardCases() {
     // V5.15: Filter cases by timeframe
     // V6.9: Also filter to show only OPEN cases (hide closed from operational list)
     const caseIds = DEMO_DATA.casesByTimeframe?.[currentTimeframe] || [];
-    const timeframeCases = caseIds.length > 0
+    let timeframeCases = caseIds.length > 0
         ? casesData.filter(c => caseIds.includes(c.id))
         : casesData;
+    // v15 (D4): actor scope toggle — narrows the list only; authored tallies stay static.
+    if (actorFilter !== 'all') timeframeCases = timeframeCases.filter(c => (c.actor || 'person') === actorFilter);
 
     // v9 N2: ensure the "Show recently closed" checkbox exists once, just above the accordions.
     (function ensureClosedToggle(){
@@ -6334,9 +6376,21 @@ function renderCaseList() {
             return false;
         });
     }
+    // v15 (D4): actor scope toggle — shared with Command, narrows the list only.
+    if (actorFilter !== 'all') filtered = filtered.filter(c => (c.actor || 'person') === actorFilter);
 
     const list = document.getElementById('case-list');
-    list.innerHTML = filtered.map(c => renderCaseCard(c)).join('');
+    if (!filtered.length) {
+        // v15 (D4): empty-state — keep the card chrome, centered muted icon + one line (never a dashed box).
+        const msg = actorFilter === 'agent' ? 'No AI-agent cases match the current view'
+                  : actorFilter === 'person' ? 'No people cases match the current view'
+                  : 'No cases match the current filters';
+        list.innerHTML = '<div class="bg-white rounded-xl border border-border-subtle shadow-sm p-10 flex flex-col items-center justify-center text-center">' +
+            '<span class="material-symbols-outlined text-[40px] text-text-muted mb-2">smart_toy</span>' +
+            '<p class="text-sm font-medium text-text-secondary">' + msg + '</p></div>';
+    } else {
+        list.innerHTML = filtered.map(c => renderCaseCard(c)).join('');
+    }
 
     const open = filtered.filter(c => c.status === 'open').length;
     const closed = filtered.filter(c => c.status === 'closed').length;
@@ -7490,6 +7544,154 @@ function renderDashboardViewScreen() {
     // Row 3: Alerts vs. True Incidents (6 cols) + True Incidents (3 cols) + 3 cols blank
     renderFalseAlarmsChart();
     renderTrueIncidents();
+
+    // v15 (D3) Row 4: Agent Fleet (6 cols) + Agent Events (3 cols) + relocated Add-Widget (3 cols)
+    renderAgentFleet();
+    renderAgentEvents();
+}
+
+// ==================== v15 (D3): AI-AGENT INSIGHTS WIDGETS + shared export helper ====================
+// Both widgets read live from casesData filtered by the Insights dashboardTimeframe (agent cases only),
+// so they move with the timeframe selector. Grounded in the agent cases (018/028/043 rogue, auto-stopped;
+// 044/045 wired, judged before acting) and their stewards (Oren Baskin, IT; Ilan Sagiv, CISO office).
+function axiaAgentCasesForTf() {
+    const ids = DEMO_DATA.casesByTimeframe?.[dashboardTimeframe] || [];
+    const scope = ids.length ? casesData.filter(c => ids.includes(c.id)) : casesData;
+    return scope.filter(c => (c.actor || 'person') === 'agent');
+}
+window.axiaDownloadJSON = function(name, obj) {
+    try {
+        const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = name;
+        document.body.appendChild(a); a.click();
+        setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 100);
+    } catch (e) { console.warn('[axia v15] widget export failed:', e && e.message); }
+};
+
+// W1 — Agent Fleet: wired (MCP/API, judged before acting) vs un-wired (caught at the gates) platform roster.
+// Roster names from the AXIA agent model; Material-Symbols wired/un-wired glyph pair, NO external logos.
+const AXIA_AGENT_FLEET = [
+    { name: 'Microsoft 365 Copilot', via: 'AXIA MCP', wired: true },
+    { name: 'Copilot Studio',        via: 'AXIA API', wired: true },
+    { name: 'Glean',                 via: 'AXIA MCP', wired: true },
+    { name: 'Salesforce Agentforce', via: 'Caught at gate', wired: false },
+    { name: 'LangGraph',             via: 'Caught at gate', wired: false },
+    { name: 'Bedrock AgentCore',     via: 'Caught at gate', wired: false }
+];
+window.axiaExportAgentFleet = function() {
+    const agents = axiaAgentCasesForTf();
+    window.axiaDownloadJSON('axia-agent-fleet-' + dashboardTimeframe + '.json', {
+        widget: 'Agent Fleet', timeframe: dashboardTimeframe,
+        wiredEvents: agents.filter(c => !c.agentRogue).length,
+        caughtAtGates: agents.filter(c => c.agentRogue).length,
+        roster: AXIA_AGENT_FLEET
+    });
+};
+function renderAgentFleet() {
+    const el = document.getElementById('widget-agent-fleet');
+    if (!el) return;
+    const agents = axiaAgentCasesForTf();
+    const wiredEvents = agents.filter(c => !c.agentRogue).length;   // judged before acting over AXIA API / MCP
+    const caught = agents.filter(c => c.agentRogue).length;         // rogue agents stopped at the same gates as people
+    const row = (p) => `
+        <div class="flex items-center gap-2 py-1">
+            <span class="material-symbols-outlined text-[16px] ${p.wired ? 'text-primary' : 'text-text-muted'}">${p.wired ? 'link' : 'link_off'}</span>
+            <span class="text-[11px] font-medium text-text-primary flex-1 truncate" title="${p.name}">${p.name}</span>
+            <span class="text-[9px] font-bold uppercase tracking-wide ${p.wired ? 'text-primary' : 'text-text-muted'}">${p.via}</span>
+        </div>`;
+    const wiredRoster = AXIA_AGENT_FLEET.filter(p => p.wired);
+    const unwiredRoster = AXIA_AGENT_FLEET.filter(p => !p.wired);
+    el.innerHTML = `
+        <div class="flex items-center justify-between mb-1.5">
+            <h3 class="text-xs font-bold text-text-primary tracking-wide flex items-center gap-1">
+                <span class="material-symbols-outlined text-primary text-[14px]">smart_toy</span>
+                Agent Fleet
+            </h3>
+            <button onclick="event.stopPropagation(); window.axiaExportAgentFleet()" class="text-text-muted hover:text-primary transition-colors" title="Export">
+                <span class="material-symbols-outlined text-[16px]">download</span>
+            </button>
+        </div>
+        <div class="flex items-center gap-3 mb-2 text-[10px]">
+            <span class="flex items-center gap-1 font-bold text-primary"><span class="material-symbols-outlined text-[13px]">link</span>${wiredEvents} judged before acting</span>
+            <span class="flex items-center gap-1 font-bold text-text-secondary"><span class="material-symbols-outlined text-[13px]">gpp_maybe</span>${caught} caught at gates</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 flex-1">
+            <div>
+                <div class="text-[9px] font-bold uppercase tracking-wider text-primary mb-0.5">Wired (judged before acting)</div>
+                ${wiredRoster.map(row).join('')}
+            </div>
+            <div>
+                <div class="text-[9px] font-bold uppercase tracking-wider text-text-muted mb-0.5">Un-wired (caught at gates)</div>
+                ${unwiredRoster.map(row).join('')}
+            </div>
+        </div>
+        <div class="text-[9px] text-text-muted mt-1 pt-1 border-t border-border-subtle text-center">
+            Wired agents are judged before they act; un-wired agents are caught at the same gates as people
+        </div>
+    `;
+}
+
+// W2 — Agent Events: Prevented vs Governed. Labeled split (2 counts + thin proportion bar), NOT a donut.
+window.axiaExportAgentEvents = function() {
+    const agents = axiaAgentCasesForTf();
+    window.axiaDownloadJSON('axia-agent-events-' + dashboardTimeframe + '.json', {
+        widget: 'Agent Events', timeframe: dashboardTimeframe,
+        prevented: agents.filter(c => c.agentRogue).length,
+        governed: agents.filter(c => !c.agentRogue).length,
+        promptValidationsPassed: agents.filter(c => !c.agentRogue).length,
+        autoStops: agents.filter(c => c.agentRogue).length,
+        stewardConfirmations: agents.filter(c => c.status === 'closed').length
+    });
+};
+function renderAgentEvents() {
+    const el = document.getElementById('widget-agent-events');
+    if (!el) return;
+    const agents = axiaAgentCasesForTf();
+    const prevented = agents.filter(c => c.agentRogue).length;      // rogue agents auto-stopped at the gates
+    const governed = agents.filter(c => !c.agentRogue).length;      // wired agents judged before acting
+    const total = prevented + governed;
+    const preventedPct = total ? Math.round(prevented / total * 100) : 0;
+    const governedPct = 100 - preventedPct;
+    const promptValidations = governed;                             // wired agents that passed prompt-validation
+    const autoStops = prevented;                                    // rogue agents auto-stopped
+    const stewardConfirms = agents.filter(c => c.status === 'closed').length; // steward-confirmed governance closes
+    const metric = (label, val) => `
+        <div class="flex items-center justify-between text-[10px]">
+            <span class="text-text-secondary">${label}</span>
+            <span class="font-bold text-text-primary font-mono">${val}</span>
+        </div>`;
+    el.innerHTML = `
+        <div class="flex items-center justify-between mb-1.5">
+            <h3 class="text-xs font-bold text-text-primary tracking-wide">Agent Events</h3>
+            <button onclick="event.stopPropagation(); window.axiaExportAgentEvents()" class="text-text-muted hover:text-primary transition-colors" title="Export">
+                <span class="material-symbols-outlined text-[16px]">download</span>
+            </button>
+        </div>
+        <div class="flex items-end justify-between mb-1">
+            <div class="flex flex-col">
+                <span class="text-[9px] font-bold uppercase tracking-wider text-severity-critical">Prevented</span>
+                <span class="text-xl font-extrabold text-text-primary font-mono leading-none">${prevented}</span>
+            </div>
+            <div class="flex flex-col items-end">
+                <span class="text-[9px] font-bold uppercase tracking-wider text-primary">Governed</span>
+                <span class="text-xl font-extrabold text-text-primary font-mono leading-none">${governed}</span>
+            </div>
+        </div>
+        <div class="flex h-2 rounded-full overflow-hidden bg-surface-elevated mb-2" title="Prevented ${preventedPct}% · Governed ${governedPct}%">
+            <div class="h-full" style="width:${preventedPct}%;background:#E74C3C"></div>
+            <div class="h-full" style="width:${governedPct}%;background:#0D9488"></div>
+        </div>
+        <div class="flex-1 flex flex-col justify-center gap-1">
+            ${metric('Prompt-validations passed', promptValidations)}
+            ${metric('Auto-stops at the gate', autoStops)}
+            ${metric('Steward confirmations', stewardConfirms)}
+        </div>
+        <div class="text-[9px] text-text-muted mt-1 pt-1 border-t border-border-subtle text-center">
+            Rogue agents prevented; wired agents governed via steward confirmation
+        </div>
+    `;
 }
 
 // V6.25: Edit mode and drag & drop removed - fixed, purposeful layout per design philosophy
@@ -10511,7 +10713,7 @@ function caseNBA(c){
   // A case may force Manual regardless of catalog coverage (e.g. the hold-email engage-to-verify case,
   // where the human must approve releasing their own held message).
   var mode = (c && c.forceManual) ? 'manual' : (autoEligible ? 'automated' : 'manual');
-  var gated = (c && c.id === (window.AXIA_GATE_ID || 'CASE-FG-001'));
+  var gated = (c && c.id === (window.AXIA_GATE_ID || 'CASE-FG-4801'));
   return {
     family: fam,
     familyLabel: (NBA_FAMILY[fam] || {}).label || fam,
@@ -10540,7 +10742,7 @@ window.axiaStewardLabel = stewardLabel;
 
 // ---- v12 §2.4 / v13 N4: the accountable STEWARD of an agent (agent-human-judgment-model §2.3/§2.4) ----
 // internal agent → the local IT admin of the agent platform (AXIA API); external/SaaS agent → the
-// partnership IT/Business owner (AXIA MCP); FG-043 keeps the CISO team as its partnership steward (T2);
+// partnership IT/Business owner (AXIA MCP); FG-4843 keeps the CISO team as its partnership steward (T2);
 // CISO office = fallback when no steward is identified. v13 N4 (supersedes v12 founder call #4): the
 // steward is a NAMED persona holding the function — never the subject/agent identity itself; the
 // functional mailbox stays the address.
@@ -10549,7 +10751,7 @@ function axiaStewardFor(c){
   var P = window.AXIA_PERSONAS || AXIA_PERSONAS;
   var tgt = (c.origin === 'saas') ? 'AXIA MCP' : 'AXIA API';
   if (c.steward && c.steward.name) return { name: c.steward.name, fn: c.steward.fn || c.steward.role || 'IT', role: c.steward.role || c.steward.fn, email: c.steward.email || P.cisoOffice.email, target: tgt };
-  if (c.id === 'CASE-FG-043') return { name: P.cisoOffice.name, fn: P.cisoOffice.fn, role: 'CISO team (partnership steward)', email: P.cisoOffice.email, target: 'AXIA MCP' };
+  if (c.id === 'CASE-FG-4843') return { name: P.cisoOffice.name, fn: P.cisoOffice.fn, role: 'CISO team (partnership steward)', email: P.cisoOffice.email, target: 'AXIA MCP' };
   if (c.origin === 'saas') return { name: P.partnershipOwner.name, fn: P.partnershipOwner.fn, role: P.partnershipOwner.role, email: P.partnershipOwner.email, target: 'AXIA MCP' };
   if (c.origin === 'internal') return { name: P.platformAdmin.name, fn: P.platformAdmin.fn, role: P.platformAdmin.role, email: P.platformAdmin.email, target: 'AXIA API' };
   return { name: P.cisoOffice.name, fn: P.cisoOffice.fn, role: 'CISO team (steward fallback)', email: P.cisoOffice.email, target: 'AXIA API' };
@@ -10599,7 +10801,7 @@ function engagementEmailFor(c){
     window.__axiaEmail[c.id] = draftA;
     return draftA;
   }
-  // v13 N2: engagement-as-a-COMPONENT — the recommendation includes engaging a FUNCTION (e.g. FG-001
+  // v13 N2: engagement-as-a-COMPONENT — the recommendation includes engaging a FUNCTION (e.g. FG-4801
   // "Hold email · revoke shares · Legal"). The draft goes to the NAMED persona holding that function
   // (functional mailbox as the address) and is NEVER addressed to the subject employee — this branch
   // sits BEFORE the holdEmail/coach templates so the case can never fall through to a "Hi {subject}" draft.
@@ -10641,7 +10843,7 @@ function engagementEmailFor(c){
       'Thanks for helping keep client data safe.\n\n' +
       '— FundGuard Security (AXIA)';
   }
-  var CC_MAP = { 'CASE-FG-003': ['michael.brenner@fundguard.com'], 'CASE-FG-011': ['deal.desk@fundguard.com','sarah.klein@fundguard.com'], 'CASE-FG-020': ['rachel.stein@fundguard.com'] };
+  var CC_MAP = { 'CASE-FG-4803': ['michael.brenner@fundguard.com'], 'CASE-FG-4811': ['deal.desk@fundguard.com','sarah.klein@fundguard.com'], 'CASE-FG-4820': ['rachel.stein@fundguard.com'] };
   var draft = { from: from, to: sender, cc: (CC_MAP[c.id] || []), role: (c.entity && c.entity.role) || 'employee', subject: subj, body: body };
   window.__axiaEmail[c.id] = draft;
   return draft;
@@ -10847,7 +11049,7 @@ function axiaRecommend(id){
   var c = (typeof casesData !== 'undefined') ? casesData.find(function(x){ return x.id === id; }) : null;
   if (!c) return;
   var stage = c.stage || (c.status === 'open' ? 'open' : 'closed');
-  var gate = (id === (window.AXIA_GATE_ID || 'CASE-FG-001'));
+  var gate = (id === (window.AXIA_GATE_ID || 'CASE-FG-4801'));
   var isDraft = (stage === 'drafted');
   var verb = (c.remediation && c.remediation.label) || ((typeof caseNBA === 'function') ? caseNBA(c).label : '') || 'Proceed';
   var route = gate ? 'gate' : (isDraft ? 'send' : 'execute');
@@ -11226,29 +11428,29 @@ function addActionOption(family){
 
   // ---------- 1. Tag existing cases with channel + remediation (reuses existing case shape; no new UI) ----------
   var TAG = {
-    'CASE-FG-011': {channel:'Salesforce',                 channelIcon:'cloud',         remediation:{family:'engagement',  label:'Brief deal owner · hold share', icon:'forum'}},
-    'CASE-FG-003': {channel:'Google email (Gmail)',        channelIcon:'mail',          remediation:{family:'engagement',  label:'Coach + brief manager',              icon:'forum'}},
-    'CASE-FG-005': {channel:'Microsoft 365 email',         channelIcon:'mail',          remediation:{family:'content',     label:'Quarantine email',                   icon:'block'}},
-    'CASE-FG-014': {channel:'SharePoint / OneDrive',       channelIcon:'folder_shared', remediation:{family:'content',     label:'Hold file · restrict access',    icon:'lock'}},
-    'CASE-FG-002': {channel:'Internal API · Box',     channelIcon:'folder',        remediation:{family:'identity',    label:'Quarantine email · revoke service-account token',    icon:'key'}},
-    'CASE-FG-004': {channel:'Google Drive',                channelIcon:'add_to_drive',  remediation:{family:'content',     label:'Revoke external share',              icon:'link_off'}},
-    'CASE-FG-017': {channel:'Dropbox',                     channelIcon:'cloud',         remediation:{family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt'}},
-    'CASE-FG-001': {channel:'Microsoft 365 → personal Gmail', channelIcon:'mail',  remediation:{family:'content',     label:'Hold email · revoke shares · Legal', icon:'gavel'}, engageComponent:{role:'Legal'}}, /* v13 N2: engagement is a COMPONENT of the recommendation (…· Legal) — explicit flag, not label parsing */
+    'CASE-FG-4811': {channel:'Salesforce',                 channelIcon:'cloud',         remediation:{family:'engagement',  label:'Brief deal owner · hold share', icon:'forum'}},
+    'CASE-FG-4803': {channel:'Google email (Gmail)',        channelIcon:'mail',          remediation:{family:'engagement',  label:'Coach + brief manager',              icon:'forum'}},
+    'CASE-FG-4805': {channel:'Microsoft 365 email',         channelIcon:'mail',          remediation:{family:'content',     label:'Quarantine email',                   icon:'block'}},
+    'CASE-FG-4814': {channel:'SharePoint / OneDrive',       channelIcon:'folder_shared', remediation:{family:'content',     label:'Hold file · restrict access',    icon:'lock'}},
+    'CASE-FG-4802': {channel:'Internal API · Box',     channelIcon:'folder',        remediation:{family:'identity',    label:'Quarantine email · revoke service-account token',    icon:'key'}},
+    'CASE-FG-4804': {channel:'Google Drive',                channelIcon:'add_to_drive',  remediation:{family:'content',     label:'Revoke external share',              icon:'link_off'}},
+    'CASE-FG-4817': {channel:'Dropbox',                     channelIcon:'cloud',         remediation:{family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt'}},
+    'CASE-FG-4801': {channel:'Microsoft 365 → personal Gmail', channelIcon:'mail',  remediation:{family:'content',     label:'Hold email · revoke shares · Legal', icon:'gavel'}, engageComponent:{role:'Legal'}}, /* v13 N2: engagement is a COMPONENT of the recommendation (…· Legal) — explicit flag, not label parsing */
     // closed history cases — channel-coverage chips only
-    'CASE-FG-006': {channel:'Slack',                       channelIcon:'forum',         remediation:{family:'content',     label:'Message removed',                    icon:'block'}},
-    'CASE-FG-012': {channel:'Microsoft Teams',             channelIcon:'groups',        remediation:{family:'engagement',  label:'Coached employee',                   icon:'forum'}},
-    'CASE-FG-007': {channel:'GitHub / GitLab',             channelIcon:'code',          remediation:{family:'verdict-out', label:'Logged to SIEM',      icon:'sync_alt'}},
-    'CASE-FG-009': {channel:'Atlassian (Jira/Confluence)', channelIcon:'view_kanban',   remediation:{family:'content',     label:'Restricted page',                    icon:'lock'}},
-    'CASE-FG-013': {channel:'GitHub (open source)',        channelIcon:'code',          remediation:{family:'engagement',  label:'Verified legitimate',                icon:'check'}},
-    'CASE-FG-015': {channel:'Browser upload',             channelIcon:'public',        remediation:{family:'content',     label:'Upload quarantined',                 icon:'block'}},
-    'CASE-FG-016': {channel:'Box',                         channelIcon:'folder',        remediation:{family:'content',     label:'File quarantined',                   icon:'block'}}
+    'CASE-FG-4806': {channel:'Slack',                       channelIcon:'forum',         remediation:{family:'content',     label:'Message removed',                    icon:'block'}},
+    'CASE-FG-4812': {channel:'Microsoft Teams',             channelIcon:'groups',        remediation:{family:'engagement',  label:'Coached employee',                   icon:'forum'}},
+    'CASE-FG-4807': {channel:'GitHub / GitLab',             channelIcon:'code',          remediation:{family:'verdict-out', label:'Logged to SIEM',      icon:'sync_alt'}},
+    'CASE-FG-4809': {channel:'Atlassian (Jira/Confluence)', channelIcon:'view_kanban',   remediation:{family:'content',     label:'Restricted page',                    icon:'lock'}},
+    'CASE-FG-4813': {channel:'GitHub (open source)',        channelIcon:'code',          remediation:{family:'engagement',  label:'Verified legitimate',                icon:'check'}},
+    'CASE-FG-4815': {channel:'Browser upload',             channelIcon:'public',        remediation:{family:'content',     label:'Upload quarantined',                 icon:'block'}},
+    'CASE-FG-4816': {channel:'Box',                         channelIcon:'folder',        remediation:{family:'content',     label:'File quarantined',                   icon:'block'}}
   };
   casesData.forEach(function(c){ if (TAG[c.id]) Object.assign(c, TAG[c.id]); if (!c.stage) c.stage = (c.status === 'open' ? 'open' : 'closed'); });
 
   // ---------- 2. Add the two agentic cases required for channel coverage (AI-agent identity + MCP judgment-as-a-service) ----------
   function addCase(o){ if (!casesData.find(function(c){return c.id===o.id;})) casesData.push(o); }
   addCase({
-    id:'CASE-FG-018', severity:'critical', status:'open', score:95, time:'12m ago',
+    id:'CASE-FG-4818', severity:'critical', status:'open', score:95, time:'12m ago',
     actor:'agent', agentRogue:true, origin:'internal', integration:'unwired',
     title:'Rogue AI export agent (svc-nav-export) on a stale token pulling NAV datasets to an external endpoint',
     description:'A non-human identity — the svc-nav-export automation agent — began pulling NAV reference datasets on a stale OAuth token and posting them to an unrecognized external endpoint. AXIA made the call and contained the agent identity itself: token revoked and session terminated via Entra.',
@@ -11267,7 +11469,7 @@ function addActionOption(family){
     canEnforce:false, judgmentOnlyReason:'No static DLP rule covers a non-human identity acting on a stale token; AXIA contains the agent identity via Entra.', judgmentRouteTo:'Identity'
   });
   addCase({
-    id:'CASE-FG-043', severity:'high', status:'open', score:87, time:'8m ago',
+    id:'CASE-FG-4843', severity:'high', status:'open', score:87, time:'8m ago',
     actor:'agent', agentRogue:true, origin:'saas', integration:'unwired',
     title:'Rogue SaaS agent (Agentforce) pulling investor records through the Salesforce API to an external endpoint',
     description:'A third-party SaaS agent — a Salesforce Agentforce autonomous agent connected over an OAuth grant — began pulling investor and CRM records through the Salesforce API gate and staging them to an unrecognized external endpoint outside its granted workflow. AXIA saw the action at the SaaS gate, resolved it to a non-human identity, contained it, and handed it to the CISO office.',
@@ -11287,10 +11489,10 @@ function addActionOption(family){
   });
 
   // ---------- v12 §2.4: the two GOVERNANCE cases (integrated agents — judged BEFORE acting) ----------
-  // A1 — CASE-FG-044: INTERNAL integrated agent (Copilot Studio, AXIA API). Blocked pre-send; the case
+  // A1 — CASE-FG-4844: INTERNAL integrated agent (Copilot Studio, AXIA API). Blocked pre-send; the case
   // leads with the GOVERNANCE ask (validate the agent's instructions), prevention is a timeline beat.
   addCase({
-    id:'CASE-FG-044', severity:'medium', status:'open', score:47, time:'35m ago',
+    id:'CASE-FG-4844', severity:'medium', status:'open', score:47, time:'35m ago',
     actor:'agent', agentRogue:false, origin:'internal', integration:'integrated',
     steward:{name:'Oren Baskin', fn:'IT', role:'Platform admin (IT)', email:'it-platform-admins@fundguard.com'},
     title:'Prompt validation required — an internal agent attempted a sensitive send (blocked pre-send)',
@@ -11309,10 +11511,10 @@ function addActionOption(family){
     evidence:{channel:'email', email:{from:'fin-brief-assistant@fundguard.com', to:['briefing-distribution@fundguard.com'], cc:[], subject:'automated client briefing (blocked pre-send)', sentAt:'2026-04-14T04:40:00Z', bodyMarkdown:'Draft briefing generated by the fin-brief-assistant agent. AXIA blocked the send pre-delivery — client-identifying data outside the agent’s approved scope. Data never moved.', attachments:[]}},
     canEnforce:false, judgmentOnlyReason:'The agent consulted AXIA before acting (judgment-as-a-service, AXIA API); the block happened pre-send — the open item is the steward’s prompt validation.', judgmentRouteTo:'Identity'
   });
-  // B1 — CASE-FG-045: SaaS integrated agent (M365 Copilot, AXIA MCP). CLOSED history (7d+): the provider
+  // B1 — CASE-FG-4845: SaaS integrated agent (M365 Copilot, AXIA MCP). CLOSED history (7d+): the provider
   // validated the agent's instructions and the partnership owner confirmed — the governance loop completed.
   addCase({
-    id:'CASE-FG-045', severity:'medium', status:'closed', score:44, time:'3d ago',
+    id:'CASE-FG-4845', severity:'medium', status:'closed', score:44, time:'3d ago',
     actor:'agent', agentRogue:false, origin:'saas', integration:'integrated',
     steward:{name:'Keren Malachi', fn:'IT/Business', role:'Partnership owner (IT/Business)', email:'partner-integrations@fundguard.com'},
     title:'Provider prompt validation — an M365 Copilot agent attempted a sensitive share (blocked pre-send)',
@@ -11333,9 +11535,9 @@ function addActionOption(family){
   });
 
   // ---------- 2b. Phase 3: easy-to-automate Medium/Low cases + the hold-email "engage-to-verify" use case ----------
-  // CASE-FG-020 — Medium · routine oversharing → AXIA auto-coaches (engagement, auto)
+  // CASE-FG-4820 — Medium · routine oversharing → AXIA auto-coaches (engagement, auto)
   addCase({
-    id:'CASE-FG-020', severity:'medium', status:'open', score:54, time:'9m ago',
+    id:'CASE-FG-4820', severity:'medium', status:'open', score:54, time:'9m ago',
     title:'Analyst shared an internal quarterly deck to a personal Gmail for weekend review',
     description:'A research analyst forwarded an internal (non-restricted) quarterly review deck to a personal Gmail address. Low harm, common pattern — AXIA auto-coached the analyst on the approved way to work off-hours and logged it.',
     entity:{name:'Maya Klein', initials:'MK', role:'Research Analyst', department:'Research', location:'Tel Aviv'},
@@ -11352,9 +11554,9 @@ function addActionOption(family){
     evidence:{channel:'email', email:{from:'maya.klein@fundguard.com', to:['maya.personal@gmail.com'], cc:[], subject:'Q2 review deck (for weekend)', sentAt:'2026-04-14T05:01:00Z', bodyMarkdown:'Forwarding the Q2 review deck to read over the weekend.', attachments:[{name:'Q2-review.pptx'}]}},
     canEnforce:true
   });
-  // CASE-FG-021 — Medium · HOLD-EMAIL + engage-to-verify (AXIA holds the outbound email and asks the sender to confirm)
+  // CASE-FG-4821 — Medium · HOLD-EMAIL + engage-to-verify (AXIA holds the outbound email and asks the sender to confirm)
   addCase({
-    id:'CASE-FG-021', severity:'medium', status:'open', score:61, time:'4m ago',
+    id:'CASE-FG-4821', severity:'medium', status:'open', score:61, time:'4m ago',
     title:'Outbound email with an attachment held — AXIA is asking the sender to confirm it is not confidential',
     description:'An outbound email to an external recipient carried an attachment that looked potentially sensitive. Rather than block or allow blindly, AXIA placed the email on a brief hold and engaged the sender to verify the content is safe to send. On the sender’s confirmation it is released; otherwise it routes for review.',
     entity:{name:'Daniel Roth', initials:'DR', role:'Client Solutions Manager', department:'Client Operations', location:'London'},
@@ -11372,9 +11574,9 @@ function addActionOption(family){
     evidence:{channel:'email', email:{from:'daniel.roth@fundguard.com', to:['ops@external-client.com'], cc:[], subject:'Updated onboarding pack', sentAt:'2026-04-14T05:05:00Z', bodyMarkdown:'Hi — sending over the updated onboarding pack as discussed.', attachments:[{name:'onboarding-pack.xlsx'}]}},
     canEnforce:true
   });
-  // CASE-FG-022 — Low · minor policy nudge → AXIA auto-coaches
+  // CASE-FG-4822 — Low · minor policy nudge → AXIA auto-coaches
   addCase({
-    id:'CASE-FG-022', severity:'low', status:'open', score:24, time:'7m ago',
+    id:'CASE-FG-4822', severity:'low', status:'open', score:24, time:'7m ago',
     title:'Employee pasted a short internal snippet into a personal note-taking app',
     description:'An employee pasted a small internal text snippet into a consumer note-taking app. Negligible harm — AXIA auto-coached on approved tools and closed it.',
     entity:{name:'Tom Avery', initials:'TA', role:'Operations Associate', department:'Operations', location:'London'},
@@ -11391,9 +11593,9 @@ function addActionOption(family){
     evidence:{channel:'email', email:{from:'tom.avery@fundguard.com', to:['note-app'], cc:[], subject:'pasted snippet', sentAt:'2026-04-14T05:03:00Z', bodyMarkdown:'Internal snippet pasted into a consumer note app.', attachments:[]}},
     canEnforce:true
   });
-  // CASE-FG-023 — Low · routine oversharing → AXIA auto-coaches
+  // CASE-FG-4823 — Low · routine oversharing → AXIA auto-coaches
   addCase({
-    id:'CASE-FG-023', severity:'low', status:'open', score:19, time:'3m ago',
+    id:'CASE-FG-4823', severity:'low', status:'open', score:19, time:'3m ago',
     title:'Marketing shared a public-ready one-pager to a personal address',
     description:'A marketing team member emailed a public-ready one-pager to their personal address. Effectively no risk — AXIA auto-coached and logged it for completeness.',
     entity:{name:'Sara Cohen', initials:'SC', role:'Marketing Specialist', department:'Marketing', location:'Tel Aviv'},
@@ -11422,20 +11624,20 @@ function addActionOption(family){
   // (AXIA_PERSONAS); Reporting Managers are named PER CASE — derived from existing CC emails where present
   // (michael.brenner / sarah.klein / rachel.stein), else authored non-colliding names.
   var FUNCTION_OWNER = {
-    'CASE-FG-001':{name:'Miriam Foss', fn:'Legal'},            'CASE-FG-002':{name:'Miriam Foss', fn:'Legal'},
-    'CASE-FG-004':{name:'Erik Vandermeer', fn:'Reporting Manager'}, 'CASE-FG-017':{name:'Victor Lindqvist', fn:'Compliance'},
-    'CASE-FG-027':{name:'Miriam Foss', fn:'Legal'},            'CASE-FG-034':{name:'Miriam Foss', fn:'Legal'},
-    'CASE-FG-035':{name:'Felix Marchetti', fn:'Reporting Manager'}, 'CASE-FG-003':{name:'Michael Brenner', fn:'Reporting Manager'},
-    'CASE-FG-005':{name:'Victor Lindqvist', fn:'Compliance'},  'CASE-FG-011':{name:'Sarah Klein', fn:'Reporting Manager'},
-    'CASE-FG-014':{name:'Hannah Reznik', fn:'HR'},             'CASE-FG-024':{name:'Tamar Rosenblit', fn:'Reporting Manager'},
-    'CASE-FG-030':{name:'Claire Dubois', fn:'Reporting Manager'}, 'CASE-FG-025':{name:'Boris Antonov', fn:'Reporting Manager'},
-    'CASE-FG-029':{name:'Victor Lindqvist', fn:'Compliance'},  'CASE-FG-036':{name:'Miriam Foss', fn:'Legal'},
-    'CASE-FG-038':{name:'Hannah Reznik', fn:'HR'}
+    'CASE-FG-4801':{name:'Miriam Foss', fn:'Legal'},            'CASE-FG-4802':{name:'Miriam Foss', fn:'Legal'},
+    'CASE-FG-4804':{name:'Erik Vandermeer', fn:'Reporting Manager'}, 'CASE-FG-4817':{name:'Victor Lindqvist', fn:'Compliance'},
+    'CASE-FG-4827':{name:'Miriam Foss', fn:'Legal'},            'CASE-FG-4834':{name:'Miriam Foss', fn:'Legal'},
+    'CASE-FG-4835':{name:'Felix Marchetti', fn:'Reporting Manager'}, 'CASE-FG-4803':{name:'Michael Brenner', fn:'Reporting Manager'},
+    'CASE-FG-4805':{name:'Victor Lindqvist', fn:'Compliance'},  'CASE-FG-4811':{name:'Sarah Klein', fn:'Reporting Manager'},
+    'CASE-FG-4814':{name:'Hannah Reznik', fn:'HR'},             'CASE-FG-4824':{name:'Tamar Rosenblit', fn:'Reporting Manager'},
+    'CASE-FG-4830':{name:'Claire Dubois', fn:'Reporting Manager'}, 'CASE-FG-4825':{name:'Boris Antonov', fn:'Reporting Manager'},
+    'CASE-FG-4829':{name:'Victor Lindqvist', fn:'Compliance'},  'CASE-FG-4836':{name:'Miriam Foss', fn:'Legal'},
+    'CASE-FG-4838':{name:'Hannah Reznik', fn:'HR'}
   };
   // ownerLabel(c) accepts either a full case object (c.severity, c.entity) or a raw HIST record (c.sev, c.name, c.role).
   // v12 §2.3/§2.4: agent cases are owned by the accountable human STEWARD of the agent — internal →
-  // Platform admin (IT); SaaS → Partnership owner (IT/Business); FG-043 → CISO team (partnership steward);
-  // CISO office = fallback. System cases (detection pipeline) display the named CISO-office persona; SOC routing unchanged.
+  // Platform admin (IT); SaaS → Partnership owner (IT/Business); FG-4843 → CISO team (partnership steward);
+  // CISO office = fallback.
   function ownerLabel(c){
     c = c || {};
     var actor = c.actor || 'person';
@@ -11444,7 +11646,6 @@ function addActionOption(family){
       var stw = (typeof window.axiaStewardFor === 'function') ? window.axiaStewardFor(c) : null;
       return 'Owner: ' + (stw ? SL(stw) : 'CISO team (steward fallback)');
     }
-    if (actor === 'system') return 'Owner: ' + SL((window.AXIA_PERSONAS || {}).cisoOffice) + ' · forwarded to SOC';
     var sev = c.severity || c.sev;
     var e = c.entity || {};
     var nm = e.name || c.name || 'the user';
@@ -11474,27 +11675,24 @@ function addActionOption(family){
   }
   var HIST = [
     // ---- 7d Act-breadth: Identity (Okta, Ping) + Verdict-out (Splunk SOAR) ----
-    { id:'CASE-FG-024', sev:'high', family:'identity', label:'Step-up authentication (Okta)', icon:'verified_user', channel:'Okta', channelIcon:'verified_user', score:78, name:'Noa Bar-Lev', initials:'NB', role:'Treasury Analyst', dept:'Finance', loc:'Tel Aviv', title:'Anomalous sign-in to the treasury console triggered an Okta step-up challenge', desc:'AXIA judged a high-risk sign-in pattern on the treasury console and required an Okta step-up challenge before access continued.', what:'A treasury-console sign-in showed impossible-travel and device-posture anomalies.', why:'Step-up authentication contains account-takeover risk without locking out a legitimate user.', cc:'manager', from:'noa.barlev@fundguard.com', to:'okta', subj:'step-up challenge issued' },
-    { id:'CASE-FG-025', sev:'high', family:'identity', label:'Disable session (Ping)', icon:'person_off', channel:'Ping', channelIcon:'person_off', score:84, name:'Eitan Gross', initials:'EG', role:'Platform Engineer', dept:'Engineering', loc:'Tel Aviv', title:'Compromised session terminated via Ping after credential-stuffing indicators', desc:'AXIA disabled an active session through Ping after detecting credential-stuffing indicators against an engineering account.', what:'Credential-stuffing indicators against an engineering identity with an active privileged session.', why:'Disabling the session through Ping stops misuse immediately while the account is reset.', from:'eitan.gross@fundguard.com', to:'ping', subj:'session disabled' },
-    { id:'CASE-FG-026', sev:'medium', actor:'system', family:'verdict-out', label:'Forwarded to SOC', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:58, name:'Automated detection', initials:'SO', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Forwarded to the SOC, triggering a containment playbook for a bulk-download pattern', desc:'AXIA forwarded its decision to the SOC, which triggered a containment playbook (isolate + ticket) for a bulk-download pattern.', what:'A bulk-download pattern matched a containment playbook.', why:'Forwarding to the SOC lets the SOC’s existing automation execute containment at machine speed.', from:'detections@fundguard.com', to:'soc', subj:'containment playbook fired' },
+    { id:'CASE-FG-4824', sev:'high', family:'identity', label:'Step-up authentication (Okta)', icon:'verified_user', channel:'Okta', channelIcon:'verified_user', score:78, name:'Noa Bar-Lev', initials:'NB', role:'Treasury Analyst', dept:'Finance', loc:'Tel Aviv', title:'Anomalous sign-in to the treasury console triggered an Okta step-up challenge', desc:'AXIA judged a high-risk sign-in pattern on the treasury console and required an Okta step-up challenge before access continued.', what:'A treasury-console sign-in showed impossible-travel and device-posture anomalies.', why:'Step-up authentication contains account-takeover risk without locking out a legitimate user.', cc:'manager', from:'noa.barlev@fundguard.com', to:'okta', subj:'step-up challenge issued' },
+    { id:'CASE-FG-4825', sev:'high', family:'identity', label:'Disable session (Ping)', icon:'person_off', channel:'Ping', channelIcon:'person_off', score:84, name:'Eitan Gross', initials:'EG', role:'Platform Engineer', dept:'Engineering', loc:'Tel Aviv', title:'Compromised session terminated via Ping after credential-stuffing indicators', desc:'AXIA disabled an active session through Ping after detecting credential-stuffing indicators against an engineering account.', what:'Credential-stuffing indicators against an engineering identity with an active privileged session.', why:'Disabling the session through Ping stops misuse immediately while the account is reset.', from:'eitan.gross@fundguard.com', to:'ping', subj:'session disabled' },
     // ---- 30d history (+7): C2 H2 M2 L1 ----
-    { id:'CASE-FG-027', sev:'critical', family:'content', label:'Hold file · revoke share', icon:'lock', channel:'SharePoint', channelIcon:'folder_shared', score:93, name:'Liora Katz', initials:'LK', role:'Fund Controller', dept:'Finance', loc:'London', title:'Restricted NAV reconciliation workbook shared externally before quarter close', desc:'AXIA held the workbook and revoked the external share after a restricted NAV reconciliation file was shared outside the org.', what:'A restricted NAV reconciliation workbook was shared to an external address near quarter close.', why:'Quarter-close financial artifacts are highly sensitive; holding + revoking stops external exposure.', cc:'Legal', dlp:true },
-    { id:'CASE-FG-028', sev:'critical', actor:'agent', agentRogue:true, origin:'internal', integration:'unwired', family:'identity', label:'Revoke agent token', icon:'key_off', channel:'Entra Agent ID', channelIcon:'smart_toy', score:91, name:'svc-report-sync', initials:'AI', role:'Automation service identity', dept:'Engineering', loc:'Non-human identity', title:'Service agent on an over-broad scope pulling investor reports off-baseline', desc:'AXIA revoked the agent credential after a reporting service identity began pulling investor reports far outside its baseline.', what:'A reporting service identity used an over-broad scope to pull investor reports off-baseline.', why:'Over-permissioned agents move data at machine speed; revoking the token contains it.' },
-    { id:'CASE-FG-029', sev:'high', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:75, name:'Ron Shaked', initials:'RS', role:'Investor Relations', dept:'IR', loc:'London', title:'Investor allocation extract emailed to an unapproved external consultant', desc:'AXIA quarantined an outbound email carrying an investor allocation extract to an unapproved external consultant.', what:'An investor allocation extract was emailed to an unapproved external consultant.', why:'Investor allocation data leaving to an unvetted party is a reportable exposure.' },
-    { id:'CASE-FG-030', sev:'high', family:'engagement', label:'Coach + brief manager', icon:'forum', channel:'Google email (Gmail)', channelIcon:'mail', score:72, name:'Tal Mizrahi', initials:'TM', role:'Quant Researcher', dept:'Research', loc:'Tel Aviv', title:'Model notebook forwarded to personal Gmail before a conference', desc:'AXIA coached the researcher and briefed the manager after a model notebook was forwarded to a personal address.', what:'A model notebook was forwarded to a personal Gmail before a conference.', why:'Model IP off the managed environment needs a coaching touch plus manager awareness.', cc:'manager' },
-    { id:'CASE-FG-031', sev:'medium', family:'content', label:'Hold / restrict file', icon:'lock', channel:'Box', channelIcon:'folder', score:55, name:'Yael Adler', initials:'YA', role:'Operations Analyst', dept:'Operations', loc:'London', title:'Internal runbook with embedded credentials placed on hold in Box', desc:'AXIA placed an internal runbook on hold after detecting embedded credentials in a Box upload.', what:'An internal runbook containing embedded credentials was uploaded to Box.', why:'Credentials in shared docs are a lateral-movement risk; holding the file prevents spread.' },
-    { id:'CASE-FG-032', sev:'medium', actor:'system', family:'verdict-out', label:'Forwarded to SOC', icon:'sync_alt', channel:'Security Ops', channelIcon:'sync_alt', score:52, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Repeated after-hours access forwarded to the SOC for correlation', desc:'AXIA forwarded a repeated after-hours access pattern to the SOC for correlation.', what:'A repeated after-hours access pattern met the threshold for correlation.', why:'Forwarding to the SOC lets it correlate the pattern with other signals.' },
-    { id:'CASE-FG-033', sev:'low', family:'engagement', label:'Coach employee', icon:'forum', channel:'Microsoft 365 email', channelIcon:'mail', score:22, name:'Gil Peretz', initials:'GP', role:'Sales Associate', dept:'Sales', loc:'London', title:'Internal pricing sheet emailed to a personal address for a commute read', desc:'AXIA auto-coached the associate after an internal pricing sheet was sent to a personal address.', what:'An internal pricing sheet was emailed to a personal address.', why:'Low-harm habit worth a light automatic nudge.' },
+    { id:'CASE-FG-4827', sev:'critical', family:'content', label:'Hold file · revoke share', icon:'lock', channel:'SharePoint', channelIcon:'folder_shared', score:93, name:'Liora Katz', initials:'LK', role:'Fund Controller', dept:'Finance', loc:'London', title:'Restricted NAV reconciliation workbook shared externally before quarter close', desc:'AXIA held the workbook and revoked the external share after a restricted NAV reconciliation file was shared outside the org.', what:'A restricted NAV reconciliation workbook was shared to an external address near quarter close.', why:'Quarter-close financial artifacts are highly sensitive; holding + revoking stops external exposure.', cc:'Legal', dlp:true },
+    { id:'CASE-FG-4828', sev:'critical', actor:'agent', agentRogue:true, origin:'internal', integration:'unwired', family:'identity', label:'Revoke agent token', icon:'key_off', channel:'Entra Agent ID', channelIcon:'smart_toy', score:91, name:'svc-report-sync', initials:'AI', role:'Automation service identity', dept:'Engineering', loc:'Non-human identity', title:'Service agent on an over-broad scope pulling investor reports off-baseline', desc:'AXIA revoked the agent credential after a reporting service identity began pulling investor reports far outside its baseline.', what:'A reporting service identity used an over-broad scope to pull investor reports off-baseline.', why:'Over-permissioned agents move data at machine speed; revoking the token contains it.' },
+    { id:'CASE-FG-4829', sev:'high', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:75, name:'Ron Shaked', initials:'RS', role:'Investor Relations', dept:'IR', loc:'London', title:'Investor allocation extract emailed to an unapproved external consultant', desc:'AXIA quarantined an outbound email carrying an investor allocation extract to an unapproved external consultant.', what:'An investor allocation extract was emailed to an unapproved external consultant.', why:'Investor allocation data leaving to an unvetted party is a reportable exposure.' },
+    { id:'CASE-FG-4830', sev:'high', family:'engagement', label:'Coach + brief manager', icon:'forum', channel:'Google email (Gmail)', channelIcon:'mail', score:72, name:'Tal Mizrahi', initials:'TM', role:'Quant Researcher', dept:'Research', loc:'Tel Aviv', title:'Model notebook forwarded to personal Gmail before a conference', desc:'AXIA coached the researcher and briefed the manager after a model notebook was forwarded to a personal address.', what:'A model notebook was forwarded to a personal Gmail before a conference.', why:'Model IP off the managed environment needs a coaching touch plus manager awareness.', cc:'manager' },
+    { id:'CASE-FG-4831', sev:'medium', family:'content', label:'Hold / restrict file', icon:'lock', channel:'Box', channelIcon:'folder', score:55, name:'Yael Adler', initials:'YA', role:'Operations Analyst', dept:'Operations', loc:'London', title:'Internal runbook with embedded credentials placed on hold in Box', desc:'AXIA placed an internal runbook on hold after detecting embedded credentials in a Box upload.', what:'An internal runbook containing embedded credentials was uploaded to Box.', why:'Credentials in shared docs are a lateral-movement risk; holding the file prevents spread.' },
+    { id:'CASE-FG-4833', sev:'low', family:'engagement', label:'Coach employee', icon:'forum', channel:'Microsoft 365 email', channelIcon:'mail', score:22, name:'Gil Peretz', initials:'GP', role:'Sales Associate', dept:'Sales', loc:'London', title:'Internal pricing sheet emailed to a personal address for a commute read', desc:'AXIA auto-coached the associate after an internal pricing sheet was sent to a personal address.', what:'An internal pricing sheet was emailed to a personal address.', why:'Low-harm habit worth a light automatic nudge.' },
     // ---- 90d history (+9): C2 H3 M2 L2 ----
-    { id:'CASE-FG-034', sev:'critical', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:95, name:'Dana Friedman', initials:'DF', role:'Senior Fund Accountant', dept:'Finance', loc:'New York', title:'Full investor KYC pack emailed externally days before resignation', desc:'AXIA quarantined an outbound email containing a full investor KYC pack sent externally shortly before the sender resigned.', what:'A full investor KYC pack was emailed externally just before a resignation.', why:'Departure-adjacent bulk PII exfiltration is the highest-harm pattern.', cc:'Legal', dlp:true },
-    { id:'CASE-FG-035', sev:'critical', family:'identity', label:'Disable user session', icon:'person_off', channel:'Entra', channelIcon:'key_off', score:90, name:'Omer Levi', initials:'OL', role:'Database Administrator', dept:'Engineering', loc:'Tel Aviv', title:'DBA session disabled after mass export from the investor database', desc:'AXIA disabled an administrator session via Entra after a mass export from the investor database off-baseline.', what:'A DBA session performed a mass export from the investor database far off-baseline.', why:'Privileged mass export needs immediate session containment.' },
-    { id:'CASE-FG-036', sev:'high', family:'content', label:'Revoke external share', icon:'link_off', channel:'Google Drive', channelIcon:'add_to_drive', score:74, name:'Maya Stern', initials:'MS', role:'Client Solutions', dept:'Client Operations', loc:'London', title:'Client onboarding folder shared to a personal Google account', desc:'AXIA revoked an external share after a client onboarding folder was shared to a personal Google account.', what:'A client onboarding folder was shared to a personal Google account.', why:'Client data on personal storage is an exposure that revocation closes.' },
-    { id:'CASE-FG-037', sev:'high', actor:'system', family:'verdict-out', label:'Forwarded to SOC', icon:'bolt', channel:'Security Ops', channelIcon:'sync_alt', score:80, name:'Detection pipeline', initials:'DP', role:'Detection pipeline', dept:'Security Ops', loc:'SOC', title:'Forwarded to the SOC, triggering a containment playbook for repeated DLP-evasion attempts', desc:'AXIA forwarded its decision to the SOC, which triggered a containment playbook for repeated DLP-evasion attempts.', what:'Repeated DLP-evasion attempts matched a containment playbook.', why:'Forwarding to the SOC contains evasion attempts at machine speed.' },
-    { id:'CASE-FG-038', sev:'high', family:'engagement', label:'Notify HR', icon:'badge', channel:'Microsoft Teams', channelIcon:'groups', score:70, name:'Avi Cohen', initials:'AC', role:'Portfolio Manager', dept:'Investments', loc:'New York', title:'Sensitive performance figures posted in a broad Teams channel', desc:'AXIA engaged the employee and notified HR after sensitive performance figures were posted in an over-broad Teams channel.', what:'Sensitive performance figures were posted in a broad internal Teams channel.', why:'Over-sharing sensitive figures internally warrants HR awareness.', cc:'HR' },
-    { id:'CASE-FG-039', sev:'medium', family:'content', label:'Remove message', icon:'block', channel:'Slack', channelIcon:'forum', score:53, name:'Lior Azoulay', initials:'LA', role:'Support Engineer', dept:'Support', loc:'London', title:'Customer record pasted into a public Slack channel removed', desc:'AXIA removed a Slack message after a customer record was pasted into a public channel.', what:'A customer record was pasted into a public Slack channel.', why:'Removing the message limits exposure of customer data.' },
-    { id:'CASE-FG-040', sev:'medium', family:'identity', label:'Step-up authentication', icon:'verified_user', channel:'Entra', channelIcon:'verified_user', score:50, name:'Shira Ben-David', initials:'SB', role:'HR Business Partner', dept:'HR', loc:'Tel Aviv', title:'Unrecognized device prompted a step-up challenge on the HR system', desc:'AXIA required an Entra step-up challenge after an unrecognized device attempted access to the HR system.', what:'An unrecognized device attempted access to the HR system.', why:'Step-up verification confirms the user without blocking legitimate work.' },
-    { id:'CASE-FG-041', sev:'low', family:'engagement', label:'Coach employee', icon:'forum', channel:'Browser upload', channelIcon:'public', score:20, name:'Noam Harel', initials:'NH', role:'Marketing Coordinator', dept:'Marketing', loc:'London', title:'Approved brochure draft uploaded to a consumer design tool', desc:'AXIA auto-coached the coordinator after an approved brochure draft was uploaded to a consumer design tool.', what:'An approved brochure draft was uploaded to a consumer design tool.', why:'Negligible harm; an automatic nudge keeps habits clean.' },
-    { id:'CASE-FG-042', sev:'low', family:'content', label:'File quarantined', icon:'block', channel:'Dropbox', channelIcon:'cloud', score:18, name:' Benchmark', initials:'BM', role:'Operations Associate', dept:'Operations', loc:'London', title:'Synthetic test dataset flagged in a Dropbox sync quarantined', desc:'AXIA quarantined a Dropbox sync after a synthetic test dataset matched a sensitive-data fingerprint.', what:'A synthetic test dataset matched a sensitive-data fingerprint in Dropbox.', why:'Low-harm false-positive-prone pattern; quarantine pending review keeps it clean.' }
+    { id:'CASE-FG-4834', sev:'critical', family:'content', label:'Quarantine email', icon:'shield', channel:'Microsoft 365 email', channelIcon:'mail', score:95, name:'Dana Friedman', initials:'DF', role:'Senior Fund Accountant', dept:'Finance', loc:'New York', title:'Full investor KYC pack emailed externally days before resignation', desc:'AXIA quarantined an outbound email containing a full investor KYC pack sent externally shortly before the sender resigned.', what:'A full investor KYC pack was emailed externally just before a resignation.', why:'Departure-adjacent bulk PII exfiltration is the highest-harm pattern.', cc:'Legal', dlp:true },
+    { id:'CASE-FG-4835', sev:'critical', family:'identity', label:'Disable user session', icon:'person_off', channel:'Entra', channelIcon:'key_off', score:90, name:'Omer Levi', initials:'OL', role:'Database Administrator', dept:'Engineering', loc:'Tel Aviv', title:'DBA session disabled after mass export from the investor database', desc:'AXIA disabled an administrator session via Entra after a mass export from the investor database off-baseline.', what:'A DBA session performed a mass export from the investor database far off-baseline.', why:'Privileged mass export needs immediate session containment.' },
+    { id:'CASE-FG-4836', sev:'high', family:'content', label:'Revoke external share', icon:'link_off', channel:'Google Drive', channelIcon:'add_to_drive', score:74, name:'Maya Stern', initials:'MS', role:'Client Solutions', dept:'Client Operations', loc:'London', title:'Client onboarding folder shared to a personal Google account', desc:'AXIA revoked an external share after a client onboarding folder was shared to a personal Google account.', what:'A client onboarding folder was shared to a personal Google account.', why:'Client data on personal storage is an exposure that revocation closes.' },
+    { id:'CASE-FG-4838', sev:'high', family:'engagement', label:'Notify HR', icon:'badge', channel:'Microsoft Teams', channelIcon:'groups', score:70, name:'Avi Cohen', initials:'AC', role:'Portfolio Manager', dept:'Investments', loc:'New York', title:'Sensitive performance figures posted in a broad Teams channel', desc:'AXIA engaged the employee and notified HR after sensitive performance figures were posted in an over-broad Teams channel.', what:'Sensitive performance figures were posted in a broad internal Teams channel.', why:'Over-sharing sensitive figures internally warrants HR awareness.', cc:'HR' },
+    { id:'CASE-FG-4839', sev:'medium', family:'content', label:'Remove message', icon:'block', channel:'Slack', channelIcon:'forum', score:53, name:'Lior Azoulay', initials:'LA', role:'Support Engineer', dept:'Support', loc:'London', title:'Customer record pasted into a public Slack channel removed', desc:'AXIA removed a Slack message after a customer record was pasted into a public channel.', what:'A customer record was pasted into a public Slack channel.', why:'Removing the message limits exposure of customer data.' },
+    { id:'CASE-FG-4840', sev:'medium', family:'identity', label:'Step-up authentication', icon:'verified_user', channel:'Entra', channelIcon:'verified_user', score:50, name:'Shira Ben-David', initials:'SB', role:'HR Business Partner', dept:'HR', loc:'Tel Aviv', title:'Unrecognized device prompted a step-up challenge on the HR system', desc:'AXIA required an Entra step-up challenge after an unrecognized device attempted access to the HR system.', what:'An unrecognized device attempted access to the HR system.', why:'Step-up verification confirms the user without blocking legitimate work.' },
+    { id:'CASE-FG-4841', sev:'low', family:'engagement', label:'Coach employee', icon:'forum', channel:'Browser upload', channelIcon:'public', score:20, name:'Noam Harel', initials:'NH', role:'Marketing Coordinator', dept:'Marketing', loc:'London', title:'Approved brochure draft uploaded to a consumer design tool', desc:'AXIA auto-coached the coordinator after an approved brochure draft was uploaded to a consumer design tool.', what:'An approved brochure draft was uploaded to a consumer design tool.', why:'Negligible harm; an automatic nudge keeps habits clean.' },
+    { id:'CASE-FG-4842', sev:'low', family:'content', label:'File quarantined', icon:'block', channel:'Dropbox', channelIcon:'cloud', score:18, name:' Benchmark', initials:'BM', role:'Operations Associate', dept:'Operations', loc:'London', title:'Synthetic test dataset flagged in a Dropbox sync quarantined', desc:'AXIA quarantined a Dropbox sync after a synthetic test dataset matched a sensitive-data fingerprint.', what:'A synthetic test dataset matched a sensitive-data fingerprint in Dropbox.', why:'Low-harm false-positive-prone pattern; quarantine pending review keeps it clean.' }
   ];
   HIST.forEach(function(h){ addCase(histCase(h)); });
 
@@ -11508,22 +11706,21 @@ function addActionOption(family){
   // At-most-one CC (Phase 3 owner/CC discipline). Analyst names rotate across cases.
   var SOC_ANALYSTS = ['Alex Rivera (SOC)', 'Priya Nair (SOC)', 'Marcus Webb (SOC)', 'Dana Cohen (Security Ops)', 'Sam Okafor (SOC)'];
   var OUTCOME = {
-    'CASE-FG-020': {owner:'Alex Rivera (SOC)',       cc:'manager'},
-    'CASE-FG-021': {owner:'Priya Nair (SOC)',        cc:null},
-    'CASE-FG-022': {owner:'Marcus Webb (SOC)',       cc:null},
-    'CASE-FG-023': {owner:'Dana Cohen (Security Ops)', cc:null},
-    'CASE-FG-003': {owner:'Sam Okafor (SOC)',        cc:'manager'},
-    'CASE-FG-005': {owner:'Alex Rivera (SOC)',       cc:null},
-    'CASE-FG-014': {owner:'Priya Nair (SOC)',        cc:null},
-    'CASE-FG-011': {owner:'Marcus Webb (SOC)',       cc:null},
-    'CASE-FG-043': {owner:'CISO office', cc:null},
-    'CASE-FG-002': {owner:'Sam Okafor (SOC)',        cc:'manager'},
-    'CASE-FG-004': {owner:'Alex Rivera (SOC)',       cc:null},
-    'CASE-FG-017': {owner:'Priya Nair (SOC)',        cc:null},
-    'CASE-FG-018': {owner:'Marcus Webb (SOC)',       cc:null},
-    'CASE-FG-001': {owner:'Sam Okafor (SOC)',        cc:'Legal'},
-    'CASE-FG-026': {owner:'Marcus Webb (SOC)',       cc:null},   // v9 A2: newly-opened, may be user-closed
-    'CASE-FG-033': {owner:'Dana Cohen (Security Ops)', cc:null}  // v9 A2: newly-opened, may be user-closed
+    'CASE-FG-4820': {owner:'Alex Rivera (SOC)',       cc:'manager'},
+    'CASE-FG-4821': {owner:'Priya Nair (SOC)',        cc:null},
+    'CASE-FG-4822': {owner:'Marcus Webb (SOC)',       cc:null},
+    'CASE-FG-4823': {owner:'Dana Cohen (Security Ops)', cc:null},
+    'CASE-FG-4803': {owner:'Sam Okafor (SOC)',        cc:'manager'},
+    'CASE-FG-4805': {owner:'Alex Rivera (SOC)',       cc:null},
+    'CASE-FG-4814': {owner:'Priya Nair (SOC)',        cc:null},
+    'CASE-FG-4811': {owner:'Marcus Webb (SOC)',       cc:null},
+    'CASE-FG-4843': {owner:'CISO office', cc:null},
+    'CASE-FG-4802': {owner:'Sam Okafor (SOC)',        cc:'manager'},
+    'CASE-FG-4804': {owner:'Alex Rivera (SOC)',       cc:null},
+    'CASE-FG-4817': {owner:'Priya Nair (SOC)',        cc:null},
+    'CASE-FG-4818': {owner:'Marcus Webb (SOC)',       cc:null},
+    'CASE-FG-4801': {owner:'Sam Okafor (SOC)',        cc:'Legal'},
+    'CASE-FG-4833': {owner:'Dana Cohen (Security Ops)', cc:null}  // v9 A2: newly-opened, may be user-closed
   };
   function outcomeFor(c){
     // v10 D1: actor-aware ownership via ownerLabel — agent/system → CISO office; person low/med → the user
@@ -11578,17 +11775,17 @@ function addActionOption(family){
   // headline stats are authored (50/185) over seeded exemplar lists. No timers; nothing moves on load.
   var SEED = {
     // Critical open 3: 001 = the awaiting gate · 002 · 018 (rogue agent, awaiting steward)
-    'CASE-FG-001':'awaiting', 'CASE-FG-002':'open', 'CASE-FG-018':'open',
-    'CASE-FG-017':'closed', 'CASE-FG-028':'closed', 'CASE-FG-004':'closed',
+    'CASE-FG-4801':'awaiting', 'CASE-FG-4802':'open', 'CASE-FG-4818':'open',
+    'CASE-FG-4817':'closed', 'CASE-FG-4828':'closed', 'CASE-FG-4804':'closed',
     // High open 4: 005/014 open · 003/011 engaged-pending
-    'CASE-FG-014':'open', 'CASE-FG-005':'open', 'CASE-FG-011':'pending', 'CASE-FG-003':'pending',
-    'CASE-FG-043':'closed', 'CASE-FG-024':'closed', 'CASE-FG-030':'closed',
+    'CASE-FG-4814':'open', 'CASE-FG-4805':'open', 'CASE-FG-4811':'pending', 'CASE-FG-4803':'pending',
+    'CASE-FG-4843':'closed', 'CASE-FG-4824':'closed', 'CASE-FG-4830':'closed',
     // Medium open 2: 044 governance (awaiting steward) · 021 hold-email engaged-pending
-    'CASE-FG-044':'open', 'CASE-FG-021':'pending',
-    'CASE-FG-020':'closed', 'CASE-FG-026':'closed', 'CASE-FG-006':'closed', 'CASE-FG-031':'closed', 'CASE-FG-045':'closed',
+    'CASE-FG-4844':'open', 'CASE-FG-4821':'pending',
+    'CASE-FG-4820':'closed', 'CASE-FG-4806':'closed', 'CASE-FG-4831':'closed', 'CASE-FG-4845':'closed',
     // Low open 1: 022
-    'CASE-FG-022':'open',
-    'CASE-FG-023':'closed', 'CASE-FG-033':'closed', 'CASE-FG-041':'closed'
+    'CASE-FG-4822':'open',
+    'CASE-FG-4823':'closed', 'CASE-FG-4833':'closed', 'CASE-FG-4841':'closed'
   };
   Object.keys(SEED).forEach(function(id){
     var c = casesData.find(function(x){ return x.id === id; });
@@ -11598,7 +11795,7 @@ function addActionOption(family){
     if (c.stage === 'closed') { c.status = 'closed'; c.outcome = outcomeFor(c); }
     else { c.status = 'open'; c.outcome = null; } // open / awaiting / pending all keep status:'open'
   });
-  // closed history 007,009,012,013,015,016,025,027,029,032,034-040,042 already ship status:'closed'.
+  // closed history 007,009,012,013,015,016,025,027,029,034-036,038-040,042 already ship status:'closed'.
 
   // ---------- v9 N1: close-path (lifecycle) tag on every closed case + N4 attribution tags ----------
   // closePath (a-j) = the single source of truth for BOTH which lifecycle a closed case demonstrates
@@ -11607,33 +11804,33 @@ function addActionOption(family){
   // e removed/quarantined · f external share revoked · g step-up/session-disabled · h token/agent revoked ·
   // i forwarded to SOC (SIEM/SOAR) · j human-confirmed containment (gate).
   var CLOSEPATH = {
-    'CASE-FG-006':'e','CASE-FG-007':'i','CASE-FG-009':'e','CASE-FG-012':'a','CASE-FG-013':'a',
-    'CASE-FG-015':'e','CASE-FG-016':'e','CASE-FG-017':'i','CASE-FG-043':'k','CASE-FG-024':'g',
-    'CASE-FG-025':'g','CASE-FG-027':'b','CASE-FG-028':'h','CASE-FG-029':'e','CASE-FG-030':'c',
-    'CASE-FG-031':'d','CASE-FG-032':'i','CASE-FG-034':'j','CASE-FG-035':'g','CASE-FG-036':'f',
-    'CASE-FG-037':'i','CASE-FG-038':'b','CASE-FG-039':'e','CASE-FG-040':'g','CASE-FG-041':'a',
-    'CASE-FG-042':'e',
-    // v12 re-baseline: cases newly seeded closed (004 revoke-share · 020/023/033 auto-coached · 026 fwd-SOC)
-    'CASE-FG-004':'f','CASE-FG-020':'a','CASE-FG-023':'a','CASE-FG-033':'a','CASE-FG-026':'i'
+    'CASE-FG-4806':'e','CASE-FG-4807':'i','CASE-FG-4809':'e','CASE-FG-4812':'a','CASE-FG-4813':'a',
+    'CASE-FG-4815':'e','CASE-FG-4816':'e','CASE-FG-4817':'i','CASE-FG-4843':'k','CASE-FG-4824':'g',
+    'CASE-FG-4825':'g','CASE-FG-4827':'b','CASE-FG-4828':'h','CASE-FG-4829':'e','CASE-FG-4830':'c',
+    'CASE-FG-4831':'d','CASE-FG-4834':'j','CASE-FG-4835':'g','CASE-FG-4836':'f',
+    'CASE-FG-4838':'b','CASE-FG-4839':'e','CASE-FG-4840':'g','CASE-FG-4841':'a',
+    'CASE-FG-4842':'e',
+    // v12 re-baseline: cases newly seeded closed (004 revoke-share · 020/023/033 auto-coached)
+    'CASE-FG-4804':'f','CASE-FG-4820':'a','CASE-FG-4823':'a','CASE-FG-4833':'a'
   };
   // Bespoke close labels for the paths whose stock 'Resolved' would not read the story (c/d/j).
   var CLOSELABEL = {
-    'CASE-FG-030':'Replied — confirmed',   // c: engagement -> employee replied -> closed
-    'CASE-FG-031':'Released after verify',        // d: content held -> sender verified -> released
-    'CASE-FG-034':'Containment confirmed'         // j: human-confirmed containment (gate mirror)
+    'CASE-FG-4830':'Replied — confirmed',   // c: engagement -> employee replied -> closed
+    'CASE-FG-4831':'Released after verify',        // d: content held -> sender verified -> released
+    'CASE-FG-4834':'Containment confirmed'         // j: human-confirmed containment (gate mirror)
   };
   // v9 N4 / v13 N5: Phase-2 PRD attribution tags (Verified-by / Confirmed-by / Approved-by). Metadata only,
   // no authority, not a gate. ONE format, always a named person; chip + timeline use identical naming.
   // `auto` = reply-comprehension on engage->replied / hold-verify paths; `manual` = analyst/approver action.
-  // v13 N5: FG-011's loose 'User verified' action strings became a proper Verified-by tag; FG-031 carries
+  // v13 N5: FG-4811's loose 'User verified' action strings became a proper Verified-by tag; FG-4831 carries
   // Verified-by AND Confirmed-by side by side (verified the FACT; confirmed the CLOSURE — PRD §3.10 semantics).
   var ATTRIBS = {
-    'CASE-FG-011': [{type:'Verified-by',  person:'Sarah Goldman', source:'auto', evidence:'reply comprehension — legitimate prospect engagement on the Meridian Capital Partners POC'}],
-    'CASE-FG-030': [{type:'Confirmed-by', person:'Tal Mizrahi', source:'auto',   evidence:'reply: "removed the notebook from my personal drive"'}],
-    'CASE-FG-031': [{type:'Verified-by',  person:'Yael Adler',  source:'auto',   evidence:'reply comprehension — verified the held runbook contents as safe to release'},
+    'CASE-FG-4811': [{type:'Verified-by',  person:'Sarah Goldman', source:'auto', evidence:'reply comprehension — legitimate prospect engagement on the Meridian Capital Partners POC'}],
+    'CASE-FG-4830': [{type:'Confirmed-by', person:'Tal Mizrahi', source:'auto',   evidence:'reply: "removed the notebook from my personal drive"'}],
+    'CASE-FG-4831': [{type:'Verified-by',  person:'Yael Adler',  source:'auto',   evidence:'reply comprehension — verified the held runbook contents as safe to release'},
                     {type:'Confirmed-by', person:'Yael Adler',  source:'auto',   evidence:'reply: "confirmed the runbook is safe to release"'}],
-    'CASE-FG-034': [{type:'Approved-by',  person:'Sam Okafor (SOC)',  source:'manual', evidence:'analyst confirmed containment before execute'}],
-    'CASE-FG-027': [{type:'Approved-by',  person:'Marcus Webb (SOC)', source:'manual', evidence:'analyst approved hold + external-share revoke; Legal notified'}]
+    'CASE-FG-4834': [{type:'Approved-by',  person:'Sam Okafor (SOC)',  source:'manual', evidence:'analyst confirmed containment before execute'}],
+    'CASE-FG-4827': [{type:'Approved-by',  person:'Marcus Webb (SOC)', source:'manual', evidence:'analyst approved hold + external-share revoke; Legal notified'}]
   };
   casesData.forEach(function(c){
     // v10: default every un-tagged case to the person actor (agents/system are set explicitly at their source).
@@ -11669,7 +11866,7 @@ function addActionOption(family){
       var P = window.AXIA_PERSONAS || {};
       Object.keys(P).forEach(function(k){ addName(P[k].name); });
       var text = Object.keys(DEMO_RESPONSES).map(function(k){ return DEMO_RESPONSES[k]; }).join('\n');
-      var idRe = /CASE-FG-\d{3}/g, m, missIds = {};
+      var idRe = /CASE-FG-\d{4}/g, m, missIds = {};
       while ((m = idRe.exec(text)) !== null) { if (!validIds[m[0]]) missIds[m[0]] = true; }
       // Person/agent names the canned answers cite (authored inventory — kept in sync with DEMO_RESPONSES).
       var INTEL_NAME_REFS = ['Liam Hoffman','Natasha Orlov','Paul Novak','Maya Patel','Diane Okafor',

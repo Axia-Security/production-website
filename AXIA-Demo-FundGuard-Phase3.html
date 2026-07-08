@@ -7573,33 +7573,44 @@ window.axiaDownloadJSON = function(name, obj) {
 // W1 — Agent Fleet: wired (MCP/API, judged before acting) vs un-wired (caught at the gates) platform roster.
 // Roster names from the AXIA agent model; Material-Symbols wired/un-wired glyph pair, NO external logos.
 const AXIA_AGENT_FLEET = [
-    { name: 'Microsoft 365 Copilot', via: 'AXIA MCP', wired: true },
-    { name: 'Copilot Studio',        via: 'AXIA API', wired: true },
-    { name: 'Glean',                 via: 'AXIA MCP', wired: true },
-    { name: 'Salesforce Agentforce', via: 'Caught at gate', wired: false },
-    { name: 'LangGraph',             via: 'Caught at gate', wired: false },
-    { name: 'Bedrock AgentCore',     via: 'Caught at gate', wired: false }
+    { name: 'Microsoft 365 Copilot', via: 'AXIA MCP', wired: true,  counts: { '1d': 8, '7d': 52, '30d': 220, '90d': 670 } },
+    { name: 'Copilot Studio',        via: 'AXIA API', wired: true,  counts: { '1d': 4, '7d': 28, '30d': 120, '90d': 360 } },
+    { name: 'Glean',                 via: 'AXIA MCP', wired: true,  counts: { '1d': 2, '7d': 16, '30d': 70,  '90d': 210 } },
+    { name: 'Salesforce Agentforce', via: 'Caught at gate', wired: false, counts: { '1d': 1, '7d': 2, '30d': 5, '90d': 13 } },
+    { name: 'LangGraph',             via: 'Caught at gate', wired: false, counts: { '1d': 0, '7d': 1, '30d': 3, '90d': 7 } },
+    { name: 'Bedrock AgentCore',     via: 'Caught at gate', wired: false, counts: { '1d': 0, '7d': 0, '30d': 1, '90d': 4 } }
 ];
+// Authored per-timeframe agent-governance ACTIVITY (events, not cases) - scales with the window like the other
+// dashboard aggregates. governed = sum of wired platform counts; prevented = sum of un-wired (caught-at-gate) counts.
+const AGENT_ACTIVITY_BY_TF = {
+    '1d':  { governed: 14,   prevented: 1,  stewardConfirmations: 1 },
+    '7d':  { governed: 96,   prevented: 3,  stewardConfirmations: 2 },
+    '30d': { governed: 410,  prevented: 9,  stewardConfirmations: 6 },
+    '90d': { governed: 1240, prevented: 24, stewardConfirmations: 18 }
+};
+function axiaAgentActivity() { return AGENT_ACTIVITY_BY_TF[dashboardTimeframe] || AGENT_ACTIVITY_BY_TF['7d']; }
+function axiaFleetCount(p) { return (p.counts && p.counts[dashboardTimeframe]) || 0; }
 window.axiaExportAgentFleet = function() {
-    const agents = axiaAgentCasesForTf();
+    const act = axiaAgentActivity();
     window.axiaDownloadJSON('axia-agent-fleet-' + dashboardTimeframe + '.json', {
         widget: 'Agent Fleet', timeframe: dashboardTimeframe,
-        wiredEvents: agents.filter(c => !c.agentRogue).length,
-        caughtAtGates: agents.filter(c => c.agentRogue).length,
-        roster: AXIA_AGENT_FLEET
+        wiredEvents: act.governed,
+        caughtAtGates: act.prevented,
+        roster: AXIA_AGENT_FLEET.map(p => ({ name: p.name, via: p.via, wired: p.wired, events: axiaFleetCount(p) }))
     });
 };
 function renderAgentFleet() {
     const el = document.getElementById('widget-agent-fleet');
     if (!el) return;
-    const agents = axiaAgentCasesForTf();
-    const wiredEvents = agents.filter(c => !c.agentRogue).length;   // judged before acting over AXIA API / MCP
-    const caught = agents.filter(c => c.agentRogue).length;         // rogue agents stopped at the same gates as people
+    const act = axiaAgentActivity();
+    const wiredEvents = act.governed;   // judged before acting over AXIA API / MCP (authored, per timeframe)
+    const caught = act.prevented;       // rogue agents stopped at the same gates as people (authored, per timeframe)
     const row = (p) => `
         <div class="flex items-center gap-2 py-1">
             <span class="material-symbols-outlined text-[16px] ${p.wired ? 'text-primary' : 'text-text-muted'}">${p.wired ? 'link' : 'link_off'}</span>
             <span class="text-[11px] font-medium text-text-primary flex-1 truncate" title="${p.name}">${p.name}</span>
-            <span class="text-[9px] font-bold uppercase tracking-wide ${p.wired ? 'text-primary' : 'text-text-muted'}">${p.via}</span>
+            <span class="text-[11px] font-bold font-mono tabular-nums ${p.wired ? 'text-primary' : 'text-text-muted'}">${axiaFleetCount(p)}</span>
+            <span class="text-[9px] font-bold uppercase tracking-wide ${p.wired ? 'text-primary' : 'text-text-muted'} w-[78px] text-right shrink-0">${p.via}</span>
         </div>`;
     const wiredRoster = AXIA_AGENT_FLEET.filter(p => p.wired);
     const unwiredRoster = AXIA_AGENT_FLEET.filter(p => !p.wired);
@@ -7635,28 +7646,28 @@ function renderAgentFleet() {
 
 // W2 — Agent Events: Prevented vs Governed. Labeled split (2 counts + thin proportion bar), NOT a donut.
 window.axiaExportAgentEvents = function() {
-    const agents = axiaAgentCasesForTf();
+    const act = axiaAgentActivity();
     window.axiaDownloadJSON('axia-agent-events-' + dashboardTimeframe + '.json', {
         widget: 'Agent Events', timeframe: dashboardTimeframe,
-        prevented: agents.filter(c => c.agentRogue).length,
-        governed: agents.filter(c => !c.agentRogue).length,
-        promptValidationsPassed: agents.filter(c => !c.agentRogue).length,
-        autoStops: agents.filter(c => c.agentRogue).length,
-        stewardConfirmations: agents.filter(c => c.status === 'closed').length
+        prevented: act.prevented,
+        governed: act.governed,
+        promptValidationsPassed: act.governed,
+        autoStops: act.prevented,
+        stewardConfirmations: act.stewardConfirmations
     });
 };
 function renderAgentEvents() {
     const el = document.getElementById('widget-agent-events');
     if (!el) return;
-    const agents = axiaAgentCasesForTf();
-    const prevented = agents.filter(c => c.agentRogue).length;      // rogue agents auto-stopped at the gates
-    const governed = agents.filter(c => !c.agentRogue).length;      // wired agents judged before acting
+    const act = axiaAgentActivity();
+    const prevented = act.prevented;      // rogue agents auto-stopped at the gates (authored, per timeframe)
+    const governed = act.governed;        // wired agents judged before acting (authored, per timeframe)
     const total = prevented + governed;
     const preventedPct = total ? Math.round(prevented / total * 100) : 0;
     const governedPct = 100 - preventedPct;
     const promptValidations = governed;                             // wired agents that passed prompt-validation
     const autoStops = prevented;                                    // rogue agents auto-stopped
-    const stewardConfirms = agents.filter(c => c.status === 'closed').length; // steward-confirmed governance closes
+    const stewardConfirms = act.stewardConfirmations;               // steward-confirmed governance closes
     const metric = (label, val) => `
         <div class="flex items-center justify-between text-[10px]">
             <span class="text-text-secondary">${label}</span>

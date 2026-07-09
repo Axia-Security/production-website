@@ -12346,7 +12346,7 @@ function addActionOption(family){
     return '<div data-testid="adjust-guard" class="font-mono text-[12px] mt-2" style="color:#22C55E">guard ▸ ✓ passes policy guard</div>';
   }
   function renderDefaultBody(c, first, origLabel){
-    return '<p class="font-sans text-[14px] leading-relaxed" style="color:#E2E8F0">My call on '+esc(first)+'’s case is <span class="font-mono" style="color:#22D3EE">'+esc(origLabel)+'</span>. You want something else — tell me what.</p>'
+    return '<p class="font-sans text-[14px] leading-relaxed" style="color:#E2E8F0">My call on '+esc(first)+'’s case is <span class="font-mono" style="color:#22D3EE">'+esc(origLabel)+'</span>.</p><p class="font-sans text-[14px] leading-relaxed mt-1.5" style="color:#E2E8F0">You want something else — tell me what.</p>'
       +'<div class="mt-3 flex flex-col gap-2">'
       +'<textarea id="adjust-input" data-testid="adjust-input" rows="2" placeholder="e.g. just brief Legal instead of a full hold" class="w-full rounded-lg px-3 py-2 text-[13px] font-sans" style="background:#0F1A2E;color:#E2E8F0;border:1px solid rgba(148,163,184,.25);outline:none"></textarea>'
       +'<div class="flex justify-end"><button type="button" data-testid="adjust-draft-btn" onclick="window.axiaAdjustDraft()" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-[12px] font-bold" style="background:#2DD4BF;color:#04121A"><span class="material-symbols-outlined text-[16px]">bolt</span>Draft the change</button></div>'

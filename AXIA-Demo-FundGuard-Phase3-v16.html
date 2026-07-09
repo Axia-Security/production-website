@@ -147,6 +147,9 @@
         .dark summary:hover * {
             color: #f1f5f9 !important;
         }
+        /* Asaf fix #5: False-Alerts rows keep red readable on hover — no bg wash-out, inset-ring affordance instead, and don't recolor the severity text */
+        .adjust-fa-summary:hover { box-shadow: inset 0 0 0 1px #64748b; }
+        .dark .adjust-fa-summary:hover * { color: revert-layer !important; }
         .dark .text-text-primary {
             color: #f1f5f9 !important;
         }
@@ -2161,7 +2164,7 @@ const DEMO_DATA = {
         },
         "30d": {
             open: 10,
-            closed: 40,
+            closed: 80,
             axiaEngagements: 198,
             engagementsByType: { employee: 94, manager: 68, legal: 18, evidence: 42 },
             policyUpdates: 9,
@@ -2173,7 +2176,7 @@ const DEMO_DATA = {
         },
         "90d": {
             open: 10,
-            closed: 175,
+            closed: 330,
             axiaEngagements: 623,
             engagementsByType: { employee: 298, manager: 212, legal: 56, evidence: 128 },
             policyUpdates: 28,
@@ -2240,17 +2243,17 @@ const DEMO_DATA = {
         },
         "30d": {
             // 50 cases authored (open 10 + closed 40); list carries the seeded exemplars
-            critical: { open: 3, dlpAlerted: 10, total: 10 },
-            high: { open: 4, dlpAlerted: 12, total: 15 },
-            medium: { open: 2, dlpAlerted: 10, total: 15 },
-            low: { open: 1, dlpAlerted: 6, total: 10 }
+            critical: { open: 3, dlpAlerted: 3, total: 10 },
+            high: { open: 4, dlpAlerted: 7, total: 28 },
+            medium: { open: 2, dlpAlerted: 8, total: 32 },
+            low: { open: 1, dlpAlerted: 5, total: 20 }
         },
         "90d": {
             // 185 cases authored (open 10 + closed 175); list carries the seeded exemplars
-            critical: { open: 3, dlpAlerted: 24, total: 30 },
-            high: { open: 4, dlpAlerted: 48, total: 55 },
-            medium: { open: 2, dlpAlerted: 50, total: 60 },
-            low: { open: 1, dlpAlerted: 30, total: 40 }
+            critical: { open: 3, dlpAlerted: 7, total: 30 },
+            high: { open: 4, dlpAlerted: 26, total: 100 },
+            medium: { open: 2, dlpAlerted: 34, total: 120 },
+            low: { open: 1, dlpAlerted: 23, total: 90 }
         }
     },
 
@@ -2355,14 +2358,14 @@ const DEMO_DATA = {
             "Executive": { cases: 2, trend: "stable", severity: "medium", percentage: 4, critical: 0, high: 0, medium: 1, low: 1, caseTypes: ['M&A data', 'Board materials'] }
         },
         "90d": {
-            "Engineering": { cases: 40, trend: "down", severity: "high", percentage: 21, critical: 8, high: 13, medium: 13, low: 6, caseTypes: ['IP exfiltration', 'Departure risk', 'Agent governance'] },
-            "Sales": { cases: 33, trend: "down", severity: "high", percentage: 18, critical: 6, high: 10, medium: 11, low: 6, caseTypes: ['Client data export', 'Fund portfolio', 'Investor lists'] },
-            "Finance": { cases: 30, trend: "down", severity: "high", percentage: 16, critical: 6, high: 9, medium: 9, low: 6, caseTypes: ['NAV reports', 'Investor allocations', 'M&A data'] },
-            "Product": { cases: 26, trend: "down", severity: "medium", percentage: 14, critical: 4, high: 8, medium: 9, low: 5, caseTypes: ['Migration docs', 'Product roadmap', 'Feature plans'] },
-            "Marketing": { cases: 19, trend: "down", severity: "medium", percentage: 10, critical: 2, high: 5, medium: 6, low: 6, caseTypes: ['Partner comms', 'Partner info', 'Brand assets'] },
-            "HR": { cases: 14, trend: "down", severity: "medium", percentage: 8, critical: 1, high: 4, medium: 5, low: 4, caseTypes: ['Employee data', 'Comp info', 'Performance reviews'] },
-            "Legal": { cases: 14, trend: "down", severity: "medium", percentage: 8, critical: 2, high: 4, medium: 4, low: 4, caseTypes: ['Compliance docs', 'Regulatory data', 'Litigation docs'] },
-            "Executive": { cases: 9, trend: "down", severity: "medium", percentage: 5, critical: 1, high: 2, medium: 3, low: 3, caseTypes: ['M&A data', 'Board materials', 'Strategic plans'] }
+            "Engineering": { cases: 72, trend: "down", severity: "high", percentage: 21, critical: 8, high: 24, medium: 26, low: 14, caseTypes: ['IP exfiltration', 'Departure risk', 'Agent governance'] },
+            "Sales": { cases: 60, trend: "down", severity: "high", percentage: 18, critical: 6, high: 18, medium: 22, low: 14, caseTypes: ['Client data export', 'Fund portfolio', 'Investor lists'] },
+            "Finance": { cases: 53, trend: "down", severity: "high", percentage: 16, critical: 6, high: 16, medium: 18, low: 13, caseTypes: ['NAV reports', 'Investor allocations', 'M&A data'] },
+            "Product": { cases: 48, trend: "down", severity: "medium", percentage: 14, critical: 4, high: 15, medium: 18, low: 11, caseTypes: ['Migration docs', 'Product roadmap', 'Feature plans'] },
+            "Marketing": { cases: 36, trend: "down", severity: "medium", percentage: 11, critical: 2, high: 9, medium: 12, low: 13, caseTypes: ['Partner comms', 'Partner info', 'Brand assets'] },
+            "HR": { cases: 27, trend: "down", severity: "medium", percentage: 8, critical: 1, high: 7, medium: 10, low: 9, caseTypes: ['Employee data', 'Comp info', 'Performance reviews'] },
+            "Legal": { cases: 26, trend: "down", severity: "medium", percentage: 8, critical: 2, high: 7, medium: 8, low: 9, caseTypes: ['Compliance docs', 'Regulatory data', 'Litigation docs'] },
+            "Executive": { cases: 18, trend: "down", severity: "medium", percentage: 5, critical: 1, high: 4, medium: 6, low: 7, caseTypes: ['M&A data', 'Board materials', 'Strategic plans'] }
         }
     },
 
@@ -2373,8 +2376,8 @@ const DEMO_DATA = {
         // off-round). False Alerts = totalDlpAlarms − validatedByAxia ≈ 97-98% noise.
         "1d": { axiaCases: 5, dlpAlerted: 3, totalDlpAlarms: 118, validatedByAxia: 3 },
         "7d": { axiaCases: 18, dlpAlerted: 12, totalDlpAlarms: 834, validatedByAxia: 12 },
-        "30d": { axiaCases: 50, dlpAlerted: 38, totalDlpAlarms: 3612, validatedByAxia: 38 },
-        "90d": { axiaCases: 185, dlpAlerted: 152, totalDlpAlarms: 10847, validatedByAxia: 152 }
+        "30d": { axiaCases: 90, dlpAlerted: 23, totalDlpAlarms: 3612, validatedByAxia: 23 },
+        "90d": { axiaCases: 340, dlpAlerted: 90, totalDlpAlarms: 10847, validatedByAxia: 90 }
     },
 
     // ==================== FundGuard: SUPPRESSED DLP ALERTS (False Positives) ====================
@@ -2680,8 +2683,8 @@ const DEMO_DATA = {
         // v12: aligned to the authored case baseline 5/18/50/185
         "1d": { axiaDiscovered: 5, dlpDiscovered: 1 },
         "7d": { axiaDiscovered: 18, dlpDiscovered: 5 },
-        "30d": { axiaDiscovered: 50, dlpDiscovered: 14 },
-        "90d": { axiaDiscovered: 185, dlpDiscovered: 52 }
+        "30d": { axiaDiscovered: 90, dlpDiscovered: 23 },
+        "90d": { axiaDiscovered: 340, dlpDiscovered: 90 }
     },
 
     // False Alarms Trend (Signal vs Noise) - DLP alerts vs AXIA true alerts
@@ -2760,8 +2763,8 @@ const DEMO_DATA = {
         // v12: sums = 5/18/50/185 (open per window + authored closed history)
         "1d": { open: 4, assigned: 0, unassigned: 0, closed: 1 },
         "7d": { open: 10, assigned: 0, unassigned: 0, closed: 8 },
-        "30d": { open: 10, assigned: 0, unassigned: 0, closed: 40 },
-        "90d": { open: 10, assigned: 0, unassigned: 0, closed: 175 }
+        "30d": { open: 10, assigned: 0, unassigned: 0, closed: 80 },
+        "90d": { open: 10, assigned: 0, unassigned: 0, closed: 330 }
     },
 
     // V6.27: Top Case Types by timeframe — FundGuard-specific categories
@@ -2784,22 +2787,22 @@ const DEMO_DATA = {
             { type: 'Context-Validated', count: 1, icon: 'verified' }
         ],
         "30d": [
-            { type: 'IP Exfiltration', count: 12, icon: 'code' },
-            { type: 'Client Data Exposure', count: 10, icon: 'group' },
-            { type: 'Departure Risk', count: 8, icon: 'exit_to_app' },
-            { type: 'Compliance Violation', count: 7, icon: 'gavel' },
-            { type: 'Reputation Risk', count: 5, icon: 'trending_down' },
-            { type: 'Agent Governance', count: 4, icon: 'smart_toy' },
-            { type: 'Context-Validated', count: 4, icon: 'verified' }
+            { type: 'IP Exfiltration', count: 22, icon: 'code' },
+            { type: 'Client Data Exposure', count: 18, icon: 'group' },
+            { type: 'Departure Risk', count: 14, icon: 'exit_to_app' },
+            { type: 'Compliance Violation', count: 13, icon: 'gavel' },
+            { type: 'Reputation Risk', count: 9, icon: 'trending_down' },
+            { type: 'Agent Governance', count: 7, icon: 'smart_toy' },
+            { type: 'Context-Validated', count: 7, icon: 'verified' }
         ],
         "90d": [
-            { type: 'IP Exfiltration', count: 45, icon: 'code' },
-            { type: 'Client Data Exposure', count: 38, icon: 'group' },
-            { type: 'Departure Risk', count: 30, icon: 'exit_to_app' },
-            { type: 'Compliance Violation', count: 26, icon: 'gavel' },
-            { type: 'Reputation Risk', count: 20, icon: 'trending_down' },
-            { type: 'Context-Validated', count: 14, icon: 'verified' },
-            { type: 'Agent Governance', count: 12, icon: 'smart_toy' }
+            { type: 'IP Exfiltration', count: 82, icon: 'code' },
+            { type: 'Client Data Exposure', count: 70, icon: 'group' },
+            { type: 'Departure Risk', count: 55, icon: 'exit_to_app' },
+            { type: 'Compliance Violation', count: 48, icon: 'gavel' },
+            { type: 'Reputation Risk', count: 37, icon: 'trending_down' },
+            { type: 'Context-Validated', count: 26, icon: 'verified' },
+            { type: 'Agent Governance', count: 22, icon: 'smart_toy' }
         ]
     },
 
@@ -2837,23 +2840,23 @@ const DEMO_DATA = {
         "30d": {
             // total 50 · open 10 · closed 40 · sev C10/H15/M15/L10
             labels: ['Jan 10', 'Jan 17', 'Jan 24', 'Jan 31'],
-            closed: [12, 10, 10, 8],         // =40
+            closed: [25, 21, 19, 15],         // =40
             open:   [2, 3, 2, 3],            // =10  → per-period totals [14,13,12,11]=50
             critical: [3, 3, 2, 2],          // =10
-            high:     [4, 4, 4, 3],          // =15
-            medium:   [4, 4, 3, 4],          // =15
-            low:      [3, 2, 3, 2],          // =10  → per-period sev [14,13,12,11]=50
+            high:     [8, 7, 7, 6],          // =15
+            medium:   [9, 8, 8, 7],          // =15
+            low:      [7, 6, 4, 3],          // =10  → per-period sev [14,13,12,11]=50
             interactions: [900, 905, 903, 904] // DLP alerts overlay =3612
         },
         "90d": {
             // total 185 · open 10 · closed 175 · sev C30/H55/M60/L40 — monthly bars DECLINE 75/60/50
             labels: ['Nov', 'Dec', 'Jan'],
-            closed: [70, 55, 50],            // =175
+            closed: [135, 105, 90],            // =175
             open:   [5, 5, 0],               // =10  → per-period totals [75,60,50]=185
             critical: [12, 10, 8],           // =30
-            high:     [22, 18, 15],          // =55
-            medium:   [24, 20, 16],          // =60
-            low:      [17, 12, 11],          // =40  → per-period sev [75,60,50]=185
+            high:     [42, 33, 25],          // =55
+            medium:   [50, 40, 30],          // =60
+            low:      [36, 27, 27],          // =40  → per-period sev [75,60,50]=185
             interactions: [3547, 3600, 3700] // DLP alerts overlay =10847 (flat)
         }
     },
@@ -3525,20 +3528,20 @@ const DEMO_DATA = {
 
         {
             id: 'CASE-FG-4801',
-            title: 'Proprietary NAV calculation engine and patent-pending algorithms emailed to SS&C contact before departure',
+            title: 'Proprietary NAV calculation engine and patent-pending algorithms staged to personal Gmail, pre-addressed to SS&C contact, before departure',
             severity: 'critical',
             status: 'open',
             score: 97,
             time: '28m ago',
-            description: 'Departing senior quantitative developer emailed the NAV calculation engine archive, multi-currency valuation models, and three patent-pending optimization algorithm files from his corporate FundGuard mailbox to a personal Gmail address that AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator 4 days before his last day. AXIA inspected the email and the four attachments, content-matched them against the FundGuard NAV-Engine Trade-Secret Catalog, and confirmed the SS&C destination from his public profile network.',
+            description: 'Departing senior quantitative developer emailed the NAV calculation engine archive, multi-currency valuation models, and three patent-pending optimization algorithm files from his corporate FundGuard mailbox to his own personal Gmail address 4 days before his last day, the message body pre-addressed to "David", an external SS&C contact AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator. AXIA inspected the email and the four attachments, content-matched them against the FundGuard NAV-Engine Trade-Secret Catalog, and resolved the named SS&C handoff recipient from his public profile network.',
             entity: {
                 name: 'Liam Hoffman',
                 initials: 'LH',
                 role: 'Senior Quantitative Developer',
                 department: 'Engineering',
-                location: 'Tel Aviv',
+                location: 'Boston',
                 joined: 'Mar 2021',
-                riskFactors: ['Resignation submitted 10 days ago, departing FundGuard in 4 days', 'Recipient address matches External-Counterparty Register entry flagged as competitor-administrator', 'Key contributor to NAV calculation engine and reconciliation algorithms', 'Personal Gmail egress of full NAV-engine archive and patent-pending algorithm files outside normal corporate workflow']
+                riskFactors: ['Resignation submitted 10 days ago, departing FundGuard in 4 days', 'Message body pre-addressed to "David", an external SS&C contact on the External-Counterparty Register flagged as competitor-administrator, while the email was sent to his own personal Gmail — self-staging for a later handoff', 'Key contributor to NAV calculation engine and reconciliation algorithms', 'Personal Gmail egress of full NAV-engine archive and patent-pending algorithm files outside normal corporate workflow']
             },
             dlpAlerted: false,
             sensitivityClass: 'ip',
@@ -3553,9 +3556,9 @@ const DEMO_DATA = {
             actions: [], /* Phase 3: owner + ≤1 CC carried by c.outcome on resolve */
             completedActions: ['contact-manager', 'contact-hr'],
             analysis: {
-                what: 'Liam Hoffman (Senior Quantitative Developer, Engineering, Tel Aviv, credential-rotation cadence has shifted to a departure-imminent baseline) emailed four attachments from his corporate FundGuard mailbox to a personal Gmail address that AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator: the full NAV-engine v4.2 source archive (128 files, complete pricing library plus the fund-accounting state machine), the multi-currency valuation models for the 47-jurisdiction matrix, and three patent-pending optimization-algorithm files. AXIA inspected the email and each attachment, content-matched the NAV-engine commit graph (1,847 commits, 2022-2026 history), the multi-currency waterfall logic, and the patent-pending optimization signatures against the FundGuard NAV-Engine Trade-Secret Catalog uploaded by Engineering, and confirmed exact matches across all four files. the existing DLP did not fire on the email because the recipient is a personal Gmail address and the NAV-engine archive classification is not on the legacy Purview rule list for that mailbox.',
-                whyMatters: "FundGuard's NAV calculation algorithms and patent-pending optimizations are the core IP differentiating the platform from SS&C, SimCorp, and Linedata. These algorithms handle real-time multi-asset class valuations across 47 jurisdictions and underpin every dollar of the $4.2B fund-administration software market FundGuard targets. Loss to a direct competitor could eliminate FundGuard's primary competitive advantage. The Lupin v. Zeng precedent (a departing engineer who copied 128 files on her last days) resulted in criminal prosecution and is the recognized template for this fact pattern. AXIA's contribution is content-matching the NAV-engine archive plus the patent-pending optimization files against the FundGuard NAV-Engine Trade-Secret Catalog and resolving the recipient via the External-Counterparty Register competitor-administrator list, which is the WHO + WHAT + WHEN judgment that pattern-only matching cannot construct.",
-                whyUnusual: 'Personal-Gmail egress of the full NAV-engine archive plus the patent-pending optimization files is new behavior for this identity, never observed before in the 6-month baseline. The recipient address resolves through External-Counterparty Register data to an entry flagged as competitor-administrator. Hoffman accessed the patent-pending optimization directory (which he had not opened in 5 months) and the full multi-currency valuation matrix (outside his current sprint scope) in the 72 hours before the email. Activity concentrated between 11pm and 3am Tel Aviv time, outside normal working hours. Workday shows voluntary resignation, not layoff.',
+                what: 'Liam Hoffman (Senior Quantitative Developer, Engineering, Boston, credential-rotation cadence has shifted to a departure-imminent baseline) emailed four attachments from his corporate FundGuard mailbox to his own personal Gmail address, the message body pre-addressed to "David" — an external SS&C contact AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator: the full NAV-engine v4.2 source archive (128 files, complete pricing library plus the fund-accounting state machine), the multi-currency valuation models for the 47-jurisdiction matrix, and three patent-pending optimization-algorithm files. AXIA inspected the email and each attachment, content-matched the NAV-engine commit graph (1,847 commits, 2022-2026 history), the multi-currency waterfall logic, and the patent-pending optimization signatures against the FundGuard NAV-Engine Trade-Secret Catalog uploaded by Engineering, and confirmed exact matches across all four files. the existing DLP did not fire on the email because the recipient is a personal Gmail address and the NAV-engine archive classification is not on the legacy Purview rule list for that mailbox.',
+                whyMatters: "FundGuard's NAV calculation algorithms and patent-pending optimizations are the core IP differentiating the platform from SS&C, SimCorp, and Linedata. These algorithms handle real-time multi-asset class valuations across 47 jurisdictions and underpin every dollar of the $4.2B fund-administration software market FundGuard targets. Loss to a direct competitor could eliminate FundGuard's primary competitive advantage. The Lupin v. Zeng precedent (a departing engineer who copied 128 files on her last days) resulted in criminal prosecution and is the recognized template for this fact pattern. AXIA's contribution is content-matching the NAV-engine archive plus the patent-pending optimization files against the FundGuard NAV-Engine Trade-Secret Catalog and resolving the 'David' handoff recipient named in the drafted body via the External-Counterparty Register competitor-administrator list, which is the WHO + WHAT + WHEN judgment that pattern-only matching cannot construct.",
+                whyUnusual: 'Personal-Gmail egress of the full NAV-engine archive plus the patent-pending optimization files is new behavior for this identity, never observed before in the 6-month baseline. The email went to his own personal Gmail, but the body is pre-addressed to "David" — an external contact that resolves through External-Counterparty Register data to an SS&C entry flagged as competitor-administrator — which reads as staging for a later handoff, not a message to himself. Hoffman accessed the patent-pending optimization directory (which he had not opened in 5 months) and the full multi-currency valuation matrix (outside his current sprint scope) in the 72 hours before the email. Activity concentrated between 11pm and 3am Boston time, outside normal working hours. Workday shows voluntary resignation, not layoff.',
                 riskScore: {
                     total: 97,
                     factors: {
@@ -3572,7 +3575,7 @@ const DEMO_DATA = {
                     type: 'context'
                 }, {
                     time: '8 days ago',
-                    event: 'External-Counterparty Register entry: recipient flagged as competitor-administrator',
+                    event: 'External-Counterparty Register match: "David", the external SS&C contact named in the drafted email body, flagged as competitor-administrator',
                     type: 'behavioral'
                 }, {
                     time: '3 days ago',
@@ -3584,7 +3587,7 @@ const DEMO_DATA = {
                     type: 'behavioral'
                 }, {
                     time: '45m ago',
-                    event: 'Email egress: 4 attachments (NAV-engine v4.2 archive, multi-currency valuation models, three patent-pending optimization files) sent to personal Gmail address matching External-Counterparty Register entry flagged as competitor-administrator',
+                    event: 'Email egress: 4 attachments (NAV-engine v4.2 archive, multi-currency valuation models, three patent-pending optimization files) sent to his own personal Gmail, body pre-addressed to "David" (external SS&C contact on the External-Counterparty Register, competitor-administrator flag)',
                     type: 'alert'
                 }, {
                     time: '38m ago',
@@ -3600,7 +3603,7 @@ const DEMO_DATA = {
             tags: ['departure-risk', 'ip-exfiltration', 'nav-engine', 'patent-pending', 'ss-and-c'],
             canEnforce: true,
             enforcementType: 'activate-smart-block',
-            enforcementReason: 'Smart-block outbound email with NAV-engine or patent-pending-algorithm attachments from Engineering users with active behavioral pre-departure signal when AXIA content-matches the attachments against the NAV-Engine Trade-Secret Catalog AND the recipient is on a competitor or fund-admin-platform contacts list (SS&C, SimCorp, Linedata, Citco, Clearstream). pattern-only matching cannot make this judgment because the trigger is the attachment-content-meets-recipient-context combination, not a static content signature.',
+            enforcementReason: 'Smart-block outbound email with NAV-engine or patent-pending-algorithm attachments from Engineering users with active behavioral pre-departure signal when AXIA content-matches the attachments against the NAV-Engine Trade-Secret Catalog AND the drafted message names an external handoff recipient on a competitor or fund-admin-platform contacts list, even when the email is sent to his own personal account (SS&C, SimCorp, Linedata, Citco, Clearstream). pattern-only matching cannot make this judgment because the trigger is the attachment-content-meets-recipient-context combination, not a static content signature.',
             evidence: {
                 channel: 'email',
                 channelMeta: {
@@ -3614,7 +3617,7 @@ const DEMO_DATA = {
                     cc: [],
                     subject: 'transition notes - the nav engine and the optimization pieces',
                     sentAt: '2026-04-14T03:42:00Z',
-                    bodyMarkdown: 'David,\n\nAttaching the NAV engine archive and the multi-currency valuation models we discussed, plus the three optimization files that go with them. <mark class="doc-highlight" data-reason="Departing FundGuard senior quantitative developer emails the full NAV-engine v4.2 archive, multi-currency valuation models across 47 jurisdictions, and three patent-pending optimization algorithm files to a personal Gmail address that AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator, attachments content-match the NAV-Engine Trade-Secret Catalog">The waterfall logic and the patent-pending optimizations are the pieces that took us four years to dial in, and the multi-currency matrix is the part SS&C still does not have a clean answer for.</mark>\n\nKeep these on the gmail going forward, not the work address. Will be in Boston next week.\n\nLiam\n\nLiam Hoffman\nSenior Quantitative Developer\nFundGuard, Tel Aviv',
+                    bodyMarkdown: 'David,\n\nAttaching the NAV engine archive and the multi-currency valuation models we discussed, plus the three optimization files that go with them. <mark class="doc-highlight" data-reason="Departing FundGuard senior quantitative developer emails the full NAV-engine v4.2 archive, multi-currency valuation models across 47 jurisdictions, and three patent-pending optimization algorithm files to his own personal Gmail with the body pre-addressed to David, an external SS&C contact AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator, attachments content-match the NAV-Engine Trade-Secret Catalog">The waterfall logic and the patent-pending optimizations are the pieces that took us four years to dial in, and the multi-currency matrix is the part SS&C still does not have a clean answer for.</mark>\n\nKeep these on the gmail going forward, not the work address. Will be in Boston next week.\n\nLiam\n\nLiam Hoffman\nSenior Quantitative Developer\nFundGuard, Boston',
                     attachments: [{
                         filename: 'fg-nav-engine-v4.2-full-archive.zip',
                         sourceSystem: 'GitHub Enterprise',
@@ -5170,11 +5173,11 @@ const PROSE_TIMEOUT_MS = 2500;                        // M7 commit-unlock ceilin
 const DEMO_RESPONSES = {
     'liam hoffman': `## Risk Profile: Liam Hoffman
 
-**Role:** Senior Quantitative Developer | **Department:** Engineering | **Location:** Tel Aviv
+**Role:** Senior Quantitative Developer | **Department:** Engineering | **Location:** Boston
 
 ### Current Risk Assessment: **CRITICAL** (Score: 97) — CASE-FG-4801
 
-Liam Hoffman is departure-imminent (credential-rotation cadence has shifted to a departure-imminent baseline) and emailed four attachments from his corporate mailbox to a personal Gmail address AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator — an **SS&C** contact.
+Liam Hoffman is departure-imminent (credential-rotation cadence has shifted to a departure-imminent baseline) and emailed four attachments from his corporate mailbox to his own personal Gmail, the body pre-addressed to "David" — an **SS&C** contact AXIA matched to an External-Counterparty Register entry flagged as competitor-administrator — staging the files for a later handoff.
 
 ### What Was Emailed (content-matched against the NAV-Engine Trade-Secret Catalog)
 
@@ -5199,9 +5202,9 @@ Based on current monitoring, I've identified **2 high-priority risk patterns** r
 
 ### 🔴 Critical: Liam Hoffman — CASE-FG-4801
 - **Status:** Departure-imminent — credential-rotation cadence has shifted to a departure-imminent baseline
-- **Destination:** SS&C (matched via the External-Counterparty Register, competitor-administrator flag)
+- **Intended handoff:** SS&C — "David", the external contact named in the drafted body; the email itself went to his own Gmail (self-staging)
 - **Risk Score:** 97
-- **Concern:** NAV-engine v4.2 archive (128 files) + the 47-jurisdiction valuation models + 3 patent-pending algorithm files emailed to the SS&C contact — exact match against the NAV-Engine Trade-Secret Catalog
+- **Concern:** NAV-engine v4.2 archive (128 files) + the 47-jurisdiction valuation models + 3 patent-pending algorithm files staged to his own Gmail, pre-addressed to the SS&C contact — exact match against the NAV-Engine Trade-Secret Catalog
 - **Judgment:** Email held · external shares revoked · Legal escalation (Miriam Foss) — **containment gate awaiting your confirmation**
 
 ### 🔴 Critical: Natasha Orlov — CASE-FG-4802
@@ -5228,7 +5231,7 @@ Based on current monitoring, I've identified **2 high-priority risk patterns** r
 ### Top Patterns This Week
 
 #### 1. **Pre-Departure Data Collection**
-- **Liam Hoffman** (Engineering) — Score 97 · Critical · NAV-engine archive + patent-pending algorithms emailed to an SS&C contact. Email held, shares revoked — the case sits at the **containment gate awaiting your confirmation** (CASE-FG-4801).
+- **Liam Hoffman** (Engineering) — Score 97 · Critical · NAV-engine archive + patent-pending algorithms staged to his own Gmail, pre-addressed to an SS&C contact ("David"). Email held, shares revoked — the case sits at the **containment gate awaiting your confirmation** (CASE-FG-4801).
 - **Priya Ramanathan** (Tax & Compliance) — Score 96 · FATCA review-queue export before departure; contained and closed (CASE-FG-4817).
 
 #### 2. **Conflict-of-Interest Client-Data Extraction**
@@ -5359,7 +5362,7 @@ Top open person cases by risk score:
 
 | # | Employee | Department | Score | Severity | Case |
 |---|----------|------------|-------|----------|------|
-| 1 | **Liam Hoffman** | Engineering | 97 | Critical | CASE-FG-4801 — NAV engine + patent-pending algorithms to an SS&C contact · containment gate awaiting your confirmation |
+| 1 | **Liam Hoffman** | Engineering | 97 | Critical | CASE-FG-4801 — NAV engine + patent-pending algorithms staged to own Gmail, pre-addressed to an SS&C contact · containment gate awaiting your confirmation |
 | 2 | **Natasha Orlov** | Client Operations | 94 | Critical | CASE-FG-4802 — full client book (156 funds, $47.2B AUM) via the ops service account · email quarantined, token revoked |
 | 3 | **Paul Novak** | Revenue Strategy | 83 | High | CASE-FG-4803 — NAV post-mortem + pricing model to personal Gmail · engaged, awaiting his reply |
 | 4 | **Maya Patel** | Legal | 80 | High | CASE-FG-4805 — draft SOC 2 findings + KYC investor extract to an unapproved consultant |
@@ -6515,7 +6518,7 @@ function renderCaseDetails(caseId) {
         <div class="bg-surface-card rounded-xl border border-border-default overflow-hidden shadow-card">
             <div class="px-4 py-3 bg-surface-elevated border-b border-border-default flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary text-lg">psychology</span>
-                <span class="font-bold text-text-primary">AI Analysis</span>
+                <span class="font-bold text-text-primary">Axia's Analysis</span>
             </div>
             <div class="divide-y divide-border-subtle">
                 <div class="p-4 flex gap-3">
@@ -7160,7 +7163,7 @@ function renderSuppressedDlpPanel() {
         const sev = severityStyles[alert.severity] || severityStyles.high;
         return `
         <details class="group bg-white rounded-lg border border-border-default overflow-hidden">
-            <summary class="flex items-start gap-3 p-3 cursor-pointer select-none hover:bg-surface-hover transition-colors">
+            <summary class="adjust-fa-summary flex items-start gap-3 p-3 cursor-pointer select-none transition-shadow">
                 <div class="flex items-center gap-1.5 shrink-0 mt-0.5">
                     <span class="material-symbols-outlined text-[16px]" style="color:${sev.color}">${sev.icon}</span>
                     <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded border" style="color:${sev.color};background:${sev.bg};border-color:${sev.color}30">${alert.severity}</span>
@@ -10993,6 +10996,11 @@ function renderNBAPanel(c){
     var stateLine = closedG
       ? stwLbl + ' confirmed · case closed'
       : 'Awaiting ' + stwLbl + '’s confirmation';
+    // v16 (#1): agent-governance rows carry a relative-time chip derived from c.time
+    var _gtb = (c.time || '');
+    var _gtm = /^(\d+)m ago$/.exec(_gtb);
+    var _gtLater = _gtm ? (Math.max(parseInt(_gtm[1], 10) - 4, 1)) + 'm ago' : _gtb;
+    var _gchip = function(t){ return '<span class="text-text-muted text-[11px] shrink-0 ml-auto">' + t + '</span>'; };
     return ''
     + '<div class="bg-surface-card rounded-xl border border-border-default overflow-hidden shadow-card">'
     +   '<div class="px-4 py-3 bg-surface-elevated border-b border-border-default flex items-center justify-between">'
@@ -11000,9 +11008,9 @@ function renderNBAPanel(c){
     +     '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-ops-purple/15 text-ops-purple border border-ops-purple/30">' + (integ ? 'Governance · prompt validation' : 'Governance · connect directive') + '</span>'
     +   '</div>'
     +   '<div class="p-4 space-y-2">'
-    +     '<div class="flex items-start gap-2 text-sm text-text-primary"><span class="material-symbols-outlined text-primary text-[18px] shrink-0">' + (integ ? 'gavel' : 'block') + '</span><span>' + actLine + '</span></div>'
-    +     '<div class="flex items-start gap-2 text-sm text-text-primary"><span class="material-symbols-outlined text-accent-teal text-[18px] shrink-0">outgoing_mail</span><span>' + askLine + '</span></div>'
-    +     '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg ' + (closedG ? 'bg-status-success/10 border border-status-success/30 text-status-success' : 'bg-ops-purple/10 border border-ops-purple/30 text-ops-purple') + ' text-sm font-bold"><span class="material-symbols-outlined">' + (closedG ? 'check_circle' : 'pending') + '</span>' + stateLine + '</div>'
+    +     '<div class="flex items-start gap-2 text-sm text-text-primary"><span class="material-symbols-outlined text-primary text-[18px] shrink-0">' + (integ ? 'gavel' : 'block') + '</span><span>' + actLine + '</span>' + _gchip(_gtb) + '</div>'
+    +     '<div class="flex items-start gap-2 text-sm text-text-primary"><span class="material-symbols-outlined text-accent-teal text-[18px] shrink-0">outgoing_mail</span><span>' + askLine + '</span>' + _gchip(_gtb) + '</div>'
+    +     '<div class="flex items-center gap-2 px-3 py-2.5 rounded-lg ' + (closedG ? 'bg-status-success/10 border border-status-success/30 text-status-success' : 'bg-ops-purple/10 border border-ops-purple/30 text-ops-purple') + ' text-sm font-bold"><span class="material-symbols-outlined">' + (closedG ? 'check_circle' : 'pending') + '</span>' + stateLine + _gchip(_gtLater) + '</div>'
     +     '<button type="button" onclick="axiaViewEmail(\'' + c.id + '\')" class="w-full flex items-center justify-center gap-1.5 h-9 px-3 rounded-lg bg-white text-ops-teal border border-ops-teal hover:bg-ops-teal/5 transition-colors text-[12px] font-bold"><span class="material-symbols-outlined text-[16px]">mark_email_read</span>View sent message</button>'
     +   '</div>'
     + '</div>';

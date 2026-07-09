@@ -6723,8 +6723,8 @@ function renderCaseDetails(caseId) {
         </div>
         ` : ''}
 
-        <!-- V6.11: Timeline - More compact -->
-        <details class="group bg-surface-card rounded-xl border border-border-default overflow-hidden shadow-card" open>
+        <!-- V6.11: Timeline - More compact. Asaf fix: agent cases use the Agent-governance panel as their (timed) timeline — hide this redundant plain one for agents. -->
+        <details class="group bg-surface-card rounded-xl border border-border-default overflow-hidden shadow-card" open ${c.actor === 'agent' ? 'hidden' : ''}>
             <summary class="flex items-center justify-between px-4 py-3 cursor-pointer select-none hover:bg-surface-hover transition-colors">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-text-secondary">history</span>
